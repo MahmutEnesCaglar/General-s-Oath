@@ -2,18 +2,17 @@
 
 ---
 
-## 🚀 Versiyon 1.0 - İlk Harita ve Temel Yapı
-Bu aşamada projenin temel görsel ve teknik altyapısı oluşturulmuştur.
+## 🚀 Versiyon 1.1 - Görsel Yenileme ve İlk Mekanikler
+Bu güncelleme ile projenin hem harita yapısı genişletildi hem de ilk etkileşimli butonlar sisteme dahil edildi.
 
-### ✅ Yapılan Çalışmalar:
-* **2D Isometric Grid:** Sahne yapısı izometrik düzene göre yapılandırıldı.
-* **Tileset Seçimi:** Projeye uygun tileset assetleri belirlendi ve projeye dahil edildi.
-* **Tile Palette:** Hızlı harita tasarımı yapabilmek için Tile Palette hazırlandı.
-* **Harita Tasarımı:** İlk deneme haritası için grid oluşturuldu.
+### ✅ Yenilikler:
+* **Tileset Güncellemesi:** Mevcut tileset daha detaylı bir setle değiştirildi, görsel kalite artırıldı.
+* **Harita Genişletme:** Oyun alanı (Grid) boyutu büyütülerek daha geniş bir keşif alanı sunuldu.
+* **Güçlendirme (Power-up) Butonları:** UI üzerine 4 adet aktif güçlendirme butonu eklendi.
+* **C# Script Entegrasyonu:** Butonlar `OnClick` fonksiyonları ile çalışır hale getirildi. (Şu an için konsola log basmaktadır).
 
-### 📸 Ekran Görüntüsü
-![Versiyon 1.0 Harita Görünümü](Screenshots/v1_harita.png)
-
+### 📸 Versiyon 1.1 Görünümü
+![v1.1 Harita ve UI](Screenshots/v1_1_harita.png)
 
 ---
 *Bu proje sürekli güncellenmektedir. Diğer versiyonlar için "Tags" kısmına bakabilirsiniz.*

@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: dcbca884cfd74c88cb926f92450c81ec
+  productGUID: 284e3da2bd76d224890dd6ba2dd0cea4
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: deneme
+  productName: Mapping
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -513,7 +513,7 @@ PlayerSettings:
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
   playerPrefsMaxSize: 32768
-  ps4Passcode: v0axGNpmC1nqJxlqkh0ES3MkWbBzDuZ8
+  ps4Passcode: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
   ps4pnSessions: 1
   ps4pnPresence: 1
   ps4pnFriends: 1
@@ -602,14 +602,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: deneme
+  metroPackageName: Mapping
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: deneme
+  metroApplicationDescription: Mapping
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -680,10 +680,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 36f9bfd0-8b6c-41d4-985d-54e5bb2d1650
+  cloudProjectId: e5af451a-d27b-4c1f-b615-41c341aceb4c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: deneme
+  projectName: Mapping
   organizationId: caglarmahmutenes
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

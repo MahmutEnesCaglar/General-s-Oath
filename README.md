@@ -16,6 +16,8 @@ Bu sürüm, yetenek yönetim sistemine stratejik derinlik katan yeni mekanikler 
 ### 📸 Versiyon 1.2 Görünümü (Yetenek Animasyonu)
 
 ![v1.2 Yetenek Cooldown Animasyonu](Screenshots/v1_2_buton_animation.png)
+
+
 *Yetenek butonlarının cooldown süresince görsel olarak dolum animasyonunu ve pasif halini gösteren bir resim.*
 
 ---

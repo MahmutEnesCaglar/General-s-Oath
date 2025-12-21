@@ -19,12 +19,16 @@ Kuleler artık menzillerine giren düşmanları algılıyor ve gerçek zamanlı 
 ### Cannon Tower Takip Sistemi
 Top kulesinin 8 farklı yöne pürüzsüz geçişini aşağıdan izleyebilirsiniz:
 
-![Cannon Animation](Videos/Cannon_Animation.mp4)
+
+https://github.com/MahmutEnesCaglar/General-s-Oath/raw/main/Videos/Cannon_Animation.mp4
+
 
 ### Mortar Tower 6-Sprite Rotasyon Mantığı
 Kısıtlı görselle 8 yönü nasıl simüle ettiğimizi ve havan topunun hedefe kilitlenmesini buradan görebilirsiniz:
 
-![Mortar Animation](Videos/Mortar_Animation.mp4)
+https://github.com/MahmutEnesCaglar/General-s-Oath/blob/main/Videos/Mortar_Animation.mp4
+
+
 
 ---
 *Bu proje geliştirilmeye devam etmektedir. Bir sonraki aşama: Mermi ve Alan Hasarı sistemleri.*

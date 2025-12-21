@@ -1,24 +1,30 @@
-# 🎮 Unity 2D Isometric Project
+# General's Oath - Tower Defense
+
+## 🚀 Son Güncellemeler (v1.3)
+
+Bu sürümde kulelerin görsel geri bildirimleri ve animasyon sistemleri üzerine odaklanıldı. 
+
+### 🛡️ Kule Animasyon & Rotasyon Sistemi
+Kuleler artık menzillerine giren düşmanları algılıyor ve gerçek zamanlı olarak hedefe yöneliyor.
+
+* **Cannon (Top) Kulesi:** 8 yönlü (45 derecelik açılarla) tam rotasyon desteği. Düşman hareketine göre en yakın sprite'ı otomatik seçer.
+* **Mortar (Havan) Kulesi:** 6 farklı sprite kullanarak 8 yönlü bakış açısını simüle eden özel yönlendirme algoritması. 
+* **Dinamik Ölçeklendirme (Scaling):** Her bakış açısı için sprite boyutları manuel olarak optimize edildi, böylece perspektif bozulmaları giderildi.
+* **Gelişmiş Fizik Algılama:** `OnTrigger2D` ve `Rigidbody2D` optimizasyonları ile düşman takip sistemi daha kararlı hale getirildi.
 
 ---
 
-## 🚀 Versiyon 1.2 - Güçlendirilen Yetenek Mekanikleri ve Görsel Geri Bildirim
+## 📺 Geliştirme Videoları
 
-Bu sürüm, yetenek yönetim sistemine stratejik derinlik katan yeni mekanikler ve akıcı görsel animasyonlar ile kullanıcı deneyimini zenginleştiriyor.
+### Cannon Tower Takip Sistemi
+Top kulesinin 8 farklı yöne pürüzsüz geçişini aşağıdan izleyebilirsiniz:
 
-### ✅ Yenilikler:
+![Cannon Animation](Videos/Cannon_Animation.mp4)
 
-* **Yetenek Kullanım Sınırı:** Her bir yetenek butonu (Heal, Rage, Attack, Barrier) artık oyun başına **5 defa** kullanılabilir. Stratejik kararlar almayı gerektiren bir kaynak yönetimi eklendi.
-* **Cooldown Sistemi:** Kullanılan yetenekler **10 saniyelik** bir bekleme süresine girer. Bu süre zarfında butonlar deaktif hale gelir ve tekrar tıklanamaz.
-* **360° Radial Cooldown Animasyonu:** Butonlar cooldown süresine girdiğinde, üzerinde **saat yönünde 360 derecelik bir dolum animasyonu** başlar. Bu animasyon, yeteneğin ne zaman tekrar kullanıma hazır olacağını görsel olarak gösterir ve şık bir geri bildirim sunar.
-* **Dinamik Buton Durumları:** Kullanım hakkı bittiğinde veya cooldown süresince butonlar görsel olarak soluklaşır ve tıklanamaz hale gelir. Süre dolduğunda ise otomatik olarak aktif hale geri döner.
+### Mortar Tower 6-Sprite Rotasyon Mantığı
+Kısıtlı görselle 8 yönü nasıl simüle ettiğimizi ve havan topunun hedefe kilitlenmesini buradan görebilirsiniz:
 
-### 📸 Versiyon 1.2 Görünümü (Yetenek Animasyonu)
-
-![v1.2 Yetenek Cooldown Animasyonu](Screenshots/v1_2_buton_animation.png)
-
-
-*Yetenek butonlarının cooldown süresince görsel olarak dolum animasyonunu ve pasif halini gösteren bir resim.*
+![Mortar Animation](Videos/Mortar_Animation.mp4)
 
 ---
-*Bu proje sürekli güncellenmektedir. Diğer versiyonlar için "Tags" kısmına bakabilirsiniz.*
+*Bu proje geliştirilmeye devam etmektedir. Bir sonraki aşama: Mermi ve Alan Hasarı sistemleri.*

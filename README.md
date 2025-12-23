@@ -1,8 +1,16 @@
 # General's Oath - Tower Defense
 
-## 🚀 Son Güncellemeler (v1.3)
+## 🚀 Son Güncellemeler (v1.4)
 
-Bu sürümde kulelerin görsel geri bildirimleri, animasyon sistemleri ve proje dosya yapısı üzerine odaklanıldı.
+Bu sürümde kamera kontrolleri, kullanıcı arayüzü optimizasyonları ve Unity 6.2 uyumluluğu üzerine odaklanıldı.
+
+### 🎮 Kamera Zoom Sistemi
+Oyun kamerası artık mouse scroll ile dinamik zoom desteğine sahip. Oyun alanını yakınlaştırıp uzaklaştırabilirsiniz.
+
+* **Orthographic Projeksiyon:** Top-down perspektif için optimize edilmiş kamera sistemi.
+* **Smooth Zoom:** 3-10 birim arası ayarlanabilir zoom seviyesi.
+* **Cross-Platform Input:** Hem eski (Input Manager) hem yeni (Input System Package) Unity input sistemleriyle uyumlu.
+* **HUD Sabitliği:** Canvas Screen Space - Overlay modunda çalışıyor, zoom yaparken butonlar ve UI elementleri ekranda sabit kalıyor.
 
 ### 🛡️ Kule Animasyon & Rotasyon Sistemi
 Kuleler artık menzillerine giren düşmanları algılıyor ve gerçek zamanlı olarak hedefe yöneliyor.
@@ -14,25 +22,20 @@ Kuleler artık menzillerine giren düşmanları algılıyor ve gerçek zamanlı 
 
 ---
 
-## 📸 Geliştirme Görselleri
+## 🎯 Teknik Özellikler
 
-### Cannon Tower Takip Sistemi
-Top kulesinin 8 farklı yöne pürüzsüz geçişi ve hedefleme mekanizması:
+### Kamera Sistemi
+* **Projection:** Orthographic
+* **Position:** (0, 0, -10)
+* **Rotation:** (0, 0, 0) - Top-down görünüm
+* **Zoom Range:** 3-10 units
+* **Input Handling:** Dual-mode (Legacy + New Input System)
 
-![Cannon Animation](Screenshots/Cannon_Animation.png)
-
-### Mortar Tower 6-Sprite Rotasyon Mantığı
-Kısıtlı görselle 8 yönü nasıl simüle ettiğimizin teknik önizlemesi:
-
-![Mortar Animation](Screenshots/Mortar_Animation.png)
-
----
-
-## 📂 Dosya Yapısı (Özet)
-Proje düzeni profesyonel standartlara göre yeniden organize edildi:
-* **Assets/Scripts:** Tüm kule ve mekanik kodları.
-* **Assets/Sprites:** Kulelerin yön görselleri ve UI elementleri.
-* **Videos:** Geliştirme sürecine dair tanıtım materyalleri.
+### UI Sistemi
+* **Canvas Render Mode:** Screen Space - Overlay
+* **Canvas Scaler:** Scale With Screen Size
+* **Reference Resolution:** 1920x1080
+* **Match Mode:** 0.5 (Width/Height balanced)
 
 ---
 *Bu proje geliştirilmeye devam etmektedir. Bir sonraki aşama: Mermi ve Alan Hasarı sistemleri.*

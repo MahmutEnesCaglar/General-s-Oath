@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5696681852415775532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 533039925163669583}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &533039925163669583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696681852415775532}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.12152, y: -0.1028, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1248923863386213826}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3905707367726663452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,7 +110,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: -5402582867162545519, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 533039925163669583}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
@@ -114,7 +148,14 @@ MonoBehaviour:
   damage: 15
   enemiesInRange: []
   currentTarget: {fileID: 0}
+  projectilePrefab: {fileID: 6683314374868514638, guid: ff894cda30324c71f83ca7ba3259c210, type: 3}
+  firePoint: {fileID: 533039925163669583}
   explosionRadius: 1.5
+--- !u!4 &1248923863386213826 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+  m_PrefabInstance: {fileID: 3905707367726663452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7503435222442878218 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
@@ -167,7 +208,7 @@ SpriteRenderer:
   m_SortingLayerID: -616371365
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: -5752444100923160545, guid: fe2c8d3f7a63b7fb9bbae42a8ba20b80, type: 3}
+  m_Sprite: {fileID: 3197014013480624027, guid: f57c89a66b6aaf52e9c957e9fb5898cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -190,22 +231,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3b1e3c5c72d5668936e7aa1973729e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MortarRotation
-  mortarData:
+  directionDataList:
   - directionName: index1
     sprite: {fileID: -3757980385129456325, guid: b28c8b7916a9c11ce86c9d28d56d6a0b, type: 3}
     scale: {x: 0.4, y: 0.4, z: 0}
+    firePointOffset: {x: 0.831, y: 0.733}
   - directionName: index2
     sprite: {fileID: 4352308158331096266, guid: 2f9ae01e028e4e4c489a7488fa295de0, type: 3}
     scale: {x: 0.4, y: 0.4, z: 0}
+    firePointOffset: {x: -0.011, y: 1.048}
   - directionName: index3
     sprite: {fileID: 4188977821117673382, guid: ebbe00a9635b649739a3afcc989881e6, type: 3}
     scale: {x: 0.4, y: 0.4, z: 0}
+    firePointOffset: {x: -0.786, y: 0.687}
   - directionName: index5
     sprite: {fileID: -5752444100923160545, guid: fe2c8d3f7a63b7fb9bbae42a8ba20b80, type: 3}
     scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: -0.643, y: 0.458}
   - directionName: index6
     sprite: {fileID: 8004925861451462671, guid: bfe5a4d3bf992eb5d92e62c8b8cfa450, type: 3}
     scale: {x: 0.36, y: 0.36, z: 0}
+    firePointOffset: {x: 0.014, y: -0.549}
   - directionName: index7
     sprite: {fileID: 3197014013480624027, guid: f57c89a66b6aaf52e9c957e9fb5898cc, type: 3}
     scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: 0.621, y: 0.451}
+  currentSegmentIndex: 0

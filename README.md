@@ -4,6 +4,10 @@
 
 ![Ana Menü](Screenshots/main_menu.png)
 
+![Game Scene](Screenshots/game_scene.png)
+
+![Setting Page](Screenshots/settings_menu.png)
+
 ---
 
 ## 🎮 Oyun Özellikleri

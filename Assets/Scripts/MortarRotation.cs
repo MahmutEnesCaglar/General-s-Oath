@@ -1,50 +1,75 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public struct MortarDirectionData
+{
+    public string directionName;
+    public Sprite sprite;
+    public Vector3 scale;
+}
+
 public class MortarRotation : MonoBehaviour
 {
-    [Header("Yön Verileri")]
-    public List<DirectionalData> directionDataList = new List<DirectionalData>();
+    [Header("6 Görseli Buraya Diz")]
+    public List<MortarDirectionData> mortarData = new List<MortarDirectionData>();
 
     private SpriteRenderer spriteRenderer;
-    
-    // Kulemizin erişebilmesi için bu değişkeni ekledik
-    [HideInInspector] public int currentSegmentIndex;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    void Start()
+    {
+        // Oyun başında varsayılan olarak index7 (Güney-Doğu) göster
+        SetDefaultDirection("index7");
+    }
+
     public void RotateTowards(Vector3 targetPosition)
     {
-        if (directionDataList == null || directionDataList.Count == 0) return;
+        if (mortarData == null || mortarData.Count == 0) return;
 
         Vector3 direction = targetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         if (angle < 0) angle += 360f;
 
-        // 6 sprite'lı özel mortar mantığın burada kalmalı
-        // ... (Önceki yazdığımız 6-sprite seçim kodları) ...
-        
-        // Önemli: Seçilen indexi sakla
-        // currentSegmentIndex = hesaplanan_index; 
-        
-        // Örnek (senin önceki koduna göre):
-        int segmentIndex = Mathf.RoundToInt(angle / 60f) % 6; 
-        currentSegmentIndex = segmentIndex;
+        int segment8 = Mathf.RoundToInt(angle / 45f) % 8;
 
-        spriteRenderer.sprite = directionDataList[segmentIndex].sprite;
-        transform.localScale = directionDataList[segmentIndex].scale;
+        string targetIndexName = "";
+
+        // EKSİK İNDEXLERİ YÖNLENDİRME MANTIĞI
+        switch (segment8)
+        {
+            case 0: targetIndexName = "index1"; break; // Sağ -> Sağ-Üst'e bak
+            case 1: targetIndexName = "index1"; break; // Sağ-Üst
+            case 2: targetIndexName = "index2"; break; // Üst
+            case 3: targetIndexName = "index3"; break; // Sol-Üst
+            case 4: targetIndexName = "index3"; break; // Sol -> Sol-Üst'e bak
+            case 5: targetIndexName = "index5"; break; // Sol-Alt
+            case 6: targetIndexName = "index6"; break; // Alt
+            case 7: targetIndexName = "index7"; break; // Sağ-Alt
+        }
+
+        ApplyDataByName(targetIndexName);
     }
 
-    // İŞTE EKSİK OLAN FONKSİYON:
-    public Vector2 GetCurrentFirePointOffset(int index)
+    private void ApplyDataByName(string name)
     {
-        if (index >= 0 && index < directionDataList.Count)
+        foreach (var data in mortarData)
         {
-            return directionDataList[index].firePointOffset;
+            if (data.directionName == name)
+            {
+                spriteRenderer.sprite = data.sprite;
+                transform.localScale = data.scale;
+                return;
+            }
         }
-        return Vector2.zero;
+    }
+
+    private void SetDefaultDirection(string name)
+    {
+        ApplyDataByName(name);
     }
 }

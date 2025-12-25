@@ -42,20 +42,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ground
-    uniqueID: 2390807501
-    locked: 0
-  - name: BuildArea
-    uniqueID: 2780930593
-    locked: 0
   - name: Towers
     uniqueID: 3678595931
     locked: 0
   - name: Enemies
     uniqueID: 2652372867
-    locked: 0
-  - name: Projectile
-    uniqueID: 876142777
     locked: 0
   m_RenderingLayers:
   - Default

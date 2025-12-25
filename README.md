@@ -1,38 +1,31 @@
-# General's Oath - Tower Defense
+# General's Oath - v1.5 (Tower Defense Mechanics Update)
 
-## 🚀 Son Güncellemeler (v1.3)
+Bu sürüm ile birlikte oyunun temel savunma mekanikleri ve kule sistemleri tamamlanmıştır. Artık kuleler izometrik (oval) bir menzil içerisinde düşmanları algılayıp, her biri kendine has atış mekanikleriyle saldırı yapabilmektedir.
 
-Bu sürümde kulelerin görsel geri bildirimleri, animasyon sistemleri ve proje dosya yapısı üzerine odaklanıldı.
+![Oyun İçi Görüntü](Screenshots/Attack.png)
 
-### 🛡️ Kule Animasyon & Rotasyon Sistemi
-Kuleler artık menzillerine giren düşmanları algılıyor ve gerçek zamanlı olarak hedefe yöneliyor.
+## 🏰 Eklenen Özellikler
 
-* **Cannon (Top) Kulesi:** 8 yönlü (45 derecelik açılarla) tam rotasyon desteği. Düşman hareketine göre en yakın sprite'ı otomatik seçer.
-* **Mortar (Havan) Kulesi:** 6 farklı sprite kullanarak 8 yönlü bakış açısını simüle eden özel yönlendirme algoritması.
-* **Dinamik Ölçeklendirme (Scaling):** Her bakış açısı için sprite boyutları manuel olarak optimize edildi, böylece perspektif bozulmaları giderildi.
-* **Gelişmiş Fizik Algılama:** `OnTrigger2D` ve `Rigidbody2D` optimizasyonları ile düşman takip sistemi daha kararlı hale getirildi.
+### 1. Kule Sistemleri
+* **Cannon Tower (Topçu Kulesi):**
+    * Standart gülle atışı yapar.
+    * Gülleler fiziksel obje olarak hedefe düz bir hatta ilerler.
+* **Archer Tower (Okçu Kulesi):**
+    * Düşmana kilitlenerek ok atar.
+    * Oklar havada süzülürken uç kısımları (rotasyon) sürekli hedefe dönüktür.
+* **Mortar Tower (Havan Kulesi):**
+    * Parabolik (kavisli) atış mekaniği eklendi.
+    * Mermiler hedefe varmadan önce havada yükselip alçalır (Arc hareketi).
 
----
+### 2. Hedefleme ve Fizik
+* **İzometrik Menzil:** Kuleler artık kusursuz bir daire yerine, izometrik kamera açısına uygun **Oval (Elips)** bir menzili tarar.
+* **Akıllı Hedefleme:** Menzile giren düşmanlar listeye alınır ve kule her zaman en uygun hedefe saldırır.
+* **Kinematic Fizik:** Düşmanlar ve kuleler arasındaki etkileşim, fizik motorunu yormayacak şekilde `Kinematic Rigidbody` ve `Trigger` sistemleri ile optimize edildi.
 
-## 📸 Geliştirme Görselleri
-
-### Cannon Tower Takip Sistemi
-Top kulesinin 8 farklı yöne pürüzsüz geçişi ve hedefleme mekanizması:
-
-![Cannon Animation](Screenshots/Cannon_Animation.png)
-
-### Mortar Tower 6-Sprite Rotasyon Mantığı
-Kısıtlı görselle 8 yönü nasıl simüle ettiğimizin teknik önizlemesi:
-
-![Mortar Animation](Screenshots/Mortar_Animation.png)
-
----
-
-## 📂 Dosya Yapısı (Özet)
-Proje düzeni profesyonel standartlara göre yeniden organize edildi:
-* **Assets/Scripts:** Tüm kule ve mekanik kodları.
-* **Assets/Sprites:** Kulelerin yön görselleri ve UI elementleri.
-* **Videos:** Geliştirme sürecine dair tanıtım materyalleri.
+## 🛠️ Kurulum ve Test
+1.  Projeyi Unity 2022/6 (veya sürümün neyse) ile açın.
+2.  `SampleScene` sahnesini başlatın.
+3.  `TestEnemy` prefabını kulelerin menziline sürükleyerek saldırı mekaniklerini test edebilirsiniz.
 
 ---
-*Bu proje geliştirilmeye devam etmektedir. Bir sonraki aşama: Mermi ve Alan Hasarı sistemleri.*
+*Geliştirici Notu: Bir sonraki sürümde (v1.6) harita üzerine inşaat sistemi (Building Mechanic) ve UI entegrasyonu hedeflenmektedir.*

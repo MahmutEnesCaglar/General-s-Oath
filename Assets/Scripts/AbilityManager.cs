@@ -17,6 +17,7 @@ public class AbilityManager : MonoBehaviour
         [HideInInspector] public bool isOnCooldown;
     }
 
+
     [Header("Yetenek Ayarları")]
     public AbilityData rage;
     public AbilityData heal;

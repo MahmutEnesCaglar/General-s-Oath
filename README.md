@@ -77,23 +77,11 @@ maxX = delta * xFactor (1.78)
 maxY = delta * yFactor (1.02)
 ```
 
-### Pause Entegrasyonu
-- Pause aktifken: `SetCameraControlsEnabled(false)`
-- Resume'da: `SetCameraControlsEnabled(true)`
-- Zoom değişiminde pozisyon otomatik clamp edilir (gökyüzü görünmez)
-
-
----
-
 ## 🎨 UI/UX Özellikleri
 
 ### Pause Menüsü UX
 - **Blur overlay:** Arkaplan koyulaşma (alpha: 200)
 - **Volume handle:** Görselin içinde dinamik sayı (0-100)
-- **Renk kodlaması:**
-  - Kırmızı: 0% (sessiz)
-  - Sarı: 1-30%
-  - Beyaz: 31-100%
 - **Buton feedback:** Pause butonu aktifken alevli görsel
 
 ### Kamera UX
@@ -117,12 +105,3 @@ maxY = delta * yFactor (1.02)
 
 
 ---
-
-**Geliştirici:** Görkem  
-**Platform:** Ubuntu 24.04 + Unity 6.2  
-**Proje Tipi:** 2D İzometrik Tower Defense  
-**Durum:** Aktif Geliştirme
-
----
-
-*Son Güncelleme: v1.4 - Kamera zoom sistemi, pause menüsü ve müzik entegrasyonu*

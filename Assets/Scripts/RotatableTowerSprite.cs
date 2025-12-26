@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Inspector'da görünebilmesi için System.Serializable eklemeliyiz
 [System.Serializable]
 public struct DirectionalData
 {
-    public string directionName; // Sadece düzen için (Örn: Sag, Sag-Ust)
+    public string directionName;
     public Sprite sprite;
-    public Vector3 scale; // Bu yöne özel ölçek
+    public Vector3 scale;
+    public Vector2 firePointOffset; 
 }
 
 public class RotatableTowerSprite : MonoBehaviour
@@ -16,6 +16,9 @@ public class RotatableTowerSprite : MonoBehaviour
     public List<DirectionalData> directionDataList = new List<DirectionalData>();
 
     private SpriteRenderer spriteRenderer;
+    
+    // Tower.cs'nin hangi yöne bakıldığını bilmesi için bu değişkeni ekledik
+    [HideInInspector] public int currentSegmentIndex;
 
     void Awake()
     {
@@ -31,13 +34,21 @@ public class RotatableTowerSprite : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         if (angle < 0) angle += 360f;
 
-        int segmentIndex = Mathf.RoundToInt(angle / 45f) % 8;
+        // Hesaplanan indexi hem burada kullanıyoruz hem de dışarıya saklıyoruz
+        currentSegmentIndex = Mathf.RoundToInt(angle / 45f) % 8;
 
-        // SEÇİLEN VERİYİ AL
-        DirectionalData currentData = directionDataList[segmentIndex];
+        DirectionalData currentData = directionDataList[currentSegmentIndex];
 
-        // HEM SPRITE'I HEM SCALE'I GÜNCELLE
         spriteRenderer.sprite = currentData.sprite;
         transform.localScale = currentData.scale;
+    }
+
+    // İsim hatası düzeltildi: directionDataList kullanıldı
+    public Vector2 GetCurrentFirePointOffset(int index)
+    {
+        if (index >= 0 && index < directionDataList.Count)
+            return directionDataList[index].firePointOffset;
+            
+        return Vector2.zero;
     }
 }

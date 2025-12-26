@@ -25,7 +25,20 @@ public class MortarTower : Tower
 
     protected override void Attack()
     {
-        // Ateş etme mantığında bu radius'u kullanacağız
-        Debug.Log($"{towerName} {explosionRadius} birimlik alana hasar veren mermi fırlatıyor!");
+        if (projectilePrefab != null && currentTarget != null)
+        {
+            // MortarRotation'dan o anki yönün offsetini al
+            Vector2 offset = mortarVisual.GetCurrentFirePointOffset(mortarVisual.currentSegmentIndex);
+            Vector3 spawnPos = transform.position + (Vector3)offset;
+
+            GameObject projObj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            
+            // Dikkat: Burada MortarProjectile scriptini çağırıyoruz
+            MortarProjectile projScript = projObj.GetComponent<MortarProjectile>();
+            if (projScript != null)
+            {
+                projScript.Setup(currentTarget, damage);
+            }
+        }
     }
 }

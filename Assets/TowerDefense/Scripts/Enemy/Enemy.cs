@@ -429,6 +429,7 @@ namespace TowerDefense.Enemy
 
         /// <summary>
         /// Düşman üsse ulaştı
+        /// Her düşman için -1 can
         /// </summary>
         private void ReachBase()
         {
@@ -436,10 +437,10 @@ namespace TowerDefense.Enemy
 
             hasReachedBase = true;
 
-            // GameManager'a hasar ver
+            // GameManager'a bildir (her düşman için -1 can)
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.OnEnemyReachedBase(damage);
+                GameManager.Instance.OnEnemyReachedBase(1); // Parametre kullanılmıyor ama tutarlılık için 1 gönderiyoruz
             }
 
             // Düşmanı yok et

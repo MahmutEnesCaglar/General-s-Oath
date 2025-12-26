@@ -94,10 +94,10 @@ namespace TowerDefense.Hero
         /// </summary>
         private void HandleHeroMovement()
         {
-            // Ignore clicks on UI elements
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            // Ignore clicks on actual interactive UI elements (buttons, panels, etc.)
+            if (EventSystem.current != null && IsPointerOverInteractiveUI())
             {
-                Debug.Log("Clicked on UI, ignoring hero movement");
+                Debug.Log("Clicked on interactive UI, ignoring hero movement");
                 return;
             }
 
@@ -167,6 +167,41 @@ namespace TowerDefense.Hero
         public bool IsHeroControlMode()
         {
             return currentMode == InputMode.HeroControl;
+        }
+
+        /// <summary>
+        /// Checks if the pointer is over an interactive UI element (buttons, panels)
+        /// Returns false for non-interactive UI elements like background images
+        /// </summary>
+        private bool IsPointerOverInteractiveUI()
+        {
+            if (EventSystem.current == null) return false;
+
+            // Get all UI elements under the pointer
+            var pointerData = new UnityEngine.EventSystems.PointerEventData(EventSystem.current)
+            {
+                position = Mouse.current.position.ReadValue()
+            };
+
+            var results = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            // Check if any result is an actual interactive UI element
+            foreach (var result in results)
+            {
+                // Check if it's a Button, Toggle, Slider, or other interactive component
+                if (result.gameObject.GetComponent<UnityEngine.UI.Button>() != null ||
+                    result.gameObject.GetComponent<UnityEngine.UI.Toggle>() != null ||
+                    result.gameObject.GetComponent<UnityEngine.UI.Slider>() != null ||
+                    result.gameObject.GetComponent<UnityEngine.UI.Scrollbar>() != null ||
+                    result.gameObject.GetComponent<UnityEngine.UI.InputField>() != null ||
+                    result.gameObject.GetComponent<TMPro.TMP_InputField>() != null)
+                {
+                    return true; // Found an interactive UI element
+                }
+            }
+
+            return false; // No interactive UI found
         }
     }
 }

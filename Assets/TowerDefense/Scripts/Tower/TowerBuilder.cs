@@ -171,7 +171,7 @@ namespace TowerDefense.Tower
                 // 6. Kayıt defterine işle
                 occupiedTiles.Add(cellPos, newTower);
 
-                Debug.Log($"[TowerBuilder] Kule inşa edildi: {cellPos}, Kalan para: {Core.GameManager.Instance?.money}");
+                Debug.Log($"[TowerBuilder] Kule inşa edildi: {cellPos}, Kalan para: {Core.GameManager.Instance?.playerMoney}");
             }
             else
             {

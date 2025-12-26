@@ -22,7 +22,7 @@ namespace TowerDefense.Core
         [Header("Oyun Durumu")]
         public int currentWave = 0;
         public int playerMoney = 100;
-        public int playerLives = 20;
+        public int playerLives = 5; // Her düşman geçince -1 can, toplam 5 can
         public bool isGameActive = false;
 
         [Header("Referanslar")]
@@ -37,6 +37,9 @@ namespace TowerDefense.Core
         public TowerDefense.Hero.Hero currentHero;
         public bool enableHeroRespawn = false;
         public float heroRespawnDelay = 5f;
+
+        [Header("UI System")]
+        public SpriteHealthBar healthBar; // Can barı görseli (Inspector'dan atanacak)
 
         private void Awake()
         {
@@ -107,7 +110,7 @@ namespace TowerDefense.Core
             currentMap = allMaps[mapIndex];
             currentWave = 0;
             playerMoney = currentMap.startingMoney;
-            playerLives = 20;
+            playerLives = 5; // 5 can ile başla
             isGameActive = true;
 
             Debug.Log($"\n=== {currentMap.mapName} BAŞLADI ===");
@@ -116,8 +119,35 @@ namespace TowerDefense.Core
             Debug.Log($"Başlangıç Parası: {playerMoney} coin");
             Debug.Log($"Can: {playerLives}");
 
+            // Can barını başlat
+            InitializeHealthBar();
+
             // Spawn hero at base
             SpawnHero();
+        }
+
+        /// <summary>
+        /// Can barını başlatır ve 5/5 can gösterir
+        /// </summary>
+        private void InitializeHealthBar()
+        {
+            // Eğer healthBar Inspector'dan atanmamışsa, sahnede bul
+            if (healthBar == null)
+            {
+                healthBar = FindObjectOfType<SpriteHealthBar>();
+            }
+
+            if (healthBar != null)
+            {
+                healthBar.maxHealth = 5;
+                healthBar.currentHealth = 5;
+                healthBar.UpdateHealthSprite();
+                Debug.Log("✓ Can barı başlatıldı: 5/5");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ SpriteHealthBar bulunamadı! Sahnede CanBariGorseli objesi olduğundan emin olun.");
+            }
         }
 
         /// <summary>
@@ -242,15 +272,45 @@ namespace TowerDefense.Core
 
         /// <summary>
         /// Düşman üsse ulaştığında can kaybı
+        /// Her düşman için -1 can
         /// </summary>
         public void OnEnemyReachedBase(int damage)
         {
-            playerLives -= damage;
-            Debug.Log($"⚠️ Üs hasar aldı! -{damage} can. Kalan can: {playerLives}");
+            // Her düşman geçince -1 can (damage parametresi kullanılmıyor artık)
+            playerLives -= 1;
+            Debug.Log($"⚠️ Düşman üsse ulaştı! -1 can. Kalan can: {playerLives}");
+
+            // Can barını güncelle
+            UpdateHealthBar();
 
             if (playerLives <= 0)
             {
                 OnGameOver();
+            }
+        }
+
+        /// <summary>
+        /// Can barını günceller (her can kaybında)
+        /// </summary>
+        private void UpdateHealthBar()
+        {
+            // Eğer healthBar yoksa tekrar ara
+            if (healthBar == null)
+            {
+                healthBar = FindObjectOfType<SpriteHealthBar>();
+            }
+
+            if (healthBar != null)
+            {
+                // SpriteHealthBar'ın TakeDamage fonksiyonunu kullanmak yerine
+                // direkt currentHealth'i set edip güncelle
+                healthBar.currentHealth = playerLives;
+                healthBar.UpdateHealthSprite();
+                Debug.Log($"✓ Can barı güncellendi: {playerLives}/{healthBar.maxHealth}");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ Can barı güncellenemedi - SpriteHealthBar bulunamadı!");
             }
         }
 
@@ -273,6 +333,12 @@ namespace TowerDefense.Core
             Debug.Log("\n💀 OYUN BİTTİ 💀");
             Debug.Log($"Wave: {currentWave}/10");
             isGameActive = false;
+
+            // UIManager'a Game Over ekranını göster
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowGameOver();
+            }
         }
 
         /// <summary>

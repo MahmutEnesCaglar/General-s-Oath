@@ -78,7 +78,7 @@ namespace TowerDefense.Tower
             if (GameManager.Instance == null)
                 return true; // GameManager yoksa test için true döndür
 
-            return GameManager.Instance.money >= towerCost;
+            return GameManager.Instance.playerMoney >= towerCost;
         }
 
         /// <summary>
@@ -88,14 +88,14 @@ namespace TowerDefense.Tower
         {
             if (!CanAffordTower())
             {
-                Debug.LogWarning($"[BuildManager] Yetersiz para! Mevcut: {GameManager.Instance?.money}, Gerekli: {towerCost}");
+                Debug.LogWarning($"[BuildManager] Yetersiz para! Mevcut: {GameManager.Instance?.playerMoney}, Gerekli: {towerCost}");
                 return false;
             }
 
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.money -= towerCost;
-                Debug.Log($"[BuildManager] Kule satın alındı! Kalan para: {GameManager.Instance.money}");
+                GameManager.Instance.playerMoney -= towerCost;
+                Debug.Log($"[BuildManager] Kule satın alındı! Kalan para: {GameManager.Instance.playerMoney}");
             }
 
             return true;

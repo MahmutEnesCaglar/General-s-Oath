@@ -132,12 +132,8 @@ namespace TowerDefense.Tower
             GameObject tower = Instantiate(prefab, position, Quaternion.identity);
             tower.name = $"{selectedTowerType}_Tower";
 
-            // Tower script'i ayarla
-            Tower towerScript = tower.GetComponent<Tower>();
-            if (towerScript != null)
-            {
-                towerScript.LoadStatsForLevel(1);
-            }
+            // Tower prefab kendi parametreleriyle gelir, ek ayar gerekmez
+            // (Arkadaşın Tower.cs sistemi prefab'dan direkt değerleri kullanıyor)
 
             Debug.Log($"{selectedTowerType} kulesi yerleştirildi: {position}");
 

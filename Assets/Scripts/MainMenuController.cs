@@ -62,7 +62,7 @@ public class MainMenuController : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Oyun başlatılıyor...");
-        SceneManager.LoadScene("GameScene"); // veya "GameScene"
+        SceneManager.LoadScene("Map_Grifon");
     }
 
     // QUIT

@@ -21,14 +21,7 @@ public class SpriteHealthBar : MonoBehaviour
         UpdateHealthSprite();
     }
 
-    void Update()
-    {
-        // Test: Boşluk tuşuna basınca 1 can azalt
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(1);
-        }
-    }
+    // Test kodu kaldırıldı - Artık GameManager can sistemini yönetiyor
 
     // Hasar alma fonksiyonu artık int alıyor (örn: 1 hasar)
     public void TakeDamage(int damage)
@@ -48,7 +41,8 @@ public class SpriteHealthBar : MonoBehaviour
         UpdateHealthSprite();
     }
 
-    void UpdateHealthSprite()
+    // Public yaptık ki GameManager erişebilsin
+    public void UpdateHealthSprite()
     {
         // --- Yazı Güncelleme ---
         if (healthText != null)
@@ -63,7 +57,7 @@ public class SpriteHealthBar : MonoBehaviour
         // int'i int'e bölünce sonuç virgüllü çıkmaz (örn 4/5 = 0 olur).
         // Bu yüzden başına (float) koyarak virgüllü bölme yapıyoruz.
         float healthPercentage = (float)currentHealth / maxHealth;
-        
+
         int spriteIndex = 0;
 
         // 4 Parça resim için yüzdelik dilimler

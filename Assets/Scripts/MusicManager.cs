@@ -67,10 +67,10 @@ public class MusicManager : MonoBehaviour
             clipToPlay = mainMenuMusic;
             Debug.Log("MainMenu müziği seçildi");
         }
-        else if (sceneName == "GameScene")
+        else if (sceneName == "Map_Grifon")
         {
             clipToPlay = gameMusic;
-            Debug.Log("GameScene müziği seçildi");
+            Debug.Log("Map_Grifon oyun müziği seçildi");
         }
         
         // Müzik değiştir

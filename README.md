@@ -1,107 +1,85 @@
-# General's Oath - Tower Defense Game
+# General's Oath
 
-**İzometrik Tower Defense Oyunu** - Unity 6.2 ile Ubuntu 24.04 üzerinde geliştirilmiştir.
+**Tower Defense Oyunu** - Unity ile geliştirilmiştir.
 
-![Ana Menü](Screenshots/main_menu.png)
-
-![Game Scene](Screenshots/game_scene.png)
-
-![Setting Page](Screenshots/settings_menu.png)
+![Grifon Map](Screenshots/game_play.png)
 
 ---
 
-## 🎮 Oyun Özellikleri
+## 🎮 Temel Özellikler
 
-### Ana Menü Sistemi
-- **MainMenu Scene:** Oyun logosu, müzik ve butonlu ana menü
-- **Play, Options, Credits, Quit** butonları
-- **Ses kontrolü:** Ana menüde volume slider ile müzik seviyesi ayarlanabilir
-- **Scene yönetimi:** Play butonuyla GameScene'e geçiş
+### Oyun Mekanikleri
+- **3 Harita:** Grifon, Kirin, Ejderha haritaları
+- **10 Dalga Sistem:** Her harita 10 wave + 1 final boss
+- **Tower Defense:** 3 farklı kule tipi (Ground, Universal, AOE)
+- **Hero Sistemi:** Click-to-move kontrol, düşman aggro, saldırı/savunma yetenekleri
+- **Can Sistemi:** 5 can, her düşman geçtiğinde -1 can, görsel can barı
 
-### Oyun Sahnesi (GameScene)
-- **İzometrik top-down görünüm** ile tower defense haritası
-- **Dinamik kamera sistemi:**
-  - Mouse scroll ile zoom (3-9 arası orthographic size)
-  - WASD veya ok tuşları ile 4 yönlü hareket
-  - Zoom seviyesine göre dinamik hareket sınırları
-  - Maksimum zoom'da hareket tamamen kilitlenir
-- **Tower sistemleri:** Cannon ve Mortar kuleleri (sprite tabanlı rotasyon)
-- **UI Elementleri:** Heal, Barrier, Rage, Attack yetenekleri
-
-### Pause Menüsü
-- **Pause butonu:** Sağ üstte, tıklandığında alevli görsele döner
-- **Pause paneli:**
-  - Arkaplan blur/koyulaşma efekti
-  - Home butonu (Ana menüye dönüş)
-  - Resume butonu (Oyuna devam)
-  - Volume slider (Handle içinde dinamik % göstergesi)
-  - Mute butonu (4 seviyeli dinamik ses ikonu)
-- **Pause aktifken:**
-  - `Time.timeScale = 0` ile oyun durur
-  - Kamera zoom ve hareketi devre dışı kalır
-  - Slider ile ses ayarı yapılabilir
-
-### Ses Sistemi
-- **MusicManager:** DontDestroyOnLoad ile scene'ler arası müzik devamlılığı
-- **Dinamik müzik:** MainMenu ve GameScene için farklı müzikler
-- **4 Seviyeli ses göstergesi:**
-  - 0%: Sessiz ikon (mute)
-  - 1-33%: 1 dalga
-  - 34-70%: 2 dalga
-  - 71-100%: 3 dalga
-- **Mute toggle:** Tek tıkla sessiz, tekrar tıkla önceki seviyeye dön
-- **PlayerPrefs:** Ses ayarları kalıcı olarak kaydedilir
-
----
-
-## 🎯 Kamera Sistemi (Detaylı)
-
-### Zoom Mekanizması
-- **Zoom aralığı:** 3 (yakın) - 9 (uzak)
-- **Zoom hızı:** Inspector'dan ayarlanabilir (default: 25)
-- **Orthographic projection:** 2D/izometrik oyunlar için optimize
-
-### Dinamik Hareket Sınırları
-Zoom seviyesine göre otomatik hesaplanan sınırlar:
-
-| Projection Size | Hareket Alanı |
-|----------------|---------------|
-| 8-9 (Max zoom) | 0 (hareket yok) |
-| 5 (Orta) | ~5.3 birim |
-| 3 (Min zoom) | ~8.9 birim |
-
-**Formül:**
-```
-delta = maxZoomSize - currentSize
-maxX = delta * xFactor (1.78)
-maxY = delta * yFactor (1.02)
-```
-
-## 🎨 UI/UX Özellikleri
-
-### Pause Menüsü UX
-- **Blur overlay:** Arkaplan koyulaşma (alpha: 200)
-- **Volume handle:** Görselin içinde dinamik sayı (0-100)
-- **Buton feedback:** Pause butonu aktifken alevli görsel
-
-### Kamera UX
-- Smooth zoom (Mathf.Clamp)
-- Anında sınır kontrolü (teleport yok)
-- Zoom'a göre otomatik hareket alanı ayarı
-- Console log'ları ile gerçek zamanlı debug
-
-
-
----
-
-## 🎮 Kontroller
-
+### Kontroller
 | Komut | Aksiyon |
 |-------|---------|
+| **Sol Tık** | Hero hareketi (Hero Mode) / Kule yerleştirme (Tower Mode) |
+| **T** | Hero/Tower mode geçişi |
+| **Q** | Hero özel yetenek |
+| **Sağ Tık / B** | Hero blok |
 | **WASD / Ok Tuşları** | Kamera hareketi |
-| **Mouse Scroll** | Zoom in/out |
-| **ESC / Pause Butonu** | Pause menüsü |
-| **M** | Mute toggle (pause'dayken) |
+| **Mouse Scroll** | Zoom (3-9 arası) |
+| **ESC** | Pause menüsü |
 
+### UI Sistemleri
+- **Ana Menü:** Müzik kontrolü, scene yönetimi
+- **Pause Menü:** Time scale kontrolü, ses ayarları, blur overlay
+- **Dinamik Kamera:** Zoom'a göre hareket sınırları, smooth camera
+- **Can Barı:** Sprite tabanlı görsel can göstergesi (5/5 → 0/5)
+
+---
+
+## 🏗️ Mimari
+
+### Tower Defense Sistemi
+- **GameManager:** Singleton pattern, oyun durumu, para/can yönetimi
+- **EnemySpawner:** Wave bazlı düşman spawn sistemi
+- **TowerPlacement:** Grid tabanlı kule yerleştirme
+- **Waypoint System:** Düşman yol takibi
+
+### Hero Sistemi
+- **HeroInput:** Mod bazlı input yönetimi (UI raycast filtreleme)
+- **HeroMovement:** Click-to-move navigasyon
+- **HeroAbilities:** Özel yetenek, blok, saldırı mekanikleri
+- **Enemy Aggro:** Menzil bazlı hero takibi ve saldırı
+
+### Son Güncellemeler (2025-12-26)
+- ✅ Hero hareket sistemi düzeltildi - Sadece interaktif UI elementleri hero hareketini blokluyor
+- ✅ Can sistemi güncellendi - Toplam 5 can, her düşman için -1 can
+- ✅ SpriteHealthBar GameManager ile entegre edildi - Otomatik güncelleme
+- ✅ Game Over ekranı UIManager ile entegre edildi
+
+---
+
+## 📁 Proje Yapısı
+
+```
+Assets/
+├── TowerDefense/
+│   ├── Scripts/
+│   │   ├── Core/          # GameManager, UIManager, Configurators
+│   │   ├── Enemy/         # Enemy, EnemySpawner, EnemyType
+│   │   ├── Tower/         # TowerBuilder, TowerPlacement, Projectile
+│   │   └── Hero/          # Hero, HeroInput, HeroMovement, HeroAbilities
+│   └── Prefabs/           # Tower, Enemy, Hero prefab'ları
+├── Scripts/               # UI ve yardımcı scriptler
+└── Scenes/                # MainMenu, GameScene, Map_Grifon, Map_Kirin, Map_Ejderha
+```
+
+---
+
+## 🛠️ Teknik Detaylar
+
+- **Unity Version:** 6.2+
+- **Input System:** New Input System (Keyboard, Mouse)
+- **Architecture:** Singleton GameManager, modüler tower/enemy sistemleri
+- **Camera:** Orthographic 2D, dinamik zoom/pan
+- **UI:** TextMeshPro, Canvas overlay, EventSystem
+- **Audio:** MusicManager (DontDestroyOnLoad), PlayerPrefs ile ayar kalıcılığı
 
 ---

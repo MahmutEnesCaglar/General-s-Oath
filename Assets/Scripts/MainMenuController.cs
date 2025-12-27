@@ -1,129 +1,129 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+    using UnityEngine;
+    using UnityEngine.SceneManagement;
+    using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
-{
-    [Header("Paneller")]
-    public GameObject optionsPanel;
-    public GameObject creditsPanel;
-
-    [Header("Ana Menü Butonları")]
-    public Button playButton;
-    public Button optionsButton;
-    public Button creditsButton;
-    public Button quitButton;
-    
-    [Header("Ses Ayarı")]
-    public Slider volumeSlider;
-
-    void Start()
+    public class MainMenuController : MonoBehaviour
     {
-        // Panelleri başlangıçta gizle
-        if (optionsPanel != null)
-            optionsPanel.SetActive(false);
-        
-        if (creditsPanel != null)
-            creditsPanel.SetActive(false);
+        [Header("Paneller")]
+        public GameObject optionsPanel;
+        public GameObject creditsPanel;
 
-        // Buton click event'lerini bağla
-        if (playButton != null)
-            playButton.onClick.AddListener(PlayGame);
+        [Header("Ana Menü Butonları")]
+        public Button playButton;
+        public Button optionsButton;
+        public Button creditsButton;
+        public Button quitButton;
         
-        if (optionsButton != null)
-            optionsButton.onClick.AddListener(OpenOptions);
-        
-        if (creditsButton != null)
-            creditsButton.onClick.AddListener(OpenCredits);
-        
-        if (quitButton != null)
-            quitButton.onClick.AddListener(QuitGame);
-        
-        // Volume slider ayarla
-        if (volumeSlider != null)
+        [Header("Ses Ayarı")]
+        public Slider volumeSlider;
+
+        void Start()
         {
-            // Kaydedilmiş ses seviyesini yükle
-            if (PlayerPrefs.HasKey("MasterVolume"))
+            // Panelleri başlangıçta gizle
+            if (optionsPanel != null)
+                optionsPanel.SetActive(false);
+            
+            if (creditsPanel != null)
+                creditsPanel.SetActive(false);
+
+            // Buton click event'lerini bağla
+            if (playButton != null)
+                playButton.onClick.AddListener(PlayGame);
+            
+            if (optionsButton != null)
+                optionsButton.onClick.AddListener(OpenOptions);
+            
+            if (creditsButton != null)
+                creditsButton.onClick.AddListener(OpenCredits);
+            
+            if (quitButton != null)
+                quitButton.onClick.AddListener(QuitGame);
+            
+            // Volume slider ayarla
+            if (volumeSlider != null)
             {
-                float savedVolume = PlayerPrefs.GetFloat("MasterVolume");
-                volumeSlider.value = savedVolume;
+                // Kaydedilmiş ses seviyesini yükle
+                if (PlayerPrefs.HasKey("MasterVolume"))
+                {
+                    float savedVolume = PlayerPrefs.GetFloat("MasterVolume");
+                    volumeSlider.value = savedVolume;
+                }
+                else
+                {
+                    volumeSlider.value = 0.5f; // Varsayılan
+                }
+                
+                // Slider event'ini bağla
+                volumeSlider.onValueChanged.AddListener(SetVolume);
+            }
+        }
+
+        // PLAY
+        public void PlayGame()
+        {
+            Debug.Log("Oyun başlatılıyor...");
+            SceneManager.LoadScene("Map_Grifon");
+        }
+
+        // QUIT
+        public void QuitGame()
+        {
+            Debug.Log("Oyundan çıkılıyor...");
+            
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+
+        // OPTIONS
+        public void OpenOptions()
+        {
+            if (optionsPanel != null)
+                optionsPanel.SetActive(true);
+        }
+
+        public void CloseOptions()
+        {
+            if (optionsPanel != null)
+                optionsPanel.SetActive(false);
+        }
+
+        public void SetVolume(float volume)
+        {
+            // Global ses (SFX için)
+            AudioListener.volume = volume;
+            
+            // MusicManager'ı bul ve müzik sesini ayarla
+            MusicManager musicManager = FindFirstObjectByType<MusicManager>();
+            if (musicManager != null)
+            {
+                musicManager.SetMusicVolume(volume);
+                Debug.Log($"MainMenu - Müzik seviyesi güncellendi: {volume:F2}");
             }
             else
             {
-                volumeSlider.value = 0.5f; // Varsayılan
+                Debug.LogWarning("MusicManager bulunamadı!");
             }
             
-            // Slider event'ini bağla
-            volumeSlider.onValueChanged.AddListener(SetVolume);
+            // Ses seviyesini kaydet
+            PlayerPrefs.SetFloat("MasterVolume", volume);
+            PlayerPrefs.Save();
+            
+            Debug.Log($"MainMenu - Ses seviyesi: {volume:F2}");
         }
-    }
 
-    // PLAY
-    public void PlayGame()
-    {
-        Debug.Log("Oyun başlatılıyor...");
-        SceneManager.LoadScene("Map_Grifon");
-    }
-
-    // QUIT
-    public void QuitGame()
-    {
-        Debug.Log("Oyundan çıkılıyor...");
-        
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
-    }
-
-    // OPTIONS
-    public void OpenOptions()
-    {
-        if (optionsPanel != null)
-            optionsPanel.SetActive(true);
-    }
-
-    public void CloseOptions()
-    {
-        if (optionsPanel != null)
-            optionsPanel.SetActive(false);
-    }
-
-    public void SetVolume(float volume)
-    {
-        // Global ses (SFX için)
-        AudioListener.volume = volume;
-        
-        // MusicManager'ı bul ve müzik sesini ayarla
-        MusicManager musicManager = FindFirstObjectByType<MusicManager>();
-        if (musicManager != null)
+        // CREDITS
+        public void OpenCredits()
         {
-            musicManager.SetMusicVolume(volume);
-            Debug.Log($"MainMenu - Müzik seviyesi güncellendi: {volume:F2}");
+            if (creditsPanel != null)
+                creditsPanel.SetActive(true);
         }
-        else
+
+        public void CloseCredits()
         {
-            Debug.LogWarning("MusicManager bulunamadı!");
+            if (creditsPanel != null)
+                creditsPanel.SetActive(false);
         }
-        
-        // Ses seviyesini kaydet
-        PlayerPrefs.SetFloat("MasterVolume", volume);
-        PlayerPrefs.Save();
-        
-        Debug.Log($"MainMenu - Ses seviyesi: {volume:F2}");
     }
-
-    // CREDITS
-    public void OpenCredits()
-    {
-        if (creditsPanel != null)
-            creditsPanel.SetActive(true);
-    }
-
-    public void CloseCredits()
-    {
-        if (creditsPanel != null)
-            creditsPanel.SetActive(false);
-    }
-}

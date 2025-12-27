@@ -8,6 +8,7 @@ namespace TowerDefense.Enemy
     /// Her düşman prefab'ına bu script eklenecek
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(CircleCollider2D))]
     public class Enemy : MonoBehaviour
     {
         [Header("Düşman Tipi")]
@@ -31,6 +32,14 @@ namespace TowerDefense.Enemy
         private bool isAttacking = false; // Saldırı animasyonu oynarken true
         private float attackAnimationDuration = 0.8f; // Attack animasyon süresi
 
+        [Header("Collision Avoidance")]
+        public float separationRadius = 0.05f;      // Diğer düşmanlardan ayrılma mesafesi
+        public float separationForce = 2f;         // Ayrılma kuvveti
+        public float heroAttackRadius = 4f;      // Hero etrafında sıralanma yarıçapı
+        private Vector2 separationVelocity;        // Ayrılma hız vektörü
+        private int heroAttackSlot = -1;           // Hero'nun etrafında hangi slot'ta olacak
+        private static int nextAttackSlot = 0;     // Sonraki attack slot numarası
+
         [Header("Hareket")]
         [HideInInspector]
         public Transform[] waypoints;    // Takip edilecek yol noktaları (spawner tarafından atanır)
@@ -40,6 +49,7 @@ namespace TowerDefense.Enemy
         [Header("Görsel")]
         private SpriteRenderer spriteRenderer;
         private Animator animator;
+        private Vector3 lastPosition;  // Animasyon için hareket algılama
 
         [Header("Health Bar (Opsiyonel)")]
         public GameObject healthBarPrefab;
@@ -59,8 +69,18 @@ namespace TowerDefense.Enemy
 
             // Rigidbody2D ayarları
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.isKinematic = true;        // Fizik simülasyonu yok, sadece hareket
+            rb.isKinematic = true;        // Manuel hareket ama collision detection var
             rb.gravityScale = 0f;         // Yerçekimi yok
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Collision detection aktif
+
+            // CircleCollider2D ayarları
+            CircleCollider2D col = GetComponent<CircleCollider2D>();
+            if (col == null)
+            {
+                col = gameObject.AddComponent<CircleCollider2D>();
+            }
+            col.radius = 0.3f;            // Düşman boyutuna göre ayarla
+            col.isTrigger = false;        // Trigger DEĞİL, gerçek collision
         }
 
         private void Start()
@@ -83,6 +103,9 @@ namespace TowerDefense.Enemy
 
             // İzometrik sorting için (Y pozisyonuna göre sıralama)
             UpdateSortingOrder();
+
+            // İlk pozisyonu kaydet (hareket algılama için)
+            lastPosition = transform.position;
         }
 
         private void Update()
@@ -99,6 +122,11 @@ namespace TowerDefense.Enemy
             }
             else
             {
+                // Hero'yu kaybettik, attack slot'u serbest bırak
+                if (currentHeroTarget != null)
+                {
+                    heroAttackSlot = -1;
+                }
                 currentHeroTarget = null;
                 MoveTowardsWaypoint();
             }
@@ -122,6 +150,7 @@ namespace TowerDefense.Enemy
                 if (distanceToHero > aggroRange * 1.5f) // Range dışına çıkarsa hedefi bırak
                 {
                     currentHeroTarget = null;
+                    heroAttackSlot = -1; // Attack slot'u serbest bırak
                 }
                 return;
             }
@@ -134,7 +163,6 @@ namespace TowerDefense.Enemy
                 if (distanceToHero <= aggroRange)
                 {
                     currentHeroTarget = hero;
-                    Debug.Log($"{gameObject.name} aggro on Hero! Distance: {distanceToHero:F2}");
                 }
             }
         }
@@ -149,22 +177,81 @@ namespace TowerDefense.Enemy
             // Saldırı animasyonu oynarken hareket etme
             if (isAttacking) return;
 
-            // Hero'ya doğru hareket
-            Vector2 direction = (currentHeroTarget.transform.position - transform.position).normalized;
-            float distanceToHero = Vector2.Distance(transform.position, currentHeroTarget.transform.position);
-
-            // Saldırı menzilinde mi? (0.8 unit yaklaş)
-            if (distanceToHero > 0.8f)
+            // Hero attack slot ata (eğer atanmamışsa)
+            if (heroAttackSlot == -1)
             {
-                // Hero'ya yaklaş
-                transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
-                FlipSprite(direction.x);
+                heroAttackSlot = nextAttackSlot;
+                nextAttackSlot = (nextAttackSlot + 1) % 8; // 8 slot (her 45 derece)
+            }
+
+            // Hero etrafında hedef pozisyon hesapla (circular formation)
+            Vector2 heroPos = currentHeroTarget.transform.position;
+            float angle = heroAttackSlot * 45f * Mathf.Deg2Rad; // 8 slot = 360/8 = 45 derece
+            Vector2 targetPosition = heroPos + new Vector2(
+                Mathf.Cos(angle) * heroAttackRadius,
+                Mathf.Sin(angle) * heroAttackRadius
+            );
+
+            // Hedef pozisyona doğru hareket
+            Vector2 directionToTarget = (targetPosition - (Vector2)transform.position).normalized;
+            float distanceToTarget = Vector2.Distance(transform.position, targetPosition);
+
+            // Separation force (diğer düşmanlardan ayrılma)
+            Vector2 separation = CalculateSeparation();
+
+            // Toplam hareket vektörü
+            Vector2 movement = directionToTarget * moveSpeed + separation * separationForce;
+
+            // Hedefe yeterince yakın mı? (saldırı mesafesinde)
+            if (distanceToTarget > 0.3f)
+            {
+                // Hedefe doğru hareket et
+                transform.position += (Vector3)movement * Time.deltaTime;
+                FlipSprite(movement.x);
             }
             else
             {
-                // Saldırı menzilindesiniz - Hero'ya saldır
+                // Saldırı mesafesindesin - Hero'ya saldır
                 AttackHero();
             }
+        }
+
+        /// <summary>
+        /// Diğer düşmanlardan ayrılma kuvveti hesaplar (separation/avoidance)
+        /// </summary>
+        private Vector2 CalculateSeparation()
+        {
+            Vector2 separationVector = Vector2.zero;
+            int nearbyEnemyCount = 0;
+
+            // Yakındaki tüm düşmanları bul
+            Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(transform.position, separationRadius);
+
+            foreach (Collider2D col in nearbyColliders)
+            {
+                // Kendisi değilse ve düşman ise
+                if (col.gameObject != gameObject && col.GetComponent<Enemy>() != null)
+                {
+                    // Bu düşmandan uzaklaş
+                    Vector2 awayFromEnemy = (Vector2)transform.position - (Vector2)col.transform.position;
+                    float distance = awayFromEnemy.magnitude;
+
+                    if (distance > 0.01f) // Sıfıra bölme hatası önleme
+                    {
+                        // Yakın olan düşmanlardan daha fazla uzaklaş
+                        separationVector += awayFromEnemy.normalized / distance;
+                        nearbyEnemyCount++;
+                    }
+                }
+            }
+
+            // Ortalama separation vektörü
+            if (nearbyEnemyCount > 0)
+            {
+                separationVector /= nearbyEnemyCount;
+            }
+
+            return separationVector;
         }
 
         /// <summary>
@@ -210,7 +297,6 @@ namespace TowerDefense.Enemy
             if (currentHeroTarget != null && !currentHeroTarget.isDead)
             {
                 currentHeroTarget.TakeDamage(damageToHero);
-                Debug.Log($"{gameObject.name} attacks Hero for {damageToHero} damage!");
             }
 
             // Animasyonun bitmesini bekle
@@ -244,7 +330,14 @@ namespace TowerDefense.Enemy
 
             // Hedefe doğru hareket et
             Vector2 direction = (targetWaypoint.position - transform.position).normalized;
-            transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
+
+            // Separation force (diğer düşmanlardan ayrılma)
+            Vector2 separation = CalculateSeparation();
+
+            // Toplam hareket vektörü
+            Vector2 movement = direction * moveSpeed + separation * separationForce;
+
+            transform.position += (Vector3)movement * Time.deltaTime;
 
             // Hedefe yaklaştı mı?
             float distanceToWaypoint = Vector2.Distance(transform.position, targetWaypoint.position);
@@ -254,7 +347,7 @@ namespace TowerDefense.Enemy
             }
 
             // Sprite'ı hareket yönüne göre çevir (opsiyonel)
-            FlipSprite(direction.x);
+            FlipSprite(movement.x);
         }
 
         /// <summary>
@@ -292,8 +385,9 @@ namespace TowerDefense.Enemy
                 return; // Attack animasyonu devam etsin
             }
 
-            // Hareket halinde mi?
-            bool isMoving = moveSpeed > 0.1f;
+            // Gerçek hareket algılama: Bu frame'de ne kadar hareket etti?
+            float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+            bool isMoving = distanceMoved > 0.001f; // 0.001 unit'ten fazla hareket ettiyse yürüyor
 
             // Miniature Army 2D: walk veya idle
             // Play yerine CrossFade kullan (daha smooth geçişler)
@@ -315,6 +409,15 @@ namespace TowerDefense.Enemy
                     animator.CrossFade("idle", 0.1f);
                 }
             }
+        }
+
+        /// <summary>
+        /// Frame sonunda lastPosition'ı güncelle
+        /// </summary>
+        private void LateUpdate()
+        {
+            // Bir sonraki frame için pozisyonu kaydet
+            lastPosition = transform.position;
         }
 
         /// <summary>
@@ -486,6 +589,38 @@ namespace TowerDefense.Enemy
                 if (waypoints[i] != null && waypoints[i + 1] != null)
                 {
                     Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gizmos ile collision/separation radius'u göster (Editor'de)
+        /// </summary>
+        private void OnDrawGizmosSelected()
+        {
+            // Separation radius (mavi)
+            Gizmos.color = new Color(0, 0, 1, 0.3f);
+            Gizmos.DrawWireSphere(transform.position, separationRadius);
+
+            // Hero attack radius (kırmızı) - sadece hero varsa
+            if (currentHeroTarget != null)
+            {
+                Gizmos.color = new Color(1, 0, 0, 0.3f);
+                Gizmos.DrawWireSphere(currentHeroTarget.transform.position, heroAttackRadius);
+
+                // Attack slot pozisyonu (yeşil)
+                if (heroAttackSlot >= 0)
+                {
+                    Vector2 heroPos = currentHeroTarget.transform.position;
+                    float angle = heroAttackSlot * 45f * Mathf.Deg2Rad;
+                    Vector2 slotPosition = heroPos + new Vector2(
+                        Mathf.Cos(angle) * heroAttackRadius,
+                        Mathf.Sin(angle) * heroAttackRadius
+                    );
+
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawSphere(slotPosition, 0.1f);
+                    Gizmos.DrawLine(transform.position, slotPosition);
                 }
             }
         }

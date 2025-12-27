@@ -36,6 +36,10 @@ namespace TowerDefense.Hero
         private Rigidbody2D rb;
         public HeroAbilities abilities;
 
+        [Header("Health Bar")]
+        public GameObject healthBarPrefab;  // Health bar prefab'ı (Unity'de atanacak)
+        private HeroHealthBar healthBarInstance;
+
         [Header("State")]
         public bool isDead = false;
         private bool isAttacking = false;
@@ -60,10 +64,20 @@ namespace TowerDefense.Hero
             abilities = gameObject.AddComponent<HeroAbilities>();
             abilities.hero = this;
 
+            // Create health bar
+            if (healthBarPrefab != null)
+            {
+                GameObject healthBarObj = Instantiate(healthBarPrefab);
+                healthBarInstance = healthBarObj.GetComponent<HeroHealthBar>();
+                if (healthBarInstance != null)
+                {
+                    healthBarInstance.Initialize(transform);
+                    healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
+                }
+            }
+
             // Initial sorting order
             UpdateSortingOrder();
-
-            Debug.Log($"Hero spawned! Health: {currentHealth}/{maxHealth}");
         }
 
         private void Update()
@@ -84,7 +98,6 @@ namespace TowerDefense.Hero
             targetPosition = worldPos;
             targetPosition.z = 0;
             isMoving = true;
-            Debug.Log($"[Hero] Destination set! Moving from {transform.position} to {targetPosition}");
         }
 
         /// <summary>
@@ -101,19 +114,11 @@ namespace TowerDefense.Hero
             if (distance < 0.1f)
             {
                 isMoving = false;
-                Debug.Log("[Hero] Reached destination!");
                 return;
             }
 
             // Move toward target
-            Vector3 oldPos = transform.position;
             transform.position += direction * moveSpeed * Time.deltaTime;
-
-            // Debug every 0.5 seconds (not every frame)
-            if (Time.frameCount % 30 == 0)
-            {
-                Debug.Log($"[Hero] Moving: {oldPos} -> {transform.position}, Distance remaining: {distance:F2}");
-            }
 
             FlipSprite(direction.x);
         }
@@ -202,8 +207,6 @@ namespace TowerDefense.Hero
 
             // Reset cooldown
             attackTimer = attackCooldown;
-
-            Debug.Log($"Hero attacks {currentTarget.name} for {meleeDamage} damage!");
         }
 
         /// <summary>
@@ -235,12 +238,6 @@ namespace TowerDefense.Hero
             {
                 animator.SetInteger("AnimState", 1); // Run
                 animator.SetBool("Grounded", true); // Ensure grounded
-
-                // Debug animation state
-                if (Time.frameCount % 60 == 0) // Every 1 second
-                {
-                    Debug.Log($"[Hero Animation] Running - AnimState: 1, isMoving: {isMoving}");
-                }
             }
             else
             {
@@ -269,6 +266,12 @@ namespace TowerDefense.Hero
 
             currentHealth -= damageAmount;
 
+            // Update health bar
+            if (healthBarInstance != null)
+            {
+                healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
+            }
+
             // Damage flash
             StartCoroutine(DamageFlash());
 
@@ -277,8 +280,6 @@ namespace TowerDefense.Hero
             {
                 animator.SetTrigger("Hurt");
             }
-
-            Debug.Log($"Hero took {damageAmount} damage! Health: {currentHealth}/{maxHealth}");
 
             if (currentHealth <= 0)
             {
@@ -305,6 +306,12 @@ namespace TowerDefense.Hero
 
             isDead = true;
 
+            // Hide health bar
+            if (healthBarInstance != null)
+            {
+                healthBarInstance.SetVisible(false);
+            }
+
             // Death animation
             if (animator != null)
             {
@@ -317,8 +324,6 @@ namespace TowerDefense.Hero
             {
                 GameManager.Instance.OnHeroKilled();
             }
-
-            Debug.Log("Hero has died!");
 
             // Destroy after animation
             Destroy(gameObject, 2f);

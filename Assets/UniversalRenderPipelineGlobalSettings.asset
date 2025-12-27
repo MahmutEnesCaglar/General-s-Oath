@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ec995e51a6e251468d2a3fd8a686257, type: 3}
   m_Name: UniversalRenderPipelineGlobalSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_ShaderStrippingSetting:
     m_Version: 0
     m_ExportShaderVariants: 1
@@ -57,19 +57,11 @@ MonoBehaviour:
       - rid: 3114554777721110528
       - rid: 3114554777721110529
       - rid: 3114554777721110530
-<<<<<<< HEAD
-      - rid: 768617599237881856
-      - rid: 768617599237881857
-      - rid: 768617599237881858
-      - rid: 768617599237881859
-      - rid: 768617599237881860
-=======
       - rid: 4255293215229083648
       - rid: 4255293215229083649
       - rid: 4255293215229083650
       - rid: 4255293215229083651
       - rid: 4255293215229083652
->>>>>>> origin/main
     m_RuntimeSettings:
       m_List: []
   m_AssetVersion: 8
@@ -77,27 +69,24 @@ MonoBehaviour:
   m_RenderingLayerNames:
   - Default
   m_ValidRenderingLayers: 0
-  lightLayerName0: 
-  lightLayerName1: 
-  lightLayerName2: 
-  lightLayerName3: 
-  lightLayerName4: 
-  lightLayerName5: 
-  lightLayerName6: 
-  lightLayerName7: 
+  lightLayerName0:
+  lightLayerName1:
+  lightLayerName2:
+  lightLayerName3:
+  lightLayerName4:
+  lightLayerName5:
+  lightLayerName6:
+  lightLayerName7:
   apvScenesData:
     obsoleteSceneBounds:
       m_Keys: []
       m_Values: []
     obsoleteHasProbeVolumes:
       m_Keys: []
-      m_Values: 
+      m_Values:
   references:
     version: 2
     RefIds:
-<<<<<<< HEAD
-    - rid: 768617599237881856
-=======
     - rid: 3114554777721110528
       type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -135,7 +124,6 @@ MonoBehaviour:
           - {r: 0.5, g: 0.5, b: 0.5, a: 1}
           - {r: 0, g: 0, b: 1, a: 1}
     - rid: 4255293215229083648
->>>>>>> origin/main
       type: {class: PostProcessData/ShaderResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         stopNanPS: {fileID: 4800000, guid: 1121bb4e615ca3c48b214e79e841e823, type: 3}
@@ -155,20 +143,12 @@ MonoBehaviour:
         uberPostPS: {fileID: 4800000, guid: e7857e9d0c934dc4f83f270f8447b006, type: 3}
         finalPostPassPS: {fileID: 4800000, guid: c49e63ed1bbcb334780a3bd19dfed403, type: 3}
         m_ShaderResourcesVersion: 0
-<<<<<<< HEAD
-    - rid: 768617599237881857
-=======
     - rid: 4255293215229083649
->>>>>>> origin/main
       type: {class: ScreenSpaceAmbientOcclusionPersistentResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
         m_Version: 0
-<<<<<<< HEAD
-    - rid: 768617599237881858
-=======
     - rid: 4255293215229083650
->>>>>>> origin/main
       type: {class: ScreenSpaceAmbientOcclusionDynamicResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_BlueNoise256Textures:
@@ -180,11 +160,7 @@ MonoBehaviour:
         - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
         - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
         m_Version: 0
-<<<<<<< HEAD
-    - rid: 768617599237881859
-=======
     - rid: 4255293215229083651
->>>>>>> origin/main
       type: {class: PostProcessData/TextureResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         blueNoise16LTex:
@@ -234,53 +210,10 @@ MonoBehaviour:
         smaaAreaTex: {fileID: 2800000, guid: d1f1048909d55cd4fa1126ab998f617e, type: 3}
         smaaSearchTex: {fileID: 2800000, guid: 51eee22c2a633ef4aada830eed57c3fd, type: 3}
         m_TexturesResourcesVersion: 0
-<<<<<<< HEAD
-    - rid: 768617599237881860
-      type: {class: RenderingDebuggerRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
-      data:
-        m_version: 0
-    - rid: 3114554777721110528
-      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
-      data:
-        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
-    - rid: 3114554777721110529
-      type: {class: LightmapSamplingSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
-      data:
-        m_Version: 1
-        m_UseBicubicLightmapSampling: 0
-    - rid: 3114554777721110530
-      type: {class: VrsRenderPipelineRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
-      data:
-        m_TextureComputeShader: {fileID: 7200000, guid: cacb30de6c40c7444bbc78cb0a81fd2a, type: 3}
-        m_VisualizationShader: {fileID: 4800000, guid: 620b55b8040a88d468e94abe55bed5ba, type: 3}
-        m_VisualizationLookupTable:
-          m_Data:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-          - {r: 1, g: 1, b: 1, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0.75, g: 0.75, b: 0, a: 1}
-          - {r: 0, g: 0.75, b: 0.55, a: 1}
-          - {r: 0.5, g: 0, b: 0.5, a: 1}
-          - {r: 0.5, g: 0.5, b: 0.5, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
-        m_ConversionLookupTable:
-          m_Data:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-          - {r: 1, g: 1, b: 1, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0.75, g: 0.75, b: 0, a: 1}
-          - {r: 0, g: 0.75, b: 0.55, a: 1}
-          - {r: 0.5, g: 0, b: 0.5, a: 1}
-          - {r: 0.5, g: 0.5, b: 0.5, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
-=======
     - rid: 4255293215229083652
       type: {class: RenderingDebuggerRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_version: 0
->>>>>>> origin/main
     - rid: 7752762179098771456
       type: {class: UniversalRenderPipelineRuntimeTextures, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -404,7 +337,7 @@ MonoBehaviour:
         m_version: 0
         m_IncludeReferencedInScenes: 0
         m_IncludeAssetsByLabel: 0
-        m_LabelToInclude: 
+        m_LabelToInclude:
     - rid: 7752762179098771471
       type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:

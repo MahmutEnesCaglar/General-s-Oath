@@ -296,7 +296,7 @@ SpriteRenderer:
   m_Size: {x: 1.5625, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &78046097
@@ -1713,7 +1713,7 @@ SpriteRenderer:
   m_Size: {x: 0.5, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &911758272
@@ -2200,10 +2200,10 @@ MonoBehaviour:
   spawnPoint: {fileID: 39609368}
   basicEnemyPrefab: {fileID: 5969436530590249289, guid: bd8d51f38d5c571478a2f644f7053f68, type: 3}
   fastEnemyPrefab: {fileID: 4549937988352056916, guid: 7f45fdbdedf3a7e4eaf468738803b99a, type: 3}
-  armoredEnemyPrefab: {fileID: 0}
-  archerEnemyPrefab: {fileID: 0}
+  armoredEnemyPrefab: {fileID: 4549937988352056916, guid: 0b954d5b852dfe84fbd977352aeddd59, type: 3}
+  archerEnemyPrefab: {fileID: 4549937988352056916, guid: e2f8106a710d23641927b211d9600547, type: 3}
   flyingEnemyPrefab: {fileID: 0}
-  eliteEnemyPrefab: {fileID: 0}
+  eliteEnemyPrefab: {fileID: 5969436530590249289, guid: 1bc8b11ba6efd6045a6ce65d3f128588, type: 3}
   miniBossPrefab: {fileID: 0}
   grifonBossPrefab: {fileID: 0}
   kirinBossPrefab: {fileID: 0}

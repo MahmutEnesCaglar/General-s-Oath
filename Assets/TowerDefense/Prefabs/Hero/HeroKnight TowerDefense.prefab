@@ -141,6 +141,7 @@ MonoBehaviour:
   attackRange: 1.5
   attackCooldown: 0.8
   abilities: {fileID: 0}
+  healthBarPrefab: {fileID: 2445333389858170738, guid: 91d4968ab2a56e5449e1dca1b4053707, type: 3}
   isDead: 0
 --- !u!95 &2655505060201611074
 Animator:

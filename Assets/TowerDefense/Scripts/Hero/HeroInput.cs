@@ -54,10 +54,6 @@ namespace TowerDefense.Hero
             if (hero == null)
             {
                 hero = FindObjectOfType<Hero>();
-                if (hero != null)
-                {
-                    Debug.Log("✓ Hero found and assigned to HeroInput!");
-                }
             }
 
             // Toggle tower mode with T key
@@ -97,21 +93,16 @@ namespace TowerDefense.Hero
             // Ignore clicks on actual interactive UI elements (buttons, panels, etc.)
             if (EventSystem.current != null && IsPointerOverInteractiveUI())
             {
-                Debug.Log("Clicked on interactive UI, ignoring hero movement");
                 return;
             }
 
-            Debug.Log("HandleHeroMovement called!");
-
             if (hero == null)
             {
-                Debug.LogError("Hero is NULL!");
                 return;
             }
 
             if (hero.isDead)
             {
-                Debug.LogWarning("Hero is dead, cannot move!");
                 return;
             }
 
@@ -120,11 +111,8 @@ namespace TowerDefense.Hero
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 10f));
             mousePos.z = 0;
 
-            Debug.Log($"Mouse clicked at: {mousePos}");
-
             // Set hero destination
             hero.SetDestination(mousePos);
-            Debug.Log($"Hero destination set to: {mousePos}");
         }
 
         /// <summary>

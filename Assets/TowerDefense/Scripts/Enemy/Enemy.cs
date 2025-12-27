@@ -69,7 +69,7 @@ namespace TowerDefense.Enemy
 
             // Rigidbody2D ayarları
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.isKinematic = true;        // Manuel hareket ama collision detection var
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;       // Manuel hareket ama collision detection var
             rb.gravityScale = 0f;         // Yerçekimi yok
             rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Collision detection aktif
 
@@ -156,7 +156,7 @@ namespace TowerDefense.Enemy
             }
 
             // Hero ara
-            TowerDefense.Hero.Hero hero = FindObjectOfType<TowerDefense.Hero.Hero>();
+            TowerDefense.Hero.Hero hero = FindAnyObjectByType<TowerDefense.Hero.Hero>();
             if (hero != null && !hero.isDead)
             {
                 float distanceToHero = Vector2.Distance(transform.position, hero.transform.position);

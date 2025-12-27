@@ -4,10 +4,6 @@ using TowerDefense.Enemy;
 
 namespace TowerDefense.Tower
 {
-    /// <summary>
-    /// Kule sistemi - Fizik tabanlı hedefleme ile düşmanları tespit eder
-    /// İzometrik menzil desteği ile oval algılama alanı
-    /// </summary>
     public class Tower : MonoBehaviour
     {
         [Header("Temel Ayarlar")]
@@ -18,40 +14,50 @@ namespace TowerDefense.Tower
 
         [Header("İzometrik Ayar")]
         [Range(0.1f, 1f)]
-        public float verticalRangeModifier = 0.5f; // Y eksenini daraltan çarpan (oval menzil için)
+        public float verticalRangeModifier = 0.6f;
 
         [Header("Hedefleme ve Liste")]
         public List<GameObject> enemiesInRange = new List<GameObject>();
         public GameObject currentTarget;
         protected float fireCooldown = 0f;
 
-        [Header("Mermi Ayarları")]
+        [Header("Setup")]
         public GameObject projectilePrefab;
-
         protected RotatableTowerSprite rotatableVisual;
+
+        // Değişiklik kontrolü
+        private float lastRange;
+        private float lastModifier;
 
         protected virtual void Start()
         {
             rotatableVisual = GetComponentInChildren<RotatableTowerSprite>();
+            
+            lastRange = range;
+            lastModifier = verticalRangeModifier;
 
-            // CircleCollider2D'yi izometrik menzile göre ayarla
-            UpdateColliderScale();
+            CreateOvalRangeDetector();
         }
 
         protected virtual void Update()
         {
+            // Dinamik güncelleme
+            if (range != lastRange || verticalRangeModifier != lastModifier)
+            {
+                CreateOvalRangeDetector();
+                lastRange = range;
+                lastModifier = verticalRangeModifier;
+            }
+
             fireCooldown -= Time.deltaTime;
 
-            // 1. Listeyi temizle ve en yakın hedefi seç
             UpdateTarget();
 
             if (currentTarget != null)
             {
-                // 2. Hedefe dön (eğer dönen sprite varsa)
                 if (rotatableVisual != null)
                     rotatableVisual.RotateTowards(currentTarget.transform.position);
 
-                // 3. Ateş et
                 if (fireCooldown <= 0)
                 {
                     Attack();
@@ -60,21 +66,99 @@ namespace TowerDefense.Tower
             }
         }
 
+        // --- MERMİ ATMA ---
+        protected virtual void Attack()
+        {
+            if (projectilePrefab != null && currentTarget != null)
+            {
+                Vector3 spawnPos = transform.position;
+                if (rotatableVisual != null)
+                {
+                    Vector2 offset = rotatableVisual.GetCurrentFirePointOffset(rotatableVisual.currentSegmentIndex);
+                    spawnPos = transform.position + (Vector3)offset;
+                }
+
+                GameObject projObj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+
+                // 1. Tip: Normal Projectile
+                Projectile p = projObj.GetComponent<Projectile>();
+                if (p != null) { p.Setup(currentTarget, damage); return; }
+
+                // 2. Tip: Arrow Projectile
+                ArrowProjectile a = projObj.GetComponent<ArrowProjectile>();
+                if (a != null) { a.Setup(currentTarget, damage); return; }
+
+                // 3. Tip: Mortar Projectile
+                MortarProjectile m = projObj.GetComponent<MortarProjectile>();
+                if (m != null) 
+                { 
+                    // DÜZELTME BURADA YAPILDI:
+                    // Eğer bu scripti "MortarTower" olmayan düz bir kulede kullanırsan
+                    // varsayılan olarak 1.5f alan hasarı ile çalışsın diye değer girdik.
+                    // (MortarTower zaten bu fonksiyonu override edip kendi değerini gönderiyor)
+                    m.Setup(currentTarget, damage, 1.5f); 
+                    return; 
+                }
+            }
+        }
+
+        // --- OVAL COLLIDER OLUŞTURUCU ---
+        public void CreateOvalRangeDetector()
+        {
+            Transform oldDetector = transform.Find("RangeDetector");
+            if (oldDetector != null) Destroy(oldDetector.gameObject);
+
+            GameObject detector = new GameObject("RangeDetector");
+            detector.transform.SetParent(this.transform);
+            detector.transform.localPosition = Vector3.zero;
+            detector.transform.localScale = Vector3.one; 
+            detector.layer = gameObject.layer;
+
+            PolygonCollider2D polyCol = detector.AddComponent<PolygonCollider2D>();
+            polyCol.isTrigger = true;
+
+            int pointCount = 36;
+            Vector2[] points = new Vector2[pointCount];
+            
+            for (int i = 0; i < pointCount; i++)
+            {
+                float angle = (2 * Mathf.PI * i) / pointCount;
+                float x = Mathf.Cos(angle) * range; 
+                float y = Mathf.Sin(angle) * range * verticalRangeModifier;
+                points[i] = new Vector2(x, y);
+            }
+
+            polyCol.points = points;
+
+            RangeRelay relay = detector.AddComponent<RangeRelay>();
+            relay.towerParent = this;
+        }
+
+        // --- FİZİK İLETİŞİMİ ---
+        public void OnEnemyEnter(GameObject enemy)
+        {
+            if (!enemiesInRange.Contains(enemy)) enemiesInRange.Add(enemy);
+        }
+
+        public void OnEnemyExit(GameObject enemy)
+        {
+            if (enemiesInRange.Contains(enemy))
+            {
+                enemiesInRange.Remove(enemy);
+                if (currentTarget == enemy) currentTarget = null;
+            }
+        }
+
         protected virtual void UpdateTarget()
         {
-            // Null/yok olan düşmanları listeden temizle
             enemiesInRange.RemoveAll(item => item == null);
 
-            // Hedef yoksa ve listede düşman varsa ilkini seç
             if (currentTarget == null && enemiesInRange.Count > 0)
             {
                 currentTarget = GetClosestEnemy();
             }
         }
 
-        /// <summary>
-        /// Listedeki düşmanlar arasından izometrik olarak en yakın olanı bulur
-        /// </summary>
         private GameObject GetClosestEnemy()
         {
             GameObject bestTarget = null;
@@ -94,10 +178,6 @@ namespace TowerDefense.Tower
             return bestTarget;
         }
 
-        /// <summary>
-        /// İzometrik mesafe hesabı (Oval Menzil)
-        /// Y eksenini daraltarak kamera açısına uygun menzil oluşturur
-        /// </summary>
         protected float GetIsometricDistance(Vector3 posA, Vector3 posB)
         {
             float diffX = posA.x - posB.x;
@@ -105,90 +185,30 @@ namespace TowerDefense.Tower
             return Mathf.Sqrt(diffX * diffX + diffY * diffY);
         }
 
-        /// <summary>
-        /// Hedefe saldırır - Projectile fırlatır
-        /// </summary>
-        protected virtual void Attack()
-        {
-            if (projectilePrefab != null && currentTarget != null)
-            {
-                // Fire point offset sistemi (eğer varsa)
-                Vector3 spawnPos = transform.position;
-                if (rotatableVisual != null)
-                {
-                    Vector2 offset = rotatableVisual.GetCurrentFirePointOffset(rotatableVisual.currentSegmentIndex);
-                    spawnPos = transform.position + (Vector3)offset;
-                }
-
-                // Projectile oluştur
-                GameObject projObj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-                Projectile projScript = projObj.GetComponent<Projectile>();
-
-                if (projScript != null)
-                {
-                    // Setup çağır (arkadaşın API'si ile uyumlu)
-                    projScript.Setup(currentTarget, damage);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Fizik tetikleyicisi - Düşman menzile girdi
-        /// NOT: Enemy GameObject'lerinin "Enemy" tag'i olmalı
-        /// </summary>
-        protected virtual void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.CompareTag("Enemy"))
-            {
-                if (!enemiesInRange.Contains(other.gameObject))
-                {
-                    enemiesInRange.Add(other.gameObject);
-                    Debug.Log($"[Tower] {other.name} menzile girdi! Toplam düşman: {enemiesInRange.Count}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Fizik tetikleyicisi - Düşman menzilden çıktı
-        /// </summary>
-        protected virtual void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.CompareTag("Enemy"))
-            {
-                enemiesInRange.Remove(other.gameObject);
-                if (currentTarget == other.gameObject)
-                {
-                    currentTarget = null;
-                }
-                Debug.Log($"[Tower] {other.name} menzilden çıktı!");
-            }
-        }
-
-        /// <summary>
-        /// Collider'ı menzile göre ayarla
-        /// NOT: CircleCollider2D'nin IsTrigger = true olmalı
-        /// </summary>
-        private void UpdateColliderScale()
-        {
-            CircleCollider2D col = GetComponent<CircleCollider2D>();
-            if (col != null)
-            {
-                col.radius = range;
-                col.isTrigger = true; // Trigger olarak ayarla
-            }
-        }
-
-        /// <summary>
-        /// Editor'de oval menzili göster
-        /// </summary>
         void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
-            // Oval menzili çizmek için matrisi değiştiriyoruz
             Matrix4x4 oldMatrix = Gizmos.matrix;
             Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, new Vector3(1, verticalRangeModifier, 1));
             Gizmos.DrawWireSphere(Vector3.zero, range);
             Gizmos.matrix = oldMatrix;
+        }
+    }
+
+    public class RangeRelay : MonoBehaviour
+    {
+        public Tower towerParent;
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Enemy"))
+                towerParent.OnEnemyEnter(other.gameObject);
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Enemy"))
+                towerParent.OnEnemyExit(other.gameObject);
         }
     }
 }

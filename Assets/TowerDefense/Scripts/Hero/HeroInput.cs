@@ -1,28 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using System.Collections.Generic; // List kullanımı için gerekli
+using TowerDefense.Core;
+using TowerDefense.Hero;
+using TowerDefense.Tower;
 
 namespace TowerDefense.Hero
 {
-    /// <summary>
-    /// Manages hero input and mode switching between hero control and tower placement
-    /// Prevents input conflicts by toggling modes with T key
-    /// Uses Unity's new Input System
-    /// </summary>
     public class HeroInput : MonoBehaviour
     {
         public static HeroInput Instance;
 
-        public enum InputMode { HeroControl, TowerPlacement }
-        public InputMode currentMode = InputMode.HeroControl;
-
         [Header("References")]
         public Hero hero;
-        private TowerDefense.Tower.TowerPlacement towerPlacement;
+        // Eski TowerPlacement referansını sildik.
 
         private void Awake()
         {
-            // Singleton pattern
             if (Instance == null)
             {
                 Instance = this;
@@ -30,166 +25,145 @@ namespace TowerDefense.Hero
             else
             {
                 Destroy(gameObject);
-                return;
             }
-
-            // Find tower placement system
-            towerPlacement = FindObjectOfType<TowerDefense.Tower.TowerPlacement>();
+            // Eski TowerPlacement arama kodunu sildik.
         }
 
         private void Start()
         {
-            Debug.Log("HeroInput initialized - HERO MODE active. Press T to toggle Tower Mode.");
+            Debug.Log("HeroInput initialized. Click on ground to move, Click on Build Spots to build.");
         }
 
         private void Update()
         {
-            // Safety check for input devices
-            if (Keyboard.current == null || Mouse.current == null)
+            // Mouse takılı değilse çık
+            if (Mouse.current == null) return;
+
+            // Hero yoksa aramaya devam et
+            if (hero == null) 
             {
-                return;
+                hero = FindAnyObjectByType<Hero>();
+                // Bulunca konsola yazsın
+                if(hero != null) Debug.Log("Hero bulundu ve bağlandı!");
             }
 
-            // Find hero if not assigned (hero might spawn later)
-            if (hero == null)
+            // SOL TIK BASILDI MI?
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                hero = FindObjectOfType<Hero>();
-            }
+                Debug.Log("Sol Tık Algılandı! İşlemler başlıyor..."); // BU YAZI ÇIKIYOR MU?
 
-            // Toggle tower mode with T key
-            if (Keyboard.current[Key.T].wasPressedThisFrame)
-            {
-                ToggleTowerMode();
+                HandleInput();
             }
-
-            // Hero movement (only in hero mode)
-            if (currentMode == InputMode.HeroControl && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                HandleHeroMovement();
-            }
-
-            // Special ability (Q key) - works in both modes
+             // Özel yetenek (Q)
             if (Keyboard.current[Key.Q].wasPressedThisFrame)
             {
                 if (hero != null && hero.abilities != null)
-                {
                     hero.abilities.ActivateSpecialAbility();
-                }
             }
 
-            // Block (RMB or B key) - works in both modes
+            // Bloklama (Sağ Tık veya B)
             bool blockPressed = Mouse.current.rightButton.isPressed || Keyboard.current[Key.B].isPressed;
             if (hero != null && hero.abilities != null)
             {
                 hero.abilities.ActivateBlock(blockPressed);
             }
         }
+        private void HandleInput()
+        {
+            // 1. UI KONTROLÜ
+            if (IsPointerOverInteractiveUI()) 
+            {
+                Debug.Log("❌ Tıklama UI (Buton/Panel) tarafından engellendi.");
+                return;
+            }
 
-        /// <summary>
-        /// Handles hero click-to-move
-        /// </summary>
+            // 2. İNŞAAT ALANI KONTROLÜ
+            // Kameranın Z pozisyonunun mutlak değerini alarak tam mesafeyi buluyoruz
+            float camDistance = Mathf.Abs(Camera.main.transform.position.z);
+            Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
+            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, camDistance));
+
+            // BuildManager kontrolü
+            if (BuildManager.main != null)
+            {
+                // BuildManager'a "Bu koordinatta tile var mı?" diye soruyoruz
+                // Not: BuildManager içindeki IsMouseOverBuildSpot fonksiyonunu da güncellemen gerekebilir (aşağıda verdim)
+                if (BuildManager.main.IsMouseOverBuildSpot())
+                {
+                    Debug.Log($"🏗️ İnşaat Alanı Algılandı! (Koordinat: {worldPoint}) - Hero duruyor, Menü açılmalı.");
+                    return; 
+                }
+            }
+
+            // 3. HERO HAREKETİ
+            Debug.Log($"✅ Boş alana tıklandı. Hero şuraya gitmeli: {worldPoint}");
+            HandleHeroMovement();
+        }
+
         private void HandleHeroMovement()
         {
-            // Ignore clicks on actual interactive UI elements (buttons, panels, etc.)
-            if (EventSystem.current != null && IsPointerOverInteractiveUI())
-            {
-                return;
-            }
+            if (hero == null || hero.isDead) return;
 
-            if (hero == null)
-            {
-                return;
-            }
-
-            if (hero.isDead)
-            {
-                return;
-            }
-
-            // Get mouse world position using new Input System
+            // Mouse pozisyonunu al (Dinamik Mesafe Hesabı)
+            float camDistance = Mathf.Abs(Camera.main.transform.position.z);
             Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 10f));
-            mousePos.z = 0;
+            
+            // Z eksenini tam sıfıra oturtuyoruz
+            Vector3 targetPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, camDistance));
+            targetPos.z = 0; 
 
-            // Set hero destination
-            hero.SetDestination(mousePos);
+            // Hero'ya git emri ver
+            hero.SetDestination(targetPos);
         }
 
-        /// <summary>
-        /// Toggles between hero control and tower placement modes
-        /// </summary>
-        private void ToggleTowerMode()
-        {
-            if (currentMode == InputMode.HeroControl)
-            {
-                // Switch to tower mode
-                currentMode = InputMode.TowerPlacement;
-                Debug.Log("TOWER MODE activated - Left click to place towers, T to return to Hero Mode");
-            }
-            else
-            {
-                // Switch to hero mode
-                currentMode = InputMode.HeroControl;
-
-                // Cancel any active tower placement
-                if (towerPlacement != null)
-                {
-                    towerPlacement.CancelPlacement();
-                }
-
-                Debug.Log("HERO MODE activated - Left click to move hero, T to switch to Tower Mode");
-            }
-        }
-
-        /// <summary>
-        /// Public method to check if tower placement should be active
-        /// </summary>
-        public bool IsTowerPlacementMode()
-        {
-            return currentMode == InputMode.TowerPlacement;
-        }
-
-        /// <summary>
-        /// Public method to check if hero control should be active
-        /// </summary>
-        public bool IsHeroControlMode()
-        {
-            return currentMode == InputMode.HeroControl;
-        }
-
-        /// <summary>
-        /// Checks if the pointer is over an interactive UI element (buttons, panels)
-        /// Returns false for non-interactive UI elements like background images
-        /// </summary>
+        // UI Tıklamasını algılayan yardımcı fonksiyon (Senin kodun aynısı)
         private bool IsPointerOverInteractiveUI()
         {
             if (EventSystem.current == null) return false;
 
-            // Get all UI elements under the pointer
-            var pointerData = new UnityEngine.EventSystems.PointerEventData(EventSystem.current)
+            var pointerData = new PointerEventData(EventSystem.current)
             {
-                position = Mouse.current.position.ReadValue()
+                // Both modunda Input.mousePosition daha garantidir
+                position = Input.mousePosition 
             };
 
-            var results = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
+            var results = new System.Collections.Generic.List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
-            // Check if any result is an actual interactive UI element
+            // Tıklanan tüm UI elemanlarını kontrol et
             foreach (var result in results)
             {
-                // Check if it's a Button, Toggle, Slider, or other interactive component
+                // Engelleyen objenin adını konsola yazdır (SUÇLUYU BURADA GÖRECEĞİZ)
+                // 
+                // 
+                // Debug.Log("🖱️ Mouse şu UI objesinin üzerinde: " + result.gameObject.name);
+
+                // Eğer tıklanan şey bir Buton, Toggle, InputField veya Scrollbar ise...
                 if (result.gameObject.GetComponent<UnityEngine.UI.Button>() != null ||
                     result.gameObject.GetComponent<UnityEngine.UI.Toggle>() != null ||
                     result.gameObject.GetComponent<UnityEngine.UI.Slider>() != null ||
                     result.gameObject.GetComponent<UnityEngine.UI.Scrollbar>() != null ||
-                    result.gameObject.GetComponent<UnityEngine.UI.InputField>() != null ||
-                    result.gameObject.GetComponent<TMPro.TMP_InputField>() != null)
+                    result.gameObject.GetComponent<TMPro.TMP_InputField>() != null ||
+                    result.gameObject.GetComponent<UnityEngine.UI.InputField>() != null) 
                 {
-                    return true; // Found an interactive UI element
+                    Debug.Log($"⛔ TIKLAMA ENGELLENDİ! Engelleyen Buton/Araç: {result.gameObject.name}");
+                    return true; 
+                }
+
+                // EĞER SADECE ARKA PLAN RESMİ İSE (Panel, Image vb.)
+                // Genelde panellerin "Raycast Target"ı açık unutulur.
+                // Eğer şeffaf bir panel yüzünden tıklayamıyorsan burası yakalayacak.
+                if (result.gameObject.GetComponent<UnityEngine.UI.Image>() != null)
+                {
+                     // İpucu: Eğer oyunun oynanmasını engelleyen şey şeffaf bir panelse,
+                     // o panelin Inspector'ındaki "Raycast Target" tikini kaldırmalısın.
+                     Debug.Log($"⚠️ Dikkat: '{result.gameObject.name}' isimli obje tıklamanı kesiyor olabilir! Raycast Target açık mı?");
+                     // Şimdilik Image'leri engelleyici saymıyoruz ki test edelim.
+                     // Eğer gerçekten panel engelliyorsa burayı 'return true' yapabilirsin.
                 }
             }
 
-            return false; // No interactive UI found
+            return false; 
         }
     }
 }

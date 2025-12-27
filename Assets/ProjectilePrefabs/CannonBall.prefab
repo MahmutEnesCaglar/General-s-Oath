@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 61717683969790739}
   - component: {fileID: 7285867751489116718}
-  - component: {fileID: 1238787411870591235}
+  - component: {fileID: 4118520410394653738}
   m_Layer: 0
   m_Name: CannonBall
   m_TagString: Untagged
@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1238787411870591235
+--- !u!114 &4118520410394653738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2284121689837625060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa4bfe1a99c02a91a8a5219fc8b4502d, type: 3}
+  m_Script: {fileID: 11500000, guid: 228bf606f44f2ab4f9afe12d84987c5c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  speed: 12
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Tower.Projectile
+  speed: 7

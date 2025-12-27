@@ -134,7 +134,7 @@ namespace TowerDefense.Core
             // Eğer healthBar Inspector'dan atanmamışsa, sahnede bul
             if (healthBar == null)
             {
-                healthBar = FindObjectOfType<SpriteHealthBar>();
+                healthBar = FindAnyObjectByType<SpriteHealthBar>();
             }
 
             if (healthBar != null)
@@ -297,7 +297,7 @@ namespace TowerDefense.Core
             // Eğer healthBar yoksa tekrar ara
             if (healthBar == null)
             {
-                healthBar = FindObjectOfType<SpriteHealthBar>();
+                healthBar = FindAnyObjectByType<SpriteHealthBar>();
             }
 
             if (healthBar != null)

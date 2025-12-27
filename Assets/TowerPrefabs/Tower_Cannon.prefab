@@ -117,11 +117,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.65
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.24
       objectReference: {fileID: 0}
     - target: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Name
@@ -129,6 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: -5402582867162545519, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 9096422375909510469, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
     m_AddedGameObjects:
@@ -138,20 +143,43 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4956410046593462593}
+      addedObject: {fileID: -5080009744351944380}
+    - targetCorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3572211415949697833}
     - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9194612201304583639}
     - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6451533244288783684}
+      addedObject: {fileID: 8644126076780813521}
   m_SourcePrefab: {fileID: 100100000, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
 --- !u!1 &858613000073198604 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
   m_PrefabInstance: {fileID: 4125360286959954363}
   m_PrefabAsset: {fileID: 0}
---- !u!58 &4956410046593462593
+--- !u!114 &-5080009744351944380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858613000073198604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5e1de4386639f4db8959625682c080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Tower.Tower
+  towerName: Kule
+  range: 6
+  fireRate: 1
+  damage: 10
+  verticalRangeModifier: 0.5
+  enemiesInRange: []
+  currentTarget: {fileID: 0}
+  projectilePrefab: {fileID: 2284121689837625060, guid: 9766464d27bb1024d94abdd06250f777, type: 3}
+--- !u!58 &3572211415949697833
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +192,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -181,12 +209,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 5
+  m_Offset: {x: 0, y: 0.2}
+  m_Radius: 1
 --- !u!4 &2172693080138703717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
@@ -222,7 +250,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -242,7 +270,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -616371365
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 3367191846994755705, guid: eb7099e3cc0299637b138d6e97071a67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -255,7 +283,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6451533244288783684
+--- !u!114 &8644126076780813521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,9 +292,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7445131807296949165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 246924b8481ff0c6ebce2d21487a5eae, type: 3}
+  m_Script: {fileID: 11500000, guid: d65954e0409f8e04cb1bd17714ec7ac0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RotatableTowerSprite
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Tower.RotatableTowerSprite
   directionDataList:
   - directionName: 0
     sprite: {fileID: -6912519822022482156, guid: 1a072de43bf1ab88b95ee23e3e699323, type: 3}
@@ -275,29 +303,29 @@ MonoBehaviour:
   - directionName: 1
     sprite: {fileID: -7115864776621549456, guid: d7fb3bfefb26ca7bcab4a3326ef4a4dd, type: 3}
     scale: {x: 0.42, y: 0.37, z: 0}
-    firePointOffset: {x: 0.502, y: 0.562}
+    firePointOffset: {x: 0.502, y: 0.802}
   - directionName: 2
     sprite: {fileID: 577809931620228447, guid: 56b407faead7d1b7a8c398a82c763350, type: 3}
     scale: {x: 0.4, y: 0.35, z: 0}
-    firePointOffset: {x: 0.01, y: 0.66}
+    firePointOffset: {x: 0.01, y: 0.9}
   - directionName: 3
     sprite: {fileID: -4975044728960347273, guid: 26f253827c7d558bba5cffb7160bc65e, type: 3}
     scale: {x: 0.47, y: 0.4, z: 0}
-    firePointOffset: {x: -0.513, y: 0.527}
+    firePointOffset: {x: -0.513, y: 0.767}
   - directionName: 4
     sprite: {fileID: -3805774032090215806, guid: 19dd3a46d25de5270949907f86dd6677, type: 3}
     scale: {x: 0.36, y: 0.31, z: 0}
-    firePointOffset: {x: -0.622, y: 0.378}
+    firePointOffset: {x: -0.622, y: 0.618}
   - directionName: 5
     sprite: {fileID: 3367191846994755705, guid: eb7099e3cc0299637b138d6e97071a67, type: 3}
     scale: {x: 0.71, y: 0.6, z: 0}
-    firePointOffset: {x: -0.457, y: 0.088}
+    firePointOffset: {x: -0.457, y: 0.328}
   - directionName: 6
     sprite: {fileID: 8004925861451462671, guid: 049c35d0a7280298a9c203239aa3cf37, type: 3}
     scale: {x: 0.4, y: 0.37, z: 0}
-    firePointOffset: {x: 0.014, y: 0.004}
+    firePointOffset: {x: 0.014, y: 0.244}
   - directionName: 7
     sprite: {fileID: -8292917871870162833, guid: f54e670e97998cd66a83b2ed838709c4, type: 3}
     scale: {x: 0.39, y: 0.37, z: 0}
-    firePointOffset: {x: 0.531, y: 0.098}
+    firePointOffset: {x: 0.531, y: 0.338}
   currentSegmentIndex: 0

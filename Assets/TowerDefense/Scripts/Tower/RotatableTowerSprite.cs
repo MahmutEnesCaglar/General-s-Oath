@@ -1,70 +1,88 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TowerDefense.Tower; 
 
 namespace TowerDefense.Tower
 {
-    /// <summary>
-    /// Yönlü sprite sistemi - 8 yönlü kule sprite'ları
-    /// Arkadaşın sistemi - namespace eklendi
-    /// </summary>
     [System.Serializable]
     public struct DirectionalData
     {
-        public string directionName;
-        public Sprite sprite;
-        public Vector3 scale;
-        public Vector2 firePointOffset;
+        public string directionName;    
+        public Sprite sprite;           
+        public Vector3 scale; 
+        public Vector2 firePointOffset; // Mermi çıkış noktası
     }
 
-    /// <summary>
-    /// Kulenin hedefe doğru dönmesini ve sprite'ını değiştirmesini sağlar
-    /// 8 yönlü sprite sistemi (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°)
-    /// </summary>
     public class RotatableTowerSprite : MonoBehaviour
     {
-        [Header("Yön Verileri")]
+        [Header("Yön Verileri (Sırayla Doldur!)")]
+        // 0:Doğu, 1:KD, 2:Kuzey, 3:KB, 4:Batı, 5:GB, 6:Güney, 7:GD
         public List<DirectionalData> directionDataList = new List<DirectionalData>();
 
         private SpriteRenderer spriteRenderer;
+        private Tower towerComponent; 
 
-        // Tower.cs'nin hangi yöne bakıldığını bilmesi için
+        // Tower.cs'nin okuyabilmesi için PUBLIC yapıldı
         [HideInInspector] public int currentSegmentIndex;
 
         void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+            towerComponent = GetComponent<Tower>(); 
         }
 
-        /// <summary>
-        /// Kulenin sprite'ını hedef pozisyona göre döndürür
-        /// </summary>
+        void Update()
+        {
+            // Eğer Tower scripti varsa ve bir hedefi kilitlediyse
+            if (towerComponent != null && towerComponent.currentTarget != null)
+            {
+                RotateTowards(towerComponent.currentTarget.transform.position);
+            }
+        }
+
         public void RotateTowards(Vector3 targetPosition)
         {
             if (directionDataList == null || directionDataList.Count == 0 || spriteRenderer == null)
                 return;
 
-            // Hedef açıyı hesapla
             Vector3 direction = targetPosition - transform.position;
+            
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             if (angle < 0) angle += 360f;
 
-            // 8 yönden en yakınını seç (her 45 derece bir segment)
-            currentSegmentIndex = Mathf.RoundToInt(angle / 45f) % 8;
+            // 8 yönlü hesaplama (45 derecelik dilimler)
+            float step = 360f / 8f; 
+            int index = Mathf.FloorToInt((angle + (step / 2)) / step) % 8;
 
-            // Sprite ve scale değiştir
-            DirectionalData currentData = directionDataList[currentSegmentIndex];
-            spriteRenderer.sprite = currentData.sprite;
-            transform.localScale = currentData.scale;
+            currentSegmentIndex = index;
+
+            // Listeden doğru sprite'ı al ve uygula
+            if (currentSegmentIndex < directionDataList.Count)
+            {
+                DirectionalData currentData = directionDataList[currentSegmentIndex];
+                
+                if (currentData.sprite != null)
+                    spriteRenderer.sprite = currentData.sprite;
+                
+                // Scale (örn: sola bakarken aynalamak için)
+                // Eğer listede scale (0,0,0) ise default (1,1,1) kullan
+                if(currentData.scale == Vector3.zero) 
+                    transform.localScale = Vector3.one;
+                else
+                    transform.localScale = currentData.scale;
+            }
         }
 
         /// <summary>
-        /// Mevcut yönün fire point offset'ini döndürür
-        /// (Mermi spawn pozisyonu için)
+        /// DÜZELTİLEN KISIM: Parametre geri eklendi.
+        /// Tower.cs içindeki çağrı ile uyumlu hale getirildi.
         /// </summary>
         public Vector2 GetCurrentFirePointOffset(int index)
         {
-            if (index >= 0 && index < directionDataList.Count)
+            if (directionDataList != null && index >= 0 && index < directionDataList.Count)
+            {
                 return directionDataList[index].firePointOffset;
+            }
 
             return Vector2.zero;
         }

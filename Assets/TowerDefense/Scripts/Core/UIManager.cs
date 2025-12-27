@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // TextMeshPro kullanıyorsanız
+using TMPro; 
 using TowerDefense.Enemy;
-using TowerDefense.Tower;
+// TowerPlacement referansı artık gerekmediği için sildik.
+// using TowerDefense.Tower; // Gerekirse ekle ama şuan UI için şart değil.
 
 namespace TowerDefense.Core
 {
     /// <summary>
-    /// Oyun UI'ını yönetir
+    /// Oyun UI'ını yönetir (Para, Can, Wave, Game Over)
     /// </summary>
     public class UIManager : MonoBehaviour
     {
@@ -18,26 +19,13 @@ namespace TowerDefense.Core
         public TextMeshProUGUI livesText;      // Can göstergesi
         public TextMeshProUGUI waveText;       // Wave numarası
 
-        // Eğer TextMeshPro yerine normal Text kullanıyorsanız:
-        // public Text moneyText;
-        // public Text livesText;
-        // public Text waveText;
-
         [Header("Butonlar")]
         public Button startWaveButton;         // Wave başlat butonu
-        public Button groundTowerButton;       // Okçu kulesi butonu
-        public Button universalTowerButton;    // Büyücü kulesi butonu
-        public Button aoeTowerButton;          // Bomba kulesi butonu
 
         [Header("Paneller")]
         public GameObject gameOverPanel;       // Game Over paneli
         public GameObject victoryPanel;        // Zafer paneli
-        public GameObject towerSelectionPanel; // Kule seçim paneli
-
-        [Header("Kule Fiyat Göstergeleri")]
-        public TextMeshProUGUI groundTowerCostText;
-        public TextMeshProUGUI universalTowerCostText;
-        public TextMeshProUGUI aoeTowerCostText;
+        // public GameObject towerSelectionPanel; // ARTIK YOK (BuildManager yönetiyor)
 
         private void Awake()
         {
@@ -59,27 +47,17 @@ namespace TowerDefense.Core
 
         private void Start()
         {
-            // Buton listener'ları ekle
+            // Start Wave butonu dinleyicisi
             if (startWaveButton != null)
                 startWaveButton.onClick.AddListener(OnStartWaveButtonClicked);
 
-            if (groundTowerButton != null)
-                groundTowerButton.onClick.AddListener(() => OnTowerButtonClicked("ground"));
-
-            if (universalTowerButton != null)
-                universalTowerButton.onClick.AddListener(() => OnTowerButtonClicked("universal"));
-
-            if (aoeTowerButton != null)
-                aoeTowerButton.onClick.AddListener(() => OnTowerButtonClicked("aoe"));
-
             // Başlangıç değerlerini güncelle
             UpdateUI();
-            UpdateTowerCosts();
         }
 
         private void Update()
         {
-            // Her frame UI'ı güncelle (performans için Update yerine event-based yapılabilir)
+            // Her frame UI'ı güncelle
             UpdateUI();
         }
 
@@ -100,42 +78,19 @@ namespace TowerDefense.Core
 
             // Wave
             if (waveText != null)
-                waveText.text = $"Wave: {GameManager.Instance.currentWave}/10";
+                waveText.text = $"Wave: {GameManager.Instance.currentWave}"; // /10 kısmını WaveConfigurator'dan almak daha doğru olur ama şimdilik böyle kalsın.
 
-            // Start Wave butonu
+            // Start Wave butonu kontrolü
             if (startWaveButton != null)
             {
                 // Wave aktifse butonu devre dışı bırak
-                EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
+                // EnemySpawner'ı bulmak maliyetli olabilir, Singleton yaparsan daha iyi olur.
+                EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
                 if (spawner != null)
                 {
                     startWaveButton.interactable = !spawner.IsWaveActive();
                 }
             }
-        }
-
-        /// <summary>
-        /// Kule fiyatlarını gösterir
-        /// </summary>
-        private void UpdateTowerCosts()
-        {
-            if (GameManager.Instance == null || GameManager.Instance.towerConfigurator == null)
-                return;
-
-            // Ground Tower
-            var groundTower = GameManager.Instance.towerConfigurator.CreateGroundTower();
-            if (groundTowerCostText != null && groundTower != null)
-                groundTowerCostText.text = $"{groundTower.GetStatsForLevel(1).upgradeCost}";
-
-            // Universal Tower
-            var universalTower = GameManager.Instance.towerConfigurator.CreateUniversalTower();
-            if (universalTowerCostText != null && universalTower != null)
-                universalTowerCostText.text = $"{universalTower.GetStatsForLevel(1).upgradeCost}";
-
-            // AOE Tower
-            var aoeTower = GameManager.Instance.towerConfigurator.CreateAOETower();
-            if (aoeTowerCostText != null && aoeTower != null)
-                aoeTowerCostText.text = $"{aoeTower.GetStatsForLevel(1).upgradeCost}";
         }
 
         /// <summary>
@@ -149,20 +104,7 @@ namespace TowerDefense.Core
             }
         }
 
-        /// <summary>
-        /// Kule butonuna tıklandığında
-        /// </summary>
-        private void OnTowerButtonClicked(string towerType)
-        {
-            Debug.Log($"{towerType} kulesi seçildi! (Yerleştirme modu aktif)");
-
-            // TowerPlacement sistemi burada devreye girer
-            TowerPlacement placement = FindObjectOfType<TowerPlacement>();
-            if (placement != null)
-            {
-                placement.SelectTower(towerType);
-            }
-        }
+        // ESKİ KULE BUTON FONKSİYONLARI SİLİNDİ (BuildManager artık bu işi yapıyor)
 
         /// <summary>
         /// Game Over ekranını gösterir
@@ -197,7 +139,6 @@ namespace TowerDefense.Core
         /// </summary>
         public void ReturnToMainMenu()
         {
-            // Ana menü scene'ini yükle
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
     }

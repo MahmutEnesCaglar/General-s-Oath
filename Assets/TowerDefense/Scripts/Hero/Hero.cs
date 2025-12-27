@@ -1,6 +1,7 @@
 using UnityEngine;
 using TowerDefense.Core;
 using TowerDefense.Enemy;
+using TowerDefense.Tower; // Bunu eklemezsen BuildManager'ı bulamaz
 
 namespace TowerDefense.Hero
 {
@@ -54,7 +55,7 @@ namespace TowerDefense.Hero
         private void Start()
         {
             // Setup rigidbody
-            rb.isKinematic = true;
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             rb.gravityScale = 0f;
 
             // Initialize health
@@ -166,7 +167,7 @@ namespace TowerDefense.Hero
         /// </summary>
         private void FindNearestEnemy()
         {
-            TowerDefense.Enemy.Enemy[] allEnemies = FindObjectsOfType<TowerDefense.Enemy.Enemy>();
+            TowerDefense.Enemy.Enemy[] allEnemies = FindObjectsByType<TowerDefense.Enemy.Enemy>(FindObjectsSortMode.None);
             TowerDefense.Enemy.Enemy closestEnemy = null;
             float closestDistance = Mathf.Infinity;
 

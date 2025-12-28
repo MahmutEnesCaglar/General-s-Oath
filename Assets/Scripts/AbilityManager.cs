@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
+using TowerDefense.Hero;
+using TowerDefense.Tower;
+using TowerDefense.Core;
+using TowerDefense.Environment; // BarrierPlacementManager'a erişmek için bunu ekledik!
 
 public class AbilityManager : MonoBehaviour 
 {
@@ -8,7 +13,7 @@ public class AbilityManager : MonoBehaviour
     public class AbilityData {
         public string name;
         public Button button;
-        public Image fillImage; // Yavaşça dolacak olan görsel
+        public Image fillImage; 
         public float cooldown = 10f;
         public int maxUsage = 5;
         
@@ -17,12 +22,16 @@ public class AbilityManager : MonoBehaviour
         [HideInInspector] public bool isOnCooldown;
     }
 
-
     [Header("Yetenek Ayarları")]
     public AbilityData rage;
     public AbilityData heal;
     public AbilityData attack;
     public AbilityData barrier;
+
+    [Header("Rage Ayarları")]
+    public float rageDuration = 5f;
+    public float rageDamageMult = 2.0f;
+    public float rageSpeedMult = 1.5f;
 
     void Start() {
         InitAbility(rage);
@@ -33,7 +42,6 @@ public class AbilityManager : MonoBehaviour
 
     void InitAbility(AbilityData data) {
         data.remainingUsage = data.maxUsage;
-        // Oyun başında cooldown barı boş (0) olsun
         if (data.fillImage != null) data.fillImage.fillAmount = 0; 
     }
 
@@ -48,19 +56,14 @@ public class AbilityManager : MonoBehaviour
         if (data.isOnCooldown) {
             data.currentCooldown -= Time.deltaTime;
             
-            // FORMÜL DEĞİŞTİ: (Toplam Süre - Kalan Süre) / Toplam Süre
-            // Bu sayede 0'dan başlayıp 1'e doğru yavaşça artar.
             if (data.fillImage != null) {
                 data.fillImage.fillAmount = (data.cooldown - data.currentCooldown) / data.cooldown;
             }
 
             if (data.currentCooldown <= 0) {
                 data.isOnCooldown = false;
-                // Cooldown bittiğinde barı sıfırla (veya 1'de bırak, tasarımına göre)
-                // Eğer "dolunca parlasın/açılsın" istiyorsan burayı 1 yapabilirsin.
                 if (data.fillImage != null) data.fillImage.fillAmount = 0; 
-                
-                if (data.remainingUsage > 0) data.button.interactable = true;
+                if (data.remainingUsage > 0 && data.button != null) data.button.interactable = true;
             }
         }
     }
@@ -70,26 +73,109 @@ public class AbilityManager : MonoBehaviour
             data.remainingUsage--;
             data.isOnCooldown = true;
             data.currentCooldown = data.cooldown;
-            data.button.interactable = false;
             
-            // Yetenek kullanıldığı an görseli sıfırla (0 yap)
+            if(data.button != null) data.button.interactable = false;
             if (data.fillImage != null) data.fillImage.fillAmount = 0;
             
-            Debug.Log($"{data.name} Kullanıldı!");
+            Debug.Log($"{data.name} Kullanıldı! Kalan hak: {data.remainingUsage}");
         }
     }
 
-    // --- BUTONLARA BAĞLANACAK FONKSİYONLAR ---
-    public void UseRage() => UseAbilityLogic(rage, "<color=red>RAGE AKTİF!</color>");
-    public void UseHeal() => UseAbilityLogic(heal, "<color=green>HEAL KULLANILDI!</color>");
-    public void UseAttack() => UseAbilityLogic(attack, "<color=orange>SALDIRI MODU!</color>");
-    public void UseBarrier() => UseAbilityLogic(barrier, "<color=blue>BARİYER MODU!</color>");
+    // --- BUTON FONKSİYONLARI ---
+    
+    // 1. RAGE
+    public void UseRage()
+    {
+        if (rage.isOnCooldown || rage.remainingUsage <= 0) return;
 
-    // Kod tekrarını önlemek için küçük bir yardımcı fonksiyon
-    private void UseAbilityLogic(AbilityData data, string logMessage) {
-        if (data.remainingUsage > 0 && !data.isOnCooldown) {
-            ExecuteAbility(data);
-            Debug.Log(logMessage);
+        StartCoroutine(RageRoutine());
+        ExecuteAbility(rage);
+    }
+
+    private IEnumerator RageRoutine()
+    {
+        Tower[] allTowers = FindObjectsByType<Tower>(FindObjectsSortMode.None);
+
+        if (allTowers.Length == 0)
+        {
+            Debug.Log("Sahnede hiç kule yok, Rage boşa gitti!");
+            yield break;
+        }
+
+        Debug.Log($"<color=red>RAGE BAŞLADI! {allTowers.Length} kule güçlendi.</color>");
+
+        foreach (Tower tower in allTowers)
+        {
+            tower.EnableRage(rageDamageMult, rageSpeedMult);
+        }
+
+        yield return new WaitForSeconds(rageDuration);
+
+        foreach (Tower tower in allTowers)
+        {
+            if (tower != null) 
+                tower.DisableRage();
+        }
+    }
+
+    // 2. HEAL
+    public void UseHeal()
+    {
+        if (heal.isOnCooldown || heal.remainingUsage <= 0) return;
+
+        Hero heroScript = FindFirstObjectByType<Hero>(); 
+
+        if (heroScript != null)
+        {
+            heroScript.HealPercentage(0.5f);
+            ExecuteAbility(heal);
+            Debug.Log("<color=green>HEAL BASILDI! Hero iyileştirildi.</color>");
+        }
+        else
+        {
+            Debug.LogError("Heal basıldı ama sahnede 'Hero' bulunamadı!");
+        }
+    }
+
+    // 3. BARRIER (GÜNCELLENDİ)
+    public void UseBarrier()
+    {
+        if (barrier.isOnCooldown || barrier.remainingUsage <= 0) return;
+
+        // BarrierPlacementManager sahne üzerinde var mı kontrol et
+        if (BarrierPlacementManager.Instance != null)
+        {
+            Debug.Log("<color=blue>BARİYER MODU BAŞLATILDI!</color>");
+            
+            // Yerleştirme modunu aç
+            BarrierPlacementManager.Instance.StartPlacement();
+            
+            // Yeteneği harca ve cooldown başlat
+            // (İstersen bunu sadece başarılı yerleştirme olursa düşecek şekilde ileride güncelleyebiliriz)
+            ExecuteAbility(barrier);
+        }
+        else
+        {
+            Debug.LogError("BarrierPlacementManager sahnede bulunamadı! GameManager'a ekledin mi?");
+        }
+    }
+    
+    // AbilityManager.cs içindeki UseAttack fonksiyonu
+    public void UseAttack() 
+    {
+        if (attack.isOnCooldown || attack.remainingUsage <= 0) return;
+
+        if (AttackManager.Instance != null)
+        {
+            Debug.Log("<color=orange>METEOR SALDIRISI HAZIRLANIYOR!</color>");
+            AttackManager.Instance.StartAttackMode();
+            
+            // Kullanım hakkını burada düşüyoruz
+            ExecuteAbility(attack);
+        }
+        else
+        {
+            Debug.LogError("AttackManager bulunamadı!");
         }
     }
 }

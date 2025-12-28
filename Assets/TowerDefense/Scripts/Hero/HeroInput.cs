@@ -77,8 +77,26 @@ namespace TowerDefense.Hero
                 return;
             }
 
+            // --- GÜNCELLENEN KISIM: ÖZEL MOD KONTROLLERİ ---
+            // Bariyer modu açık mı?
+            bool isBarrierMode = TowerDefense.Environment.BarrierPlacementManager.Instance != null && 
+                                 TowerDefense.Environment.BarrierPlacementManager.Instance.IsActive;
+            
+            // Saldırı (Meteor) modu açık mı?
+            bool isAttackMode = TowerDefense.Core.AttackManager.Instance != null && 
+                                TowerDefense.Core.AttackManager.Instance.IsActive;
+
+            // Eğer herhangi bir özel mod aktifse Hero hareket etmemeli
+            if (isBarrierMode || isAttackMode)
+            {
+                Debug.Log("⛔ Özel mod (Bariyer/Saldırı) aktif. Hero hareket etmeyecek.");
+                // Return diyerek Hero hareket kodlarını ve BuildManager kontrolünü pas geçiyoruz.
+                // Tıklamayı sadece ilgili Manager (Barrier veya Attack) yakalayacak.
+                return; 
+            }
+            // ------------------------------------------------
+
             // 2. İNŞAAT ALANI KONTROLÜ
-            // Kameranın Z pozisyonunun mutlak değerini alarak tam mesafeyi buluyoruz
             float camDistance = Mathf.Abs(Camera.main.transform.position.z);
             Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, camDistance));
@@ -86,18 +104,16 @@ namespace TowerDefense.Hero
             // BuildManager kontrolü
             if (BuildManager.main != null)
             {
-                // BuildManager'a "Bu koordinatta tile var mı?" diye soruyoruz
-                // Not: BuildManager içindeki IsMouseOverBuildSpot fonksiyonunu da güncellemen gerekebilir (aşağıda verdim)
                 if (BuildManager.main.IsMouseOverBuildSpot())
                 {
                     Debug.Log($"🏗️ İnşaat Alanı Algılandı! (Koordinat: {worldPoint}) - Hero duruyor, Menü açılmalı.");
                     return; 
                 }
             }
-
-            // 3. HERO HAREKETİ
-            Debug.Log($"✅ Boş alana tıklandı. Hero şuraya gitmeli: {worldPoint}");
-            HandleHeroMovement();
+            
+            // 3. HERO HAREKETİ (Mevcut kodunda devam eden kısım...)
+             Debug.Log($"✅ Boş alana tıklandı. Hero şuraya gitmeli: {worldPoint}");
+             HandleHeroMovement();
         }
 
         private void HandleHeroMovement()

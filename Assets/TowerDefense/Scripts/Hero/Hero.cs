@@ -329,5 +329,50 @@ namespace TowerDefense.Hero
             // Destroy after animation
             Destroy(gameObject, 2f);
         }
+        /// <summary>
+        /// Hero'yu maksimum canının belli bir yüzdesi kadar iyileştirir.
+        /// AbilityManager'daki Heal butonu tarafından çağrılır.
+        /// </summary>
+        /// <param name="percentage">0.5f = %50 can doldurur</param>
+        public void HealPercentage(float percentage)
+        {
+            if (isDead) return;
+
+            // İyileşme miktarını hesapla
+            int healAmount = Mathf.RoundToInt(maxHealth * percentage);
+            currentHealth += healAmount;
+
+            // Can maksimumu geçmesin
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+
+            // UI Barını Güncelle
+            if (healthBarInstance != null)
+            {
+                healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
+            }
+
+            // Görsel Efekt (Yeşil Yanıp Sönme)
+            if (spriteRenderer != null)
+            {
+                StopAllCoroutines(); // Kırmızı yanıyorsa durdur
+                StartCoroutine(HealFlash());
+            }
+
+            Debug.Log($"<color=green>HERO HEALED!</color> +{healAmount} HP. (Current: {currentHealth}/{maxHealth})");
+        }
+
+        /// <summary>
+        /// İyileşme görsel efekti (Yeşil Flash)
+        /// </summary>
+        private System.Collections.IEnumerator HealFlash()
+        {
+            spriteRenderer.color = Color.green; // Yeşil yap
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = Color.white; // Normale dön
+        }
     }
+    
 }

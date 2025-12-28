@@ -11,6 +11,9 @@ namespace TowerDefense.Tower
         public float range = 5f;
         public float fireRate = 1f;
         public int damage = 10;
+        private float baseFireRate;
+        private int baseDamage;
+        private bool isEnraged = false; // Şu an öfkeli mi?
 
         [Header("İzometrik Ayar")]
         [Range(0.1f, 1f)]
@@ -36,7 +39,12 @@ namespace TowerDefense.Tower
             lastRange = range;
             lastModifier = verticalRangeModifier;
 
+            rotatableVisual = GetComponentInChildren<RotatableTowerSprite>();
             CreateOvalRangeDetector();
+            
+            // ORİJİNAL DEĞERLERİ KAYDET (Rage bitince buna döneceğiz)
+            baseFireRate = fireRate;
+            baseDamage = damage;
         }
 
         protected virtual void Update()
@@ -192,6 +200,45 @@ namespace TowerDefense.Tower
             Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, new Vector3(1, verticalRangeModifier, 1));
             Gizmos.DrawWireSphere(Vector3.zero, range);
             Gizmos.matrix = oldMatrix;
+        }
+        public void EnableRage(float damageMultiplier, float speedMultiplier)
+        {
+            if (isEnraged) return; // Zaten öfkeliyse tekrar yapma
+
+            isEnraged = true;
+            
+            // Hızı ve hasarı artır
+            damage = Mathf.RoundToInt(baseDamage * damageMultiplier);
+            fireRate = baseFireRate * speedMultiplier;
+
+            // Görsel efekt: Kuleyi kırmızı yap (Varsa SpriteRenderer'ı bul)
+            var sprites = GetComponentsInChildren<SpriteRenderer>();
+            foreach (var sprite in sprites)
+            {
+                sprite.color = Color.red; 
+            }
+
+            Debug.Log($"{towerName} ÖFKELENDİ! Hız: {fireRate}, Hasar: {damage}");
+        }
+
+        public void DisableRage()
+        {
+            if (!isEnraged) return;
+
+            isEnraged = false;
+
+            // Değerleri normale döndür
+            damage = baseDamage;
+            fireRate = baseFireRate;
+
+            // Rengi normale döndür
+            var sprites = GetComponentsInChildren<SpriteRenderer>();
+            foreach (var sprite in sprites)
+            {
+                sprite.color = Color.white; 
+            }
+
+            Debug.Log($"{towerName} sakinleşti.");
         }
     }
 

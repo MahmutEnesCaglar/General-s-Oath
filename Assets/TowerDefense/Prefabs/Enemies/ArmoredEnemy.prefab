@@ -167,12 +167,11 @@ MonoBehaviour:
   isBoss: 0
   aggroRange: 3
   damageToHero: 5
-  heroAttackCooldown: 1.5
+  attackCooldown: 1.5
   separationRadius: 0.05
   separationForce: 2
   heroAttackRadius: 4
   waypoints: []
-  healthBarPrefab: {fileID: 0}
 --- !u!1001 &6939960427244664414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,13 +224,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 212000013542079236, guid: 315058484cf2044ce8dcb608b4678ff6, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5015
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1000012023364334, guid: 315058484cf2044ce8dcb608b4678ff6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7427403867919082650}
   m_SourcePrefab: {fileID: 100100000, guid: 315058484cf2044ce8dcb608b4678ff6, type: 3}
 --- !u!4 &6935970865458945582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000013857073264, guid: 315058484cf2044ce8dcb608b4678ff6, type: 3}
   m_PrefabInstance: {fileID: 6939960427244664414}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6938987905167903920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000012023364334, guid: 315058484cf2044ce8dcb608b4678ff6, type: 3}
+  m_PrefabInstance: {fileID: 6939960427244664414}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7427403867919082650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6938987905167903920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be07abd6a59cf238a986c953a10f828, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.DepthSorter
+  sortingOrderBase: 5000
+  offset: -0.5
+  runOnlyOnce: 0

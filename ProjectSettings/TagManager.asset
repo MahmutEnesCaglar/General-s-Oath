@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - BuildSpot
+  - Barrier
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Barrier
   - 
   - 
   - 
@@ -46,11 +47,14 @@ TagManager:
   - name: Enemies
     uniqueID: 2652372867
     locked: 0
+  - name: Projectile
+    uniqueID: 3715862423
+    locked: 0
   - name: Towers
     uniqueID: 3678595931
     locked: 0
-  - name: Projectile
-    uniqueID: 3715862423
+  - name: Abilities
+    uniqueID: 2478619531
     locked: 0
   m_RenderingLayers:
   - Default

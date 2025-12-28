@@ -131,12 +131,11 @@ MonoBehaviour:
   isBoss: 0
   aggroRange: 3
   damageToHero: 7
-  heroAttackCooldown: 1.5
+  attackCooldown: 1.5
   separationRadius: 0.05
   separationForce: 2
   heroAttackRadius: 4
   waypoints: []
-  healthBarPrefab: {fileID: 0}
 --- !u!58 &3204590309193834956
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -236,6 +235,18 @@ PrefabInstance:
     - target: {fileID: 4000013306724104, guid: 13c470c5b8dcd4854834911f7e0a9a6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000011735116538, guid: 13c470c5b8dcd4854834911f7e0a9a6c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5060
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000012096086302, guid: 13c470c5b8dcd4854834911f7e0a9a6c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5050
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000013066927242, guid: 13c470c5b8dcd4854834911f7e0a9a6c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5014
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

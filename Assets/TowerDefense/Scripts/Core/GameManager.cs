@@ -34,7 +34,7 @@ namespace TowerDefense.Core
         public float heroRespawnDelay = 5f;
 
         [Header("UI System")]
-        public SpriteHealthBar healthBar; // Can barı görseli (Inspector'dan atanacak)
+        public HealthBar healthBar; // Can barı görseli (Inspector'dan atanacak)
         
         [Header("UI Yöneticisi")]
         public UIManager uiManager; // <--- BU SATIRI EKLE

@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro; 
 using TowerDefense.Enemy;
-// TowerPlacement referansı artık gerekmediği için sildik.
-// using TowerDefense.Tower; // Gerekirse ekle ama şuan UI için şart değil.
 
 namespace TowerDefense.Core
 {
@@ -25,7 +23,6 @@ namespace TowerDefense.Core
         [Header("Paneller")]
         public GameObject gameOverPanel;       // Game Over paneli
         public GameObject victoryPanel;        // Zafer paneli
-        // public GameObject towerSelectionPanel; // ARTIK YOK (BuildManager yönetiyor)
 
         private void Awake()
         {
@@ -52,7 +49,8 @@ namespace TowerDefense.Core
                 startWaveButton.onClick.AddListener(OnStartWaveButtonClicked);
 
             // Başlangıç değerlerini güncelle
-            UpdateUI();
+            UpdateResourceUI(); // Para ve Canı güncelle
+            UpdateUI(); // Diğer her şeyi güncelle
         }
 
         private void Update()
@@ -62,29 +60,40 @@ namespace TowerDefense.Core
         }
 
         /// <summary>
-        /// UI'ı günceller
+        /// Sadece Para ve Can değerlerini günceller.
+        /// GameManager tarafından para harcandığında çağrılır.
         /// </summary>
-        public void UpdateUI()
+        public void UpdateResourceUI()
         {
             if (GameManager.Instance == null) return;
 
             // Para
             if (moneyText != null)
-                moneyText.text = $"Para: {GameManager.Instance.playerMoney}";
+                moneyText.text = $"{GameManager.Instance.playerMoney} G"; // "G" eklendi
 
             // Can
             if (livesText != null)
                 livesText.text = $"Can: {GameManager.Instance.playerLives}";
+        }
+
+        /// <summary>
+        /// Tüm UI elemanlarını günceller (Wave, Butonlar ve Kaynaklar)
+        /// </summary>
+        public void UpdateUI()
+        {
+            if (GameManager.Instance == null) return;
+
+            // Kaynakları güncelle (Para ve Can)
+            UpdateResourceUI();
 
             // Wave
             if (waveText != null)
-                waveText.text = $"Wave: {GameManager.Instance.currentWave}"; // /10 kısmını WaveConfigurator'dan almak daha doğru olur ama şimdilik böyle kalsın.
+                waveText.text = $"Wave: {GameManager.Instance.currentWave}"; 
 
             // Start Wave butonu kontrolü
             if (startWaveButton != null)
             {
                 // Wave aktifse butonu devre dışı bırak
-                // EnemySpawner'ı bulmak maliyetli olabilir, Singleton yaparsan daha iyi olur.
                 EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
                 if (spawner != null)
                 {
@@ -103,8 +112,6 @@ namespace TowerDefense.Core
                 GameManager.Instance.StartNextWave();
             }
         }
-
-        // ESKİ KULE BUTON FONKSİYONLARI SİLİNDİ (BuildManager artık bu işi yapıyor)
 
         /// <summary>
         /// Game Over ekranını gösterir

@@ -176,12 +176,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Tower.Tower
   towerName: Kule
   range: 6
-  fireRate: 1
-  damage: 10
+  fireRate: 0.7
+  damage: 7
   verticalRangeModifier: 0.6
   enemiesInRange: []
   currentTarget: {fileID: 0}
   projectilePrefab: {fileID: 2284121689837625060, guid: 9766464d27bb1024d94abdd06250f777, type: 3}
+  currentLevel: 1
+  maxLevel: 3
+  upgradeCanvasPrefab: {fileID: 0}
+  levels:
+  - cost: 50
+    range: 6.5
+    fireRate: 0.8
+    damage: 10
+    visualData:
+    - directionName: index0
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+  - cost: 60
+    range: 7
+    fireRate: 0.9
+    damage: 13
+    visualData:
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+  - cost: 0
+    range: 0
+    fireRate: 0
+    damage: 0
+    visualData:
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: 
+      sprite: {fileID: 0}
+      scale: {x: 0, y: 0, z: 0}
+      firePointOffset: {x: 0, y: 0}
 --- !u!58 &3572211415949697833
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -273,7 +364,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -616371365
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 5026
   m_Sprite: {fileID: 3367191846994755705, guid: eb7099e3cc0299637b138d6e97071a67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -298,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d65954e0409f8e04cb1bd17714ec7ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Tower.RotatableTowerSprite
-  directionDataList:
+  currentDirectionalData:
   - directionName: 0
     sprite: {fileID: -6912519822022482156, guid: 1a072de43bf1ab88b95ee23e3e699323, type: 3}
     scale: {x: 0.36, y: 0.345, z: 0}

@@ -28,8 +28,23 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Color hoverTextColor = new Color(1f, 0.87f, 0.68f);
     public Color pressTextColor = new Color(1f, 0.65f, 0.3f);
     
+    [Header("Ses Efektleri")]
+    public AudioClip hoverSound;
+    public AudioClip clickSound;
+    [Range(0f, 1f)]
+    public float sfxVolume = 1f;
+    
     private bool isHovered = false;
     private bool isPressed = false;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        // AudioSource ekle
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.volume = sfxVolume;
+    }
 
     void Update()
     {
@@ -103,6 +118,12 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovered = true;
+        
+        // Hover sesi çal
+        if (hoverSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hoverSound, sfxVolume);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -113,6 +134,12 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerDown(PointerEventData eventData)
     {
         isPressed = true;
+        
+        // Click sesi çal
+        if (clickSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clickSound, sfxVolume);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)

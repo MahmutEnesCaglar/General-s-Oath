@@ -1,73 +1,60 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class SpriteHealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
-    [Header("Ayarlar")]
-    public Image targetImage;
-    public TMP_Text healthText;
-
-    [Header("Can Görselleri")]
-    public Sprite[] healthSprites; 
-
-    [Header("Can Değerleri (Tamsayı)")]
-    public int maxHealth = 5; // ARTIK TAM SAYI VE VARSAYILAN 5
-    public int currentHealth; // ARTIK TAM SAYI
-
+    [Header("Can Barı Sprite'ları")]
+    public Sprite Can5; // %100 - Full can
+    public Sprite Can4; // %80
+    public Sprite Can3; // %60
+    public Sprite Can2; // %40
+    public Sprite Can1; // %20
+    public Sprite Can0; // %0 - Ölü
+    
+    [Header("Can Değerleri")]
+    public int maxHealth = 5;
+    public int currentHealth = 5;
+    
+    private Image healthImage;
+    
     void Start()
     {
-        currentHealth = maxHealth;
-        UpdateHealthSprite();
+        healthImage = GetComponent<Image>();
+        UpdateHealth();
     }
-
-    // Test kodu kaldırıldı - Artık GameManager can sistemini yönetiyor
-
-    // Hasar alma fonksiyonu artık int alıyor (örn: 1 hasar)
+    
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        
-        // Canı 0 ile 5 (maxHealth) arasına sıkıştır
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        
-        UpdateHealthSprite();
+        UpdateHealth();
     }
-
+    
     public void Heal(int amount)
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        UpdateHealthSprite();
+        UpdateHealth();
     }
-
-    // Public yaptık ki GameManager erişebilsin
-    public void UpdateHealthSprite()
+    
+    public void UpdateHealth()
     {
-        // --- Yazı Güncelleme ---
-        if (healthText != null)
+        if (healthImage == null) return;
+        
+        // Can sayısına göre sprite seç (TERS SIRALAMA)
+        Sprite selectedSprite = null;
+        
+        switch (currentHealth)
         {
-            // Ekranda "5 / 5", "4 / 5" gibi görünecek
-            healthText.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+            case 5: selectedSprite = Can0; break; // %100 - Full
+            case 4: selectedSprite = Can1; break; // %80
+            case 3: selectedSprite = Can2; break; // %60
+            case 2: selectedSprite = Can3; break; // %40
+            case 1: selectedSprite = Can4; break; // %20
+            default: selectedSprite = Can5; break; // %0 - Ölü
         }
-
-        if (targetImage == null || healthSprites.Length == 0) return;
-
-        // --- Sprite Hesaplama ---
-        // int'i int'e bölünce sonuç virgüllü çıkmaz (örn 4/5 = 0 olur).
-        // Bu yüzden başına (float) koyarak virgüllü bölme yapıyoruz.
-        float healthPercentage = (float)currentHealth / maxHealth;
-
-        int spriteIndex = 0;
-
-        // 4 Parça resim için yüzdelik dilimler
-        if (healthPercentage >= 0.8f)      spriteIndex = 0; // 5 ve 4 Can (Full gibi)
-        else if (healthPercentage >= 0.5f) spriteIndex = 1; // 3 Can
-        else if (healthPercentage >= 0.2f) spriteIndex = 2; // 2 ve 1 Can
-        else                               spriteIndex = 3; // 0 Can (Ölü)
-
-        // Diziden dışarı taşmayı önle
-        spriteIndex = Mathf.Clamp(spriteIndex, 0, healthSprites.Length - 1);
-        targetImage.sprite = healthSprites[spriteIndex];
+        
+        if (selectedSprite != null)
+            healthImage.sprite = selectedSprite;
     }
 }

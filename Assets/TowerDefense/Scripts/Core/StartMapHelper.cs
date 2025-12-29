@@ -1,19 +1,18 @@
 using UnityEngine;
 using TowerDefense.Core;
 
+/// <summary>
+/// Sadece oyunu başlatır - başka bir şey yapmaz
+/// </summary>
 public class StartMapHelper : MonoBehaviour
 {
     void Start()
     {
-        // İlk haritayı başlat (Grifon - index 0)
+        // Sadece oyunu başlat
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.StartMap(0);
-            Debug.Log("StartMapHelper: Harita başlatıldı!");
-        }
-        else
-        {
-            Debug.LogError("StartMapHelper: GameManager bulunamadı!");
+            GameManager.Instance.StartGame();
+            Debug.Log("Oyun başlatıldı! Start Wave butonuna basarak wave başlatın.");
         }
     }
 }

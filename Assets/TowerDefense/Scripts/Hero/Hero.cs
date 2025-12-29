@@ -19,7 +19,14 @@ namespace TowerDefense.Hero
         public int currentHealth;
         public float moveSpeed = 3.5f;
         public int meleeDamage = 25;
-        public float attackRange = 2.5f; // Increased from 1.5 for better combat
+
+        [Header("Attack Range (4 Köşe Sistemi)")]
+        [Tooltip("Saldırı menzili 4 köşe noktasıyla tanımlanır - her köşeyi ayrı ayarlayabilirsin!")]
+        public Vector2 attackRangeTopLeft = new Vector2(-1.8f, 1.5f);      // Sol Üst
+        public Vector2 attackRangeTopRight = new Vector2(1.8f, 1.5f);      // Sağ Üst
+        public Vector2 attackRangeBottomLeft = new Vector2(-1.8f, -1.5f);  // Sol Alt
+        public Vector2 attackRangeBottomRight = new Vector2(1.8f, -1.5f);  // Sağ Alt
+
         public float attackCooldown = 0.8f;
 
         [Header("Movement")]
@@ -27,7 +34,7 @@ namespace TowerDefense.Hero
         private bool isMoving = false;
 
         [Header("Combat")]
-        private TowerDefense.Enemy.Enemy currentTarget;
+        private BaseEnemy currentTarget;
         private float attackTimer = 0f;
         private int attackComboIndex = 0; // 0,1,2 for Attack1/2/3
 
@@ -129,10 +136,18 @@ namespace TowerDefense.Hero
         /// </summary>
         private void UpdateCombat()
         {
-            // Don't attack while moving to a destination
+            // Don't attack while moving, but maintain target if still in range
             if (isMoving)
             {
-                currentTarget = null; // Clear target while moving
+                // Only clear target if we're far from combat
+                if (currentTarget != null)
+                {
+                    // Box-based range check
+                    if (!IsEnemyInAttackRange(currentTarget, 1.5f))
+                    {
+                        currentTarget = null;
+                    }
+                }
                 return;
             }
 
@@ -148,8 +163,7 @@ namespace TowerDefense.Hero
             // Check if current target still valid
             else
             {
-                float distanceToTarget = Vector2.Distance(transform.position, currentTarget.transform.position);
-                if (distanceToTarget > attackRange || currentTarget == null)
+                if (!IsEnemyInAttackRange(currentTarget) || currentTarget == null)
                 {
                     currentTarget = null;
                 }
@@ -163,21 +177,52 @@ namespace TowerDefense.Hero
         }
 
         /// <summary>
-        /// Finds nearest enemy within attack range
+        /// Düşmanın 4 köşe ile tanımlanan attack range içinde olup olmadığını kontrol eder
+        /// </summary>
+        private bool IsEnemyInAttackRange(BaseEnemy enemy, float multiplier = 1.0f)
+        {
+            if (enemy == null) return false;
+
+            // 4 köşeyi hero pozisyonuna göre hesapla
+            Vector2 heroPos = transform.position;
+            Vector2 topLeft = heroPos + attackRangeTopLeft * multiplier;
+            Vector2 topRight = heroPos + attackRangeTopRight * multiplier;
+            Vector2 bottomLeft = heroPos + attackRangeBottomLeft * multiplier;
+            Vector2 bottomRight = heroPos + attackRangeBottomRight * multiplier;
+
+            // Min-Max bounding box hesapla
+            float minX = Mathf.Min(topLeft.x, topRight.x, bottomLeft.x, bottomRight.x);
+            float maxX = Mathf.Max(topLeft.x, topRight.x, bottomLeft.x, bottomRight.x);
+            float minY = Mathf.Min(topLeft.y, topRight.y, bottomLeft.y, bottomRight.y);
+            float maxY = Mathf.Max(topLeft.y, topRight.y, bottomLeft.y, bottomRight.y);
+
+            Vector2 enemyPos = enemy.transform.position;
+
+            // Düşman bounding box içinde mi?
+            return enemyPos.x >= minX && enemyPos.x <= maxX &&
+                   enemyPos.y >= minY && enemyPos.y <= maxY;
+        }
+
+        /// <summary>
+        /// Finds nearest enemy within attack range (box-based)
         /// </summary>
         private void FindNearestEnemy()
         {
-            TowerDefense.Enemy.Enemy[] allEnemies = FindObjectsByType<TowerDefense.Enemy.Enemy>(FindObjectsSortMode.None);
-            TowerDefense.Enemy.Enemy closestEnemy = null;
+            BaseEnemy[] allEnemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
+            BaseEnemy closestEnemy = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (var enemy in allEnemies)
             {
-                float distance = Vector2.Distance(transform.position, enemy.transform.position);
-                if (distance <= attackRange && distance < closestDistance)
+                // Box-based range check
+                if (IsEnemyInAttackRange(enemy))
                 {
-                    closestEnemy = enemy;
-                    closestDistance = distance;
+                    float distance = Vector2.Distance(transform.position, enemy.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestEnemy = enemy;
+                        closestDistance = distance;
+                    }
                 }
             }
 
@@ -373,6 +418,102 @@ namespace TowerDefense.Hero
             yield return new WaitForSeconds(0.2f);
             spriteRenderer.color = Color.white; // Normale dön
         }
+
+        // ============= DEBUG GÖRSELLEŞTIRME =============
+
+        private void OnDrawGizmos()
+        {
+            if (isDead) return;
+
+            // Attack Range - Kırmızı 4 köşeli şekil (her zaman görünür)
+            Gizmos.color = new Color(1, 0, 0, 0.2f);
+            DrawAttackRangeBox(transform.position, 1.0f, true);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (isDead) return;
+
+            // Hero seçili olduğunda detaylı bilgiler
+
+            // 1. Attack Range - Kırmızı 4 köşeli şekil
+            Gizmos.color = Color.red;
+            DrawAttackRangeBox(transform.position, 1.0f, false);
+
+            // 2. 4 köşe noktalarını göster
+            Vector2 heroPos = transform.position;
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(heroPos + attackRangeTopLeft, 0.15f);
+            Gizmos.DrawWireSphere(heroPos + attackRangeTopRight, 0.15f);
+            Gizmos.DrawWireSphere(heroPos + attackRangeBottomLeft, 0.15f);
+            Gizmos.DrawWireSphere(heroPos + attackRangeBottomRight, 0.15f);
+
+            // 3. Mevcut hedef varsa göster
+            if (currentTarget != null)
+            {
+                // Hedefe çizgi
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(transform.position, currentTarget.transform.position);
+
+                // Hedef pozisyonu
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(currentTarget.transform.position, 0.3f);
+
+                // Range içinde mi kontrol et
+                bool inRange = IsEnemyInAttackRange(currentTarget);
+
+                #if UNITY_EDITOR
+                UnityEditor.Handles.Label(
+                    transform.position + Vector3.up * 0.8f,
+                    $"Target In Range: {(inRange ? "YES" : "NO")}\n" +
+                    $"HP: {currentHealth}/{maxHealth}\n" +
+                    $"4 Corners: TL={attackRangeTopLeft}, BR={attackRangeBottomRight}"
+                );
+                #endif
+            }
+            else
+            {
+                #if UNITY_EDITOR
+                UnityEditor.Handles.Label(
+                    transform.position + Vector3.up * 0.8f,
+                    $"No Target\n" +
+                    $"HP: {currentHealth}/{maxHealth}\n" +
+                    $"Moving: {isMoving}\n" +
+                    $"4 Corners System Active"
+                );
+                #endif
+            }
+
+            // 4. Hareket hedefi varsa göster
+            if (isMoving)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(transform.position, targetPosition);
+                Gizmos.DrawWireSphere(targetPosition, 0.2f);
+            }
+        }
+
+        // Helper: 4 köşe ile attack range çiz
+        private void DrawAttackRangeBox(Vector2 center, float multiplier, bool filled)
+        {
+            Vector3 topLeft = center + attackRangeTopLeft * multiplier;
+            Vector3 topRight = center + attackRangeTopRight * multiplier;
+            Vector3 bottomLeft = center + attackRangeBottomLeft * multiplier;
+            Vector3 bottomRight = center + attackRangeBottomRight * multiplier;
+
+            // Kenarları çiz
+            Gizmos.DrawLine(topLeft, topRight);
+            Gizmos.DrawLine(topRight, bottomRight);
+            Gizmos.DrawLine(bottomRight, bottomLeft);
+            Gizmos.DrawLine(bottomLeft, topLeft);
+
+            // İsteğe bağlı: dolu şekil (çapraz çizgiler)
+            if (filled)
+            {
+                Gizmos.DrawLine(topLeft, bottomRight);
+                Gizmos.DrawLine(topRight, bottomLeft);
+            }
+        }
     }
-    
+
 }

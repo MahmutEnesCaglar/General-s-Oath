@@ -65,7 +65,7 @@ namespace TowerDefense.Tower
             {
                 if (hitCol.CompareTag("Enemy"))
                 {
-                    Enemy.Enemy enemyScript = hitCol.GetComponent<Enemy.Enemy>();
+                    BaseEnemy enemyScript = hitCol.GetComponent<BaseEnemy>();
                     if (enemyScript != null)
                     {
                         enemyScript.TakeDamage(damage);

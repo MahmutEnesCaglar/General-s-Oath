@@ -80,9 +80,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -616371365
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 5018
-  m_Sprite: {fileID: 8436675693674833332, guid: 5db5188639a4bba6f889f25aaea00736, type: 3}
+  m_Sprite: {fileID: 8713880777721925598, guid: a74d607b274bb9fdf8cffb03f97e5a9e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
     sprite: {fileID: 8436675693674833332, guid: 5db5188639a4bba6f889f25aaea00736, type: 3}
     colliderSize: {x: 2.29, y: 2.12}
     colliderOffset: {x: 0, y: -0.1}
-  currentDirectionIndex: 7
+  currentDirectionIndex: 6
 --- !u!61 &6786546518822779893
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -177,13 +177,13 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.3, y: 2.44}
+    oldSize: {x: 0.46333334, y: 2.29}
     newSize: {x: 2.81, y: 1.58}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.29, y: 2.12}
+  m_Size: {x: 0.5, y: 2.12}
   m_EdgeRadius: 0
 --- !u!114 &1609906479044844929
 MonoBehaviour:

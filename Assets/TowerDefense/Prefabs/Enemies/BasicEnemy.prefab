@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2705182876325284055}
   - component: {fileID: 7838745520928943355}
   - component: {fileID: 9038164346229040016}
-  - component: {fileID: 323022491772780542}
   - component: {fileID: 2538128715166489142}
+  - component: {fileID: -3240896175099956819}
   m_Layer: 0
   m_Name: BasicEnemy
   m_TagString: Enemy
@@ -109,33 +109,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.6, y: 1}
   m_EdgeRadius: 0
---- !u!114 &323022491772780542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5969436530590249289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3364056a6814d54c97bac3261e193be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.Enemy
-  enemyType: basic
-  maxHealth: 100
-  currentHealth: 0
-  damage: 5
-  moveSpeed: 2
-  moneyReward: 5
-  isFlying: 0
-  isBoss: 0
-  aggroRange: 3
-  damageToHero: 5
-  attackCooldown: 1.5
-  separationRadius: 0.05
-  separationForce: 2
-  heroAttackRadius: 4
-  waypoints: []
 --- !u!58 &2538128715166489142
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -172,6 +145,29 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-3240896175099956819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5969436530590249289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4734f98352660274989e185e8e4538da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.BasicEnemy
+  maxHealth: 0
+  currentHealth: 0
+  aggroRange: 2
+  attackCooldown: 1.5
+  gridInnerDepth: 0.85
+  gridOuterMultiplier: 1.3
+  meleReachOffset: 0.3
+  archerRange: 3.5
+  separationRadius: 0.4
+  separationForce: 5
+  maxPathDeviation: 2.5
 --- !u!1001 &8000000000000000000
 PrefabInstance:
   m_ObjectHideFlags: 0

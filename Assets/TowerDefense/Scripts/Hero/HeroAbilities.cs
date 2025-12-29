@@ -1,4 +1,5 @@
 using UnityEngine;
+using TowerDefense.Enemy;
 
 namespace TowerDefense.Hero
 {
@@ -109,7 +110,7 @@ namespace TowerDefense.Hero
 
             foreach (var col in hits)
             {
-                TowerDefense.Enemy.Enemy enemy = col.GetComponent<TowerDefense.Enemy.Enemy>();
+                BaseEnemy enemy = col.GetComponent<BaseEnemy>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(specialAbilityDamage);

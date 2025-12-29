@@ -53,7 +53,7 @@ namespace TowerDefense.Tower
         private void HitTarget()
         {
             // Düşmana hasar ver
-            Enemy.Enemy enemy = target.GetComponent<Enemy.Enemy>();
+            BaseEnemy enemy = target.GetComponent<BaseEnemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
@@ -61,7 +61,7 @@ namespace TowerDefense.Tower
             }
             else
             {
-                Debug.LogWarning($"[Projectile] {target.name}'de Enemy component bulunamadı!");
+                Debug.LogWarning($"[Projectile] {target.name}'de BaseEnemy component bulunamadı!");
             }
 
             // Mermiyi yok et

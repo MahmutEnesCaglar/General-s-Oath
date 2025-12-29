@@ -41,10 +41,9 @@ namespace TowerDefense.Tower
 
         void HitTarget()
         {
-            // EKLENDİ: Hasar Verme Kısmı
             if (target != null)
             {
-                Enemy.Enemy enemyScript = target.GetComponent<Enemy.Enemy>();
+                BaseEnemy enemyScript = target.GetComponent<BaseEnemy>();
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage(damage);

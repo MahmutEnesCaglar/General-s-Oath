@@ -54,10 +54,8 @@ namespace TowerDefense.Abilities
             
             foreach (Collider2D col in hitEnemies)
             {
-                // --- DÜZELTME BURADA YAPILDI ---
-                // Sadece 'Enemy' yerine 'TowerDefense.Enemy.Enemy' yazarak tam adresi verdik.
-                TowerDefense.Enemy.Enemy enemy = col.GetComponent<TowerDefense.Enemy.Enemy>();
-                
+                BaseEnemy enemy = col.GetComponent<BaseEnemy>();
+
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damage);

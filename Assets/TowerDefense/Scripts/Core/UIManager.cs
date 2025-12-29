@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; 
-using TowerDefense.Enemy;
-// TowerPlacement referansı artık gerekmediği için sildik.
-// using TowerDefense.Tower; // Gerekirse ekle ama şuan UI için şart değil.
+using TMPro;
 
 namespace TowerDefense.Core
 {
@@ -76,20 +73,16 @@ namespace TowerDefense.Core
             if (livesText != null)
                 livesText.text = $"Can: {GameManager.Instance.playerLives}";
 
-            // Wave
-            if (waveText != null)
-                waveText.text = $"Wave: {GameManager.Instance.currentWave}"; // /10 kısmını WaveConfigurator'dan almak daha doğru olur ama şimdilik böyle kalsın.
+            // Wave (WaveManager'dan alınıyor)
+            if (waveText != null && WaveManager.Instance != null)
+                waveText.text = $"Wave: {WaveManager.Instance.currentWaveIndex}/10";
 
-            // Start Wave butonu kontrolü
-            if (startWaveButton != null)
+            // Start Wave butonu kontrolü (WaveManager'dan alınıyor)
+            if (startWaveButton != null && WaveManager.Instance != null)
             {
-                // Wave aktifse butonu devre dışı bırak
-                // EnemySpawner'ı bulmak maliyetli olabilir, Singleton yaparsan daha iyi olur.
-                EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
-                if (spawner != null)
-                {
-                    startWaveButton.interactable = !spawner.IsWaveActive();
-                }
+                // Wave aktif değilse ve spawn olmuyorsa buton aktif
+                bool canStartWave = !WaveManager.Instance.isWaveActive && !WaveManager.Instance.isSpawning;
+                startWaveButton.interactable = canStartWave;
             }
         }
 
@@ -98,9 +91,13 @@ namespace TowerDefense.Core
         /// </summary>
         private void OnStartWaveButtonClicked()
         {
-            if (GameManager.Instance != null)
+            if (WaveManager.Instance != null)
             {
-                GameManager.Instance.StartNextWave();
+                WaveManager.Instance.StartWaveManually();
+            }
+            else
+            {
+                Debug.LogError("WaveManager bulunamadı!");
             }
         }
 

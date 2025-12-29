@@ -10,10 +10,6 @@ namespace TowerDefense.Core
     {
         public static GameManager Instance { get; private set; }
 
-        [Header("Harita Verileri")]
-        public MapData currentMap;
-        private List<MapData> allMaps = new List<MapData>();
-
         [Header("Oyun Durumu")]
         public int currentWave = 0;
         public int playerMoney = 100;
@@ -21,10 +17,9 @@ namespace TowerDefense.Core
         public bool isGameActive = false;
 
         [Header("Referanslar")]
-        public WaveConfigurator waveConfigurator;
+        public WaveManager waveManager;
         public TowerConfigurator towerConfigurator;
         public FinalBossConfigurator bossConfigurator;
-        public Enemy.EnemySpawner enemySpawner;
 
         [Header("Hero System")]
         public GameObject heroPrefab;
@@ -56,8 +51,8 @@ namespace TowerDefense.Core
         {
             Debug.Log("=== TOWER DEFENSE OYUNU BAŞLIYOR ===\n");
 
-            if (waveConfigurator == null)
-                waveConfigurator = gameObject.AddComponent<WaveConfigurator>();
+            if (waveManager == null)
+                waveManager = FindAnyObjectByType<WaveManager>();
 
             if (towerConfigurator == null)
                 towerConfigurator = gameObject.AddComponent<TowerConfigurator>();
@@ -65,37 +60,17 @@ namespace TowerDefense.Core
             if (bossConfigurator == null)
                 bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
 
-            LoadAllMaps();
             PrintGameConfiguration();
         }
 
-        private void LoadAllMaps()
+        public void StartGame()
         {
-            allMaps.Clear();
-
-            allMaps.Add(waveConfigurator.CreateGrifonMap());
-            allMaps.Add(waveConfigurator.CreateKirinMap());
-            allMaps.Add(waveConfigurator.CreateEjderhaMap());
-
-            Debug.Log($"✓ {allMaps.Count} harita yüklendi");
-        }
-
-        public void StartMap(int mapIndex)
-        {
-            if (mapIndex < 0 || mapIndex >= allMaps.Count)
-            {
-                Debug.LogError($"Geçersiz harita indexi: {mapIndex}");
-                return;
-            }
-
-            currentMap = allMaps[mapIndex];
             currentWave = 0;
-            playerMoney = currentMap.startingMoney;
+            playerMoney = 100;
             playerLives = 5;
             isGameActive = true;
 
-            Debug.Log($"\n=== {currentMap.mapName} BAŞLADI ===");
-            Debug.Log($"General: {currentMap.generalName}");
+            Debug.Log($"\n=== OYUN BAŞLADI ===");
             Debug.Log($"Başlangıç Parası: {playerMoney} coin");
             Debug.Log($"Can: {playerLives}");
 
@@ -125,27 +100,20 @@ namespace TowerDefense.Core
 
         public void StartNextWave()
         {
-            if (!isGameActive || currentMap == null)
+            if (!isGameActive)
             {
                 Debug.LogWarning("Oyun aktif değil!");
                 return;
             }
 
-            if (currentWave >= currentMap.waves.Count)
+            if (waveManager != null)
             {
-                Debug.Log("Tüm wave'ler tamamlandı!");
-                OnMapCompleted();
-                return;
+                waveManager.StartWaveManually();
+                currentWave = waveManager.currentWaveIndex;
             }
-
-            currentWave++;
-            WaveData wave = currentMap.waves[currentWave - 1];
-
-            Debug.Log($"\n--- WAVE {currentWave} BAŞLADI ---");
-
-            if (enemySpawner != null)
+            else
             {
-                enemySpawner.SpawnWave(wave);
+                Debug.LogWarning("WaveManager bulunamadı!");
             }
         }
 
@@ -223,7 +191,7 @@ namespace TowerDefense.Core
 
         private void OnMapCompleted()
         {
-            Debug.Log($"\n🎉 {currentMap.mapName} TAMAMLANDI! 🎉");
+            Debug.Log($"\n🎉 HARITA TAMAMLANDI! 🎉");
             isGameActive = false;
         }
 
@@ -241,24 +209,14 @@ namespace TowerDefense.Core
         private void PrintGameConfiguration()
         {
             Debug.Log("\n" + new string('=', 70));
-            waveConfigurator.InitializeAllMaps();
+            Debug.Log("TOWER DEFENSE - GAME CONFIGURATION");
+            Debug.Log(new string('=', 70));
+            if (towerConfigurator != null)
+                towerConfigurator.PrintAllTowerStats();
             Debug.Log("\n" + new string('=', 70));
-            towerConfigurator.PrintAllTowerStats();
-            Debug.Log("\n" + new string('=', 70));
-            bossConfigurator.PrintAllBossInfo();
+            if (bossConfigurator != null)
+                bossConfigurator.PrintAllBossInfo();
             Debug.Log("\n" + new string('=', 70) + "\n");
-        }
-
-        public MapData GetMap(int index)
-        {
-            if (index >= 0 && index < allMaps.Count)
-                return allMaps[index];
-            return null;
-        }
-
-        public int GetTotalMapCount()
-        {
-            return allMaps.Count;
         }
 
         // HERO SYSTEM

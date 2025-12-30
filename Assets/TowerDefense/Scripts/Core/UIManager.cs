@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using TowerDefense.Enemy;
 
 namespace TowerDefense.Core
 {
@@ -22,7 +23,6 @@ namespace TowerDefense.Core
         [Header("Paneller")]
         public GameObject gameOverPanel;       // Game Over paneli
         public GameObject victoryPanel;        // Zafer paneli
-        // public GameObject towerSelectionPanel; // ARTIK YOK (BuildManager yönetiyor)
 
         private void Awake()
         {
@@ -49,7 +49,8 @@ namespace TowerDefense.Core
                 startWaveButton.onClick.AddListener(OnStartWaveButtonClicked);
 
             // Başlangıç değerlerini güncelle
-            UpdateUI();
+            UpdateResourceUI(); // Para ve Canı güncelle
+            UpdateUI(); // Diğer her şeyi güncelle
         }
 
         private void Update()
@@ -59,19 +60,31 @@ namespace TowerDefense.Core
         }
 
         /// <summary>
-        /// UI'ı günceller
+        /// Sadece Para ve Can değerlerini günceller.
+        /// GameManager tarafından para harcandığında çağrılır.
         /// </summary>
-        public void UpdateUI()
+        public void UpdateResourceUI()
         {
             if (GameManager.Instance == null) return;
 
             // Para
             if (moneyText != null)
-                moneyText.text = $"Para: {GameManager.Instance.playerMoney}";
+                moneyText.text = $"{GameManager.Instance.playerMoney} G"; // "G" eklendi
 
             // Can
             if (livesText != null)
                 livesText.text = $"Can: {GameManager.Instance.playerLives}";
+        }
+
+        /// <summary>
+        /// Tüm UI elemanlarını günceller (Wave, Butonlar ve Kaynaklar)
+        /// </summary>
+        public void UpdateUI()
+        {
+            if (GameManager.Instance == null) return;
+
+            // Kaynakları güncelle (Para ve Can)
+            UpdateResourceUI();
 
             // Wave (WaveManager'dan alınıyor)
             if (waveText != null && WaveManager.Instance != null)
@@ -100,8 +113,6 @@ namespace TowerDefense.Core
                 Debug.LogError("WaveManager bulunamadı!");
             }
         }
-
-        // ESKİ KULE BUTON FONKSİYONLARI SİLİNDİ (BuildManager artık bu işi yapıyor)
 
         /// <summary>
         /// Game Over ekranını gösterir

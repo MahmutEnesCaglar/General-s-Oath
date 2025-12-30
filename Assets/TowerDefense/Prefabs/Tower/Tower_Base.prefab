@@ -42,15 +42,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3650834539122873783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c4abe1fe06c8e789f867b7130c4f81, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a5e1de4386639f4db8959625682c080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  towerName: 
-  range: 0
-  fireRate: 0
-  damage: 0
+  towerName: Kule
+  range: 5
+  fireRate: 1
+  damage: 10
+  verticalRangeModifier: 0.6
   enemiesInRange: []
   currentTarget: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  currentLevel: 1
+  maxLevel: 3
+  upgradeCanvasPrefab: {fileID: 0}
+  levels: []
 --- !u!1 &6778571357310804502
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +134,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -616371365
-  m_SortingLayer: 1
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

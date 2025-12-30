@@ -29,7 +29,10 @@ namespace TowerDefense.Core
         public float heroRespawnDelay = 5f;
 
         [Header("UI System")]
-        public HealthBar healthBar; // ← DEĞİŞTİ (SpriteHealthBar → HealthBar)
+        public HealthBar healthBar; // Can barı görseli (Inspector'dan atanacak)
+        
+        [Header("UI Yöneticisi")]
+        public UIManager uiManager; // <--- BU SATIRI EKLE
 
         private void Awake()
         {
@@ -265,6 +268,22 @@ namespace TowerDefense.Core
         {
             yield return new WaitForSeconds(heroRespawnDelay);
             SpawnHero();
+        }
+        // GameManager.cs içine ekle:
+
+        public bool HasMoney(int amount)
+        {
+            return playerMoney >= amount;
+        }
+
+        public void SpendMoney(int amount)
+        {
+            if (playerMoney >= amount)
+            {
+                playerMoney -= amount;
+                // UI güncelleme metodu varsa çağır (UpdateResourceUI gibi)
+                if (uiManager != null) uiManager.UpdateResourceUI(); 
+            }
         }
     }
 }

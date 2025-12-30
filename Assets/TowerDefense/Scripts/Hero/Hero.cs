@@ -76,12 +76,20 @@ namespace TowerDefense.Hero
             if (healthBarPrefab != null)
             {
                 GameObject healthBarObj = Instantiate(healthBarPrefab);
-                healthBarInstance = healthBarObj.GetComponent<HeroHealthBar>();
+                healthBarInstance = healthBarObj.GetComponentInChildren<HeroHealthBar>();
                 if (healthBarInstance != null)
                 {
                     healthBarInstance.Initialize(transform);
                     healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
                 }
+                else
+                {
+                    Debug.LogError("HeroHealthBar component not found in prefab children!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Health bar prefab not assigned to Hero!");
             }
 
             // Initial sorting order

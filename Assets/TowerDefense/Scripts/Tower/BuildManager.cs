@@ -18,8 +18,10 @@ namespace TowerDefense.Tower
         public GameObject buildMenuPanel; 
         
         [Header("Kule Prefabları & Ayarlar")]
-        public GameObject[] towerPrefabs; 
-        public int[] towerCosts = { 100, 50, 40 }; 
+        public GameObject[] towerPrefabs;
+        // UPDATED: Yeni ekonomi sistemine göre maliyetler
+        // Tower 0: Archer (75), Tower 1: Cannon (60), Tower 2: Mortar (125)
+        public int[] towerCosts = { 75, 60, 125 }; 
         
         // Seçilen kulenin kurulacağı tam pozisyon (Artık Grid koordinatı değil, Dünya pozisyonu)
         private Vector3 selectedBuildPosition;
@@ -107,16 +109,60 @@ namespace TowerDefense.Tower
 
         public void BuildTower(int towerIndex)
         {
-            // Seçilen "Kutu"nun tam merkezine kuleyi koy
-            Vector3 spawnPos = selectedBuildPosition;
-            spawnPos.z = 0; // Derinlik ayarı
-            
-            Instantiate(towerPrefabs[towerIndex], spawnPos, Quaternion.identity);
-            
-            // Opsiyonel: Kule kurulduktan sonra o "BuildSpot"u kapatabiliriz ki üstüne bir daha kurulmasın
-            // if (selectedSpotObj != null) selectedSpotObj.GetComponent<Collider2D>().enabled = false;
+            // Index kontrolü
+            if (towerIndex < 0 || towerIndex >= towerPrefabs.Length)
+            {
+                Debug.LogError($"[BuildManager] Geçersiz tower index: {towerIndex}");
+                return;
+            }
 
-            CloseBuildMenu();
+            // Kule maliyetini al
+            int cost = (towerIndex < towerCosts.Length) ? towerCosts[towerIndex] : 0;
+
+            // Para kontrolü - MoneyManager üzerinden
+            if (MoneyManager.Instance != null)
+            {
+                if (MoneyManager.Instance.SpendMoney(cost))
+                {
+                    // Para başarıyla harcandı, kuleyi inşa et
+                    Vector3 spawnPos = selectedBuildPosition;
+                    spawnPos.z = 0;
+
+                    GameObject tower = Instantiate(towerPrefabs[towerIndex], spawnPos, Quaternion.identity);
+
+                    Debug.Log($"<color=cyan>[BuildManager] Kule inşa edildi! Tip: {towerIndex}, Maliyet: {cost}</color>");
+
+                    // Opsiyonel: Kule kurulduktan sonra o "BuildSpot"u kapatabiliriz
+                    if (selectedSpotObj != null)
+                    {
+                        selectedSpotObj.GetComponent<Collider2D>().enabled = false;
+                    }
+
+                    CloseBuildMenu();
+                }
+                else
+                {
+                    // Yetersiz para
+                    Debug.Log($"<color=yellow>[BuildManager] Yetersiz para! İhtiyaç: {cost}, Mevcut: {MoneyManager.Instance.currentMoney}</color>");
+                    // İsteğe bağlı: UI'da bir mesaj gösterebilirsiniz
+                }
+            }
+            else
+            {
+                Debug.LogWarning("<color=red>[BuildManager] MoneyManager bulunamadı! Kule bedava inşa ediliyor.</color>");
+
+                // Fallback: MoneyManager yoksa yine de kuleyi inşa et
+                Vector3 spawnPos = selectedBuildPosition;
+                spawnPos.z = 0;
+                Instantiate(towerPrefabs[towerIndex], spawnPos, Quaternion.identity);
+
+                if (selectedSpotObj != null)
+                {
+                    selectedSpotObj.GetComponent<Collider2D>().enabled = false;
+                }
+
+                CloseBuildMenu();
+            }
         }
     }
 }

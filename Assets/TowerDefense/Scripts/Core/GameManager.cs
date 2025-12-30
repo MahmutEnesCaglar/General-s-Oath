@@ -12,7 +12,7 @@ namespace TowerDefense.Core
 
         [Header("Oyun Durumu")]
         public int currentWave = 0;
-        public int playerMoney = 100;
+        public int playerMoney = 100;  // Başlangıç parası
         public int playerLives = 5;
         public bool isGameActive = false;
 
@@ -73,6 +73,13 @@ namespace TowerDefense.Core
             playerLives = 5;
             isGameActive = true;
 
+            // MoneyManager'ı da senkronize et
+            if (MoneyManager.Instance != null)
+            {
+                MoneyManager.Instance.currentMoney = playerMoney;
+                MoneyManager.Instance.UpdateMoneyUI();
+            }
+
             Debug.Log($"\n=== OYUN BAŞLADI ===");
             Debug.Log($"Başlangıç Parası: {playerMoney} coin");
             Debug.Log($"Can: {playerLives}");
@@ -122,8 +129,23 @@ namespace TowerDefense.Core
 
         public void OnEnemyKilled(int moneyReward)
         {
-            playerMoney += moneyReward;
-            Debug.Log($"+ {moneyReward} coin! Toplam: {playerMoney} coin");
+            Debug.Log($"<color=cyan>[GameManager] OnEnemyKilled çağrıldı - Reward: {moneyReward}</color>");
+
+            // MoneyManager üzerinden para ekle
+            if (MoneyManager.Instance != null)
+            {
+                MoneyManager.Instance.AddMoney(moneyReward);
+                // MoneyManager'ı GameManager ile senkronize et
+                int oldPlayerMoney = playerMoney;
+                playerMoney = MoneyManager.Instance.currentMoney;
+                Debug.Log($"<color=cyan>[GameManager] Senkronize: {oldPlayerMoney} → {playerMoney}</color>");
+            }
+            else
+            {
+                // Fallback: MoneyManager yoksa sadece GameManager'ı güncelle
+                playerMoney += moneyReward;
+                Debug.LogWarning("<color=orange>[GameManager] MoneyManager bulunamadı! Fallback kullanıldı.</color>");
+            }
         }
 
         public bool PurchaseTower(string towerType)
@@ -133,13 +155,15 @@ namespace TowerDefense.Core
 
             int cost = tower.GetStatsForLevel(1).upgradeCost;
 
-            if (playerMoney >= cost)
+            // MoneyManager'dan para harcama kontrolü
+            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(cost))
             {
-                playerMoney -= cost;
+                // MoneyManager'ı GameManager ile senkronize et
+                playerMoney = MoneyManager.Instance.currentMoney;
                 Debug.Log($"{tower.towerName} satın alındı! Kalan: {playerMoney}");
                 return true;
             }
-            
+
             Debug.Log($"Yetersiz para!");
             return false;
         }
@@ -153,12 +177,15 @@ namespace TowerDefense.Core
 
             int upgradeCost = tower.GetStatsForLevel(currentLevel + 1).upgradeCost;
 
-            if (playerMoney >= upgradeCost)
+            // MoneyManager'dan para harcama kontrolü
+            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(upgradeCost))
             {
-                playerMoney -= upgradeCost;
+                // MoneyManager'ı GameManager ile senkronize et
+                playerMoney = MoneyManager.Instance.currentMoney;
+                Debug.Log($"{tower.towerName} seviye {currentLevel + 1}'e yükseltildi! Kalan: {playerMoney}");
                 return true;
             }
-            
+
             return false;
         }
 
@@ -273,16 +300,24 @@ namespace TowerDefense.Core
 
         public bool HasMoney(int amount)
         {
+            // MoneyManager varsa ondan kontrol et, yoksa playerMoney'den
+            if (MoneyManager.Instance != null)
+            {
+                return MoneyManager.Instance.currentMoney >= amount;
+            }
             return playerMoney >= amount;
         }
 
         public void SpendMoney(int amount)
         {
-            if (playerMoney >= amount)
+            // MoneyManager üzerinden para harca
+            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(amount))
             {
-                playerMoney -= amount;
+                // MoneyManager başarıyla para harcadıysa GameManager'ı senkronize et
+                playerMoney = MoneyManager.Instance.currentMoney;
+
                 // UI güncelleme metodu varsa çağır (UpdateResourceUI gibi)
-                if (uiManager != null) uiManager.UpdateResourceUI(); 
+                if (uiManager != null) uiManager.UpdateResourceUI();
             }
         }
     }

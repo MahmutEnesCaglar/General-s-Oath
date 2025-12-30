@@ -258,8 +258,6 @@ namespace TowerDefense.Core
 
             // Aktif düşman listesine ekle
             activeEnemies.Add(enemyObj);
-
-            Debug.Log($"<color=cyan>Spawned: {enemyType}</color> (Active Enemies: {activeEnemies.Count})");
         }
 
         /// <summary>

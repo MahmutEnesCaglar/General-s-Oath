@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Basic Enemy - En temel düşman tipi
     /// HP: 50, Damage to Hero: 5, Damage to Barrier: 5
-    /// Speed: 2.0, Reward: 5$
+    /// Speed: 2.0, Reward: 6$
     /// </summary>
     public class BasicEnemy : BaseEnemy
     {
@@ -18,7 +18,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 5;
             damageToOthers = 5;  // Gelecekte diğer düşmanlara saldırı için
             moveSpeed = 2.0f;
-            moneyReward = 5;
+            moneyReward = 6;
 
             // Attack Settings
             attackCooldown = 1.5f;

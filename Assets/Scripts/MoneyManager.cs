@@ -68,9 +68,9 @@ public class MoneyManager : MonoBehaviour
     
     void PlayMoneySound()
     {
-        if (moneySpentSound != null && audioSource != null)
+        if (moneySpentSound != null && audioSource != null && SFXManager.Instance != null)
         {
-            audioSource.PlayOneShot(moneySpentSound, sfxVolume);
+            SFXManager.Instance.PlaySFX(moneySpentSound, audioSource);
         }
     }
 }

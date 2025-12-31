@@ -48,7 +48,6 @@ namespace TowerDefense.Enemy
         protected Transform[] waypoints;
         protected int currentWaypointIndex = 0;
         protected bool hasReachedBase = false;
-        protected bool isDead = false;  // Birden fazla ölüm çağrısını önlemek için
 
         protected TowerDefense.Hero.Hero currentHeroTarget;
         protected Barrier currentBarrierTarget;
@@ -487,18 +486,10 @@ namespace TowerDefense.Enemy
 
         public virtual void TakeDamage(int damageAmount)
         {
-            // Zaten öldüyse hasar alma
-            if (isDead) return;
-
             currentHealth -= damageAmount;
             StartCoroutine(DamageFlash());
             if (animator != null && currentHealth > 0) animator.Play("hurt");
-
-            // Can 0 veya altına düştüyse öl
-            if (currentHealth <= 0 && !isDead)
-            {
-                Die();
-            }
+            if (currentHealth <= 0) Die();
         }
 
         protected virtual IEnumerator DamageFlash()
@@ -511,14 +502,6 @@ namespace TowerDefense.Enemy
 
         protected virtual void Die()
         {
-            // Zaten öldüyse tekrar işlem yapma (double-death prevention)
-            if (isDead) return;
-
-            // Hemen flag'i set et ki birden fazla çağrı engellenir
-            isDead = true;
-
-            Debug.Log($"<color=red>[BaseEnemy] {gameObject.name} öldü! Reward: {moneyReward}</color>");
-
             OnDeath();
 
             // Notify GameManager for money reward
@@ -533,25 +516,11 @@ namespace TowerDefense.Enemy
                 WaveManager.Instance.OnEnemyKilled(gameObject);
             }
 
-            // Death animation - Güvenli oynatma
-            if (animator != null)
-            {
-                try
-                {
-                    // "die" state'i yoksa hata vermeden geç
-                    animator.Play("die");
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogWarning($"[BaseEnemy] Death animation bulunamadı: {e.Message}");
-                }
-            }
+            if (animator != null) animator.Play("die");
 
-            // Collider'ı kapat (başka düşmanlar veya kuleler bu düşmanı hedef almasın)
             Collider2D col = GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
 
-            // 1.5 saniye sonra objeyi yok et
             Destroy(gameObject, 1.5f);
         }
 

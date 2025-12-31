@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Boss Enemy - Evil Wizard 2 (Final Boss)
     /// HP: 500, Damage to Hero: 20, Damage to Barrier: 20
-    /// Speed: 1.5, Reward: 80$
+    /// Speed: 1.5, Reward: 50$
     ///
     /// Wave 10'daki tüm Elite'ler öldükten sonra Anka Simurg dialog'u gösterir,
     /// ardından bu Boss spawn'lanır.
@@ -32,7 +32,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 20;
             damageToOthers = 20;
             moveSpeed = 1.5f;
-            moneyReward = 80;
+            moneyReward = 50;
 
             // Attack Settings
             attackCooldown = 1.5f;

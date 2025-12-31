@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps; // Artık buna ihtiyacımız pek yok ama hata vermesin diye kalsın
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using TowerDefense.UI; // UpgradeMenuUI için
 
 namespace TowerDefense.Tower 
 {
@@ -16,6 +17,7 @@ namespace TowerDefense.Tower
 
         [Header("Gerekli Bileşenler")]
         public GameObject buildMenuPanel; 
+        public UpgradeMenuUI upgradeMenu; // YENİ: Upgrade menüsü referansı
         
         [Header("Kule Prefabları & Ayarlar")]
         public GameObject[] towerPrefabs;
@@ -32,6 +34,9 @@ namespace TowerDefense.Tower
         {
             if(buildMenuPanel != null)
                 buildMenuPanel.SetActive(false);
+            
+            if(upgradeMenu != null)
+                upgradeMenu.CloseMenu();
         }
 
         void Update()
@@ -74,19 +79,41 @@ namespace TowerDefense.Tower
             // Tıklanan yerde ne var?
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-            if (hit.collider != null && hit.collider.CompareTag("BuildSpot"))
+            if (hit.collider != null)
             {
-                // Bulduk! Tıklanan objenin (Spot_1 vb.) tam merkezini alıyoruz
-                selectedSpotObj = hit.collider.gameObject;
-                selectedBuildPosition = hit.transform.position;
-                
-                // Menüyü aç
-                OpenBuildMenu(selectedBuildPosition);
+                // 1. Durum: BuildSpot'a tıklandı
+                if (hit.collider.CompareTag("BuildSpot"))
+                {
+                    // Upgrade menüsünü kapat
+                    if (upgradeMenu != null) upgradeMenu.CloseMenu();
+
+                    // Bulduk! Tıklanan objenin (Spot_1 vb.) tam merkezini alıyoruz
+                    selectedSpotObj = hit.collider.gameObject;
+                    selectedBuildPosition = hit.transform.position;
+                    
+                    // Menüyü aç
+                    OpenBuildMenu(selectedBuildPosition);
+                    return;
+                }
+                // 2. Durum: Kuleye tıklandı (Tag: "Tower" olmalı)
+                else if (hit.collider.CompareTag("Tower"))
+                {
+                    // Build menüsünü kapat
+                    CloseBuildMenu();
+
+                    // Kule scriptini al
+                    Tower towerScript = hit.collider.GetComponent<Tower>();
+                    if (towerScript != null && upgradeMenu != null)
+                    {
+                        upgradeMenu.OpenMenu(towerScript);
+                    }
+                    return;
+                }
             }
-            else
-            {
-                CloseBuildMenu();
-            }
+            
+            // Boşluğa tıklandıysa hepsini kapat
+            CloseBuildMenu();
+            if (upgradeMenu != null) upgradeMenu.CloseMenu();
         }
 
         void OpenBuildMenu(Vector3 position)
@@ -97,7 +124,7 @@ namespace TowerDefense.Tower
                 
                 // Menüyü, seçilen noktanın (Collider merkezinin) biraz üzerine koy
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(position);
-                buildMenuPanel.transform.position = screenPos + new Vector3(-25, 150, 0); 
+                buildMenuPanel.transform.position = screenPos + new Vector3(0, 150, 0); 
             }
         }
 
@@ -116,8 +143,22 @@ namespace TowerDefense.Tower
                 return;
             }
 
-            // Kule maliyetini al
-            int cost = (towerIndex < towerCosts.Length) ? towerCosts[towerIndex] : 0;
+            // Kule maliyetini al (Önce prefabdan buildCost'u al, yoksa listeden)
+            int cost = 0;
+            if (towerPrefabs[towerIndex] != null)
+            {
+                Tower tower = towerPrefabs[towerIndex].GetComponent<Tower>();
+                if (tower != null)
+                {
+                    cost = tower.buildCost;
+                }
+            }
+
+            // Eğer prefabdan alınamadıysa manuel listeden al
+            if (cost == 0 && towerIndex < towerCosts.Length)
+            {
+                cost = towerCosts[towerIndex];
+            }
 
             // Para kontrolü - MoneyManager üzerinden
             if (MoneyManager.Instance != null)
@@ -128,7 +169,16 @@ namespace TowerDefense.Tower
                     Vector3 spawnPos = selectedBuildPosition;
                     spawnPos.z = 0;
 
-                    GameObject tower = Instantiate(towerPrefabs[towerIndex], spawnPos, Quaternion.identity);
+                    GameObject towerObj = Instantiate(towerPrefabs[towerIndex], spawnPos, Quaternion.identity);
+                    
+                    // Kuleye başlangıç maliyetini bildir
+                    Tower towerScript = towerObj.GetComponent<Tower>();
+                    if (towerScript != null)
+                    {
+                        towerScript.Initialize(cost);
+                        // Kuleye hangi spot üzerinde olduğunu bildir (Satılınca geri açmak için)
+                        towerScript.occupiedSpot = selectedSpotObj;
+                    }
 
                     Debug.Log($"<color=cyan>[BuildManager] Kule inşa edildi! Tip: {towerIndex}, Maliyet: {cost}</color>");
 

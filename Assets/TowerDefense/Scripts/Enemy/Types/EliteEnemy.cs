@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Elite Enemy - Güçlü ve dengeli düşman
     /// HP: 90, Damage to Hero: 10, Damage to Barrier: 10
-    /// Speed: 2.5, Reward: 22$
+    /// Speed: 2.5, Reward: 15$
     /// Wave 7, 9, 10'da gelir. Wave 10'daki 10 Elite öldükten sonra Boss spawn'lanır
     /// </summary>
     public class EliteEnemy : BaseEnemy
@@ -19,7 +19,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 10;
             damageToOthers = 10;
             moveSpeed = 2.5f;      // Hızlı
-            moneyReward = 22;
+            moneyReward = 15;
 
             // Attack Settings
             attackCooldown = 1.0f;  // En hızlı saldırı

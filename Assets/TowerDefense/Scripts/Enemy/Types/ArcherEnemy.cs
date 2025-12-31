@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Archer Enemy - Uzaktan saldıran okçu düşman
     /// HP: 50, Damage to Hero: 6, Damage to Barrier: 6
-    /// Speed: 1.5, Reward: 12$
+    /// Speed: 1.5, Reward: 8$
     /// isRanged = true (archerRange 3.5f kullanır)
     /// </summary>
     public class ArcherEnemy : BaseEnemy
@@ -19,7 +19,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 6;
             damageToOthers = 6;
             moveSpeed = 1.5f;
-            moneyReward = 12;
+            moneyReward = 8;
 
             // Attack Settings
             attackCooldown = 2.0f;  // Yavaş ama uzun menzilli saldırı

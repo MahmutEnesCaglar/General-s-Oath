@@ -30,9 +30,14 @@ namespace TowerDefense.Tower
         public GameObject projectilePrefab;
         protected RotatableTowerSprite rotatableVisual;
 
+        // Kule inşa edildiğinde hangi BuildSpot üzerine kurulduğunu saklayalım
+        [HideInInspector] public GameObject occupiedSpot;
+
         [Header("Upgrade Sistemi")]
+        public int buildCost = 50; // İlk yerleştirme maliyeti
         public int currentLevel = 1;
         public int maxLevel = 3;
+        public int totalSpent = 0; // Toplam harcanan para (Satış için)
 
         [Header("UI Referansı")]
         public GameObject upgradeCanvasPrefab; // Kuleye tıklayınca çıkacak buton prefabı
@@ -313,58 +318,81 @@ namespace TowerDefense.Tower
             }
         }
 
-        public void Upgrade()
+        public void Initialize(int cost)
+        {
+            totalSpent = cost;
+        }
+
+        public bool Upgrade()
         {
             int nextLevelIndex = currentLevel - 1;
-            
+
             // Index ve Liste güvenliği kontrolü
-            if (levels == null || nextLevelIndex >= levels.Count) 
+            if (levels == null || nextLevelIndex >= levels.Count)
             {
                 Debug.LogWarning("Yükseltilecek seviye verisi bulunamadı!");
-                return;
+                return false;
             }
 
             LevelData data = levels[nextLevelIndex];
 
             // Para Kontrolü
-            if (GameManager.Instance != null && GameManager.Instance.HasMoney(data.cost))
+            if (MoneyManager.Instance != null && MoneyManager.Instance.currentMoney >= data.cost)
             {
-                GameManager.Instance.SpendMoney(data.cost);
-                
+                MoneyManager.Instance.SpendMoney(data.cost);
+
                 currentLevel++;
-                
+                totalSpent += data.cost; // Harcanan parayı ekle
+
                 // İstatistikleri güncelle
                 this.range = data.range;
                 this.fireRate = data.fireRate;
-                // Hasarı güncelle (Projectile scriptin bunu okumalı)
-                // this.damage = data.damage; 
+                this.damage = data.damage;
 
-                // Tower.cs içindeki Upgrade fonksiyonunun ilgili kısmı:
-
-                // ... Para harcama ve istatistik güncelleme kodları ...
+                // Base değerleri de güncelle (Rage sisteminin doğru çalışması için)
+                baseDamage = data.damage;
+                baseFireRate = data.fireRate;
 
                 // --- GÖRSEL GÜNCELLEME ---
                 // Child objedeki scripti bul
                 RotatableTowerSprite rotator = GetComponentInChildren<RotatableTowerSprite>();
                 if (rotator != null)
                 {
-                    // Yeni levelin TÜM verisini gönder
-                    rotator.SetLevelVisuals(data.visualData);
+                    // Yeni levelin indexini gönder (currentLevel 1 tabanlı, index 0 tabanlı)
+                    // Level 1 -> Index 0
+                    // Level 2 -> Index 1
+                    rotator.SetLevel(currentLevel - 1);
                 }
-                // ------------------------------------------------------------
-
-                // Yeni menzili Collider'a da yansıt (Varsa)
-                // GetComponent<CircleCollider2D>().radius = range;
 
                 Debug.Log($"Kule Level {currentLevel} oldu!");
-                
+
                 // Menüyü kapat
                 if (activeUpgradeUI != null) Destroy(activeUpgradeUI);
+                return true;
             }
             else
             {
                 Debug.Log("Yetersiz Para!");
+                return false;
             }
+        }
+
+        public void Sell()
+        {
+            int refundAmount = totalSpent / 2;
+            if (MoneyManager.Instance != null)
+            {
+                MoneyManager.Instance.AddMoney(refundAmount);
+            }
+
+            // BuildSpot'u tekrar aktif et
+            if (occupiedSpot != null)
+            {
+                Collider2D col = occupiedSpot.GetComponent<Collider2D>();
+                if (col != null) col.enabled = true;
+            }
+
+            Destroy(gameObject);
         }
     }
 

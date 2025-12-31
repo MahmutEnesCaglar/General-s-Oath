@@ -31,8 +31,6 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [Header("Ses Efektleri")]
     public AudioClip hoverSound;
     public AudioClip clickSound;
-    [Range(0f, 1f)]
-    public float sfxVolume = 1f;
     
     private bool isHovered = false;
     private bool isPressed = false;
@@ -43,7 +41,6 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
         // AudioSource ekle
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
-        audioSource.volume = sfxVolume;
     }
 
     void Update()
@@ -119,10 +116,10 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         isHovered = true;
         
-        // Hover sesi çal
-        if (hoverSound != null && audioSource != null)
+        // Hover sesi çal - SFXManager ile
+        if (hoverSound != null && audioSource != null && SFXManager.Instance != null)
         {
-            audioSource.PlayOneShot(hoverSound, sfxVolume);
+            SFXManager.Instance.PlaySFX(hoverSound, audioSource);
         }
     }
 
@@ -135,10 +132,10 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         isPressed = true;
         
-        // Click sesi çal
-        if (clickSound != null && audioSource != null)
+        // Click sesi çal - SFXManager ile
+        if (clickSound != null && audioSource != null && SFXManager.Instance != null)
         {
-            audioSource.PlayOneShot(clickSound, sfxVolume);
+            SFXManager.Instance.PlaySFX(clickSound, audioSource);
         }
     }
 

@@ -112,6 +112,8 @@ public class CameraZoom : MonoBehaviour
         
         // !!!!! ÖNEMLİ: Kamera pozisyonunu hemen sınırlar içine al !!!!!
         ClampCameraPosition();
+        
+        Debug.Log($"Zoom: {currentSize:F1} | Sınırlar: X({currentMinX:F1}, {currentMaxX:F1}) Y({currentMinY:F1}, {currentMaxY:F1})");
     }
 
     /// <summary>

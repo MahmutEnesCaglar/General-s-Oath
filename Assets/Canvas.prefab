@@ -2996,7 +2996,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7149555139420712758}
-  - component: {fileID: 4625924235379734456}
   m_Layer: 5
   m_Name: MoneyUI
   m_TagString: Untagged
@@ -3025,22 +3024,6 @@ RectTransform:
   m_AnchoredPosition: {x: 20, y: -150}
   m_SizeDelta: {x: 200, y: 116}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &4625924235379734456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4786088739280450646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aac3ae528104592884365cb28b00711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
-  currentMoney: 1000
-  moneyText: {fileID: 4269873468327044053}
-  moneySpentSound: {fileID: 8300000, guid: 2413ec45f7a8f0ea1a93b88a7e0cad49, type: 3}
-  sfxVolume: 1
 --- !u!1 &5081235202575578650
 GameObject:
   m_ObjectHideFlags: 0

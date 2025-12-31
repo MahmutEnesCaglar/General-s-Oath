@@ -65,12 +65,20 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Name
       value: Tower_Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      propertyPath: m_TagString
+      value: Tower
       objectReference: {fileID: 0}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Size.x
@@ -139,6 +147,23 @@ MonoBehaviour:
   enemiesInRange: []
   currentTarget: {fileID: 0}
   projectilePrefab: {fileID: 7841703722869363349, guid: 9006ae752627cb5f3a0eedc33427d729, type: 3}
+  occupiedSpot: {fileID: 0}
+  currentLevel: 1
+  maxLevel: 3
+  totalSpent: 0
+  levels:
+  - cost: 75
+    range: 7
+    fireRate: 1.2
+    damage: 6
+  - cost: 125
+    range: 7.5
+    fireRate: 1.5
+    damage: 8
+  - cost: 200
+    range: 8
+    fireRate: 1.8
+    damage: 10
 --- !u!58 &7133591613437250769
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -192,23 +217,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4faf913853e204fda75cbb5d6ee584a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherRotation
-  archerDataList:
+  allLevels:
+  - levelName: LVL1
+    directionalData:
+    - directionName: index1
+      sprite: {fileID: -6912519822022482156, guid: 7474d0c0a632fdc918a6d8e10e51862c, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0.359, y: 1.145}
+    - directionName: index2
+      sprite: {fileID: -7115864776621549456, guid: 5954934ab06e891cb954434b8a181763, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: -0.472, y: 1.13}
+    - directionName: index3
+      sprite: {fileID: -4975044728960347273, guid: e1f7a085aa264ae58bee8a8444a5e62f, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: -0.446, y: 0.777}
+    - directionName: index4
+      sprite: {fileID: -3805774032090215806, guid: 8993799f235ab548fa24d8b80e591bb0, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0.385, y: 0.859}
+  - levelName: LVL2
+    directionalData:
+    - directionName: index1
+      sprite: {fileID: 8761484638757995368, guid: ce264c2d9f6f99b48b7dbf51e1a6beeb, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index2
+      sprite: {fileID: 8620180294374563742, guid: d2ca9cf4315b36bc09ffce0090ed2b5e, type: 3}
+      scale: {x: 0.9, y: 0.9, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index3
+      sprite: {fileID: 8815362633290462786, guid: 65ea817eb845501348d32765513e3452, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index4
+      sprite: {fileID: -3511027342226765338, guid: 5f39b07039e31bc1c98beebdf73bf81e, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+  - levelName: LVL3
+    directionalData:
+    - directionName: index1
+      sprite: {fileID: 6585365102481021439, guid: e2d8467a322bbff0a8454da1f6fb5d1d, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index2
+      sprite: {fileID: -5197601890128960650, guid: 6855b52544f93e0869fff283bf11d744, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index3
+      sprite: {fileID: -1031163408686741369, guid: 79b820ccce4378055a4a517153d9b4bb, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+    - directionName: index4
+      sprite: {fileID: 7284157387934476113, guid: 8f7edc3693f948a00802c00b101a9475, type: 3}
+      scale: {x: 0.8, y: 0.8, z: 0}
+      firePointOffset: {x: 0, y: 0}
+  currentLevelIndex: 2
+  currentDirectionalData:
   - directionName: index1
-    sprite: {fileID: -7115864776621549456, guid: 5954934ab06e891cb954434b8a181763, type: 3}
+    sprite: {fileID: 6585365102481021439, guid: e2d8467a322bbff0a8454da1f6fb5d1d, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
-    firePointOffset: {x: 0.359, y: 1.145}
+    firePointOffset: {x: 0, y: 0}
+  - directionName: index2
+    sprite: {fileID: -5197601890128960650, guid: 6855b52544f93e0869fff283bf11d744, type: 3}
+    scale: {x: 0.8, y: 0.8, z: 0}
+    firePointOffset: {x: 0, y: 0}
   - directionName: index3
-    sprite: {fileID: -4975044728960347273, guid: e1f7a085aa264ae58bee8a8444a5e62f, type: 3}
+    sprite: {fileID: -1031163408686741369, guid: 79b820ccce4378055a4a517153d9b4bb, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
-    firePointOffset: {x: -0.472, y: 1.13}
-  - directionName: index5
-    sprite: {fileID: -3805774032090215806, guid: 8993799f235ab548fa24d8b80e591bb0, type: 3}
+    firePointOffset: {x: 0, y: 0}
+  - directionName: index4
+    sprite: {fileID: 7284157387934476113, guid: 8f7edc3693f948a00802c00b101a9475, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
-    firePointOffset: {x: -0.446, y: 0.777}
-  - directionName: index7
-    sprite: {fileID: -6912519822022482156, guid: 7474d0c0a632fdc918a6d8e10e51862c, type: 3}
-    scale: {x: 0.8, y: 0.8, z: 0}
-    firePointOffset: {x: 0.385, y: 0.859}
+    firePointOffset: {x: 0, y: 0}
   currentSegmentIndex: 3
 --- !u!114 &729541883875690596
 MonoBehaviour:

@@ -12,10 +12,21 @@ namespace TowerDefense.Tower
         public Vector2 firePointOffset; 
     }
 
+    [System.Serializable]
+    public struct LevelVisuals
+    {
+        public string levelName; // "Level 1", "Level 2" vs.
+        public List<DirectionalData> directionalData; // 8 yön verisi
+    }
+
     [RequireComponent(typeof(SpriteRenderer))]
     public class RotatableTowerSprite : MonoBehaviour
     {
-        [Header("Aktif Yön Verileri")]
+        [Header("Level Görselleri")]
+        public List<LevelVisuals> allLevels = new List<LevelVisuals>();
+
+        [Header("Debug / Read Only")]
+        public int currentLevelIndex = 0;
         // Bu liste oyun içinde sürekli değişecek (Level 1, Level 2 verisi buraya kopyalanacak)
         public List<DirectionalData> currentDirectionalData = new List<DirectionalData>();
 
@@ -34,6 +45,8 @@ namespace TowerDefense.Tower
         void Start()
         {
             lastTargetPosition = transform.position + Vector3.right;
+            // Başlangıçta Level 0 (Oyun içi Level 1) görsellerini yükle
+            SetLevel(0);
         }
 
         void Update()
@@ -45,7 +58,7 @@ namespace TowerDefense.Tower
             }
         }
 
-        public void RotateTowards(Vector3 targetPosition)
+        public virtual void RotateTowards(Vector3 targetPosition)
         {
             // Liste boşsa işlem yapma
             if (currentDirectionalData == null || currentDirectionalData.Count == 0 || spriteRenderer == null)
@@ -85,12 +98,20 @@ namespace TowerDefense.Tower
             return Vector2.zero;
         }
 
-        // --- KRİTİK FONKSİYON: LİSTE DEĞİŞTİRME ---
-        // Tower.cs upgrade olunca bu fonksiyonu çağırıp yeni levelin listesini verecek
-        public void SetLevelVisuals(List<DirectionalData> newLevelData)
+        // --- KRİTİK FONKSİYON: LEVEL DEĞİŞTİRME ---
+        // Tower.cs upgrade olunca bu fonksiyonu çağırıp level indexini verecek
+        public void SetLevel(int levelIndex)
         {
-            // Yeni listeyi kopyala
-            currentDirectionalData = new List<DirectionalData>(newLevelData);
+            if (allLevels == null || levelIndex < 0 || levelIndex >= allLevels.Count)
+            {
+                // Debug.LogWarning($"[RotatableTowerSprite] Geçersiz level index: {levelIndex}");
+                return;
+            }
+
+            currentLevelIndex = levelIndex;
+            
+            // İlgili levelin verilerini aktif listeye kopyala
+            currentDirectionalData = new List<DirectionalData>(allLevels[levelIndex].directionalData);
 
             // Görüntüyü hemen yenile
             RotateTowards(lastTargetPosition);

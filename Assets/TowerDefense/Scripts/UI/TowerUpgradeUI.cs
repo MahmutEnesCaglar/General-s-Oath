@@ -19,7 +19,7 @@ namespace TowerDefense.UI // <--- Namespace burası
             targetTower = tower;
             
             if (costText != null)
-                costText.text = cost.ToString() + " G"; 
+                costText.text = cost.ToString(); 
             
             // Butona tıklayınca ne olacağını belirle
             if (upgradeButton != null)

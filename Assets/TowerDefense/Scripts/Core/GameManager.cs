@@ -12,7 +12,7 @@ namespace TowerDefense.Core
 
         [Header("Oyun Durumu")]
         public int currentWave = 0;
-        public int playerMoney = 100;  // Başlangıç parası
+        public int playerMoney = 1000;  // Başlangıç parası
         public int playerLives = 5;
         public bool isGameActive = false;
 
@@ -69,7 +69,7 @@ namespace TowerDefense.Core
         public void StartGame()
         {
             currentWave = 0;
-            playerMoney = 100;
+            playerMoney = 1000;
             playerLives = 5;
             isGameActive = true;
 
@@ -148,46 +148,7 @@ namespace TowerDefense.Core
             }
         }
 
-        public bool PurchaseTower(string towerType)
-        {
-            TowerStats tower = GetTowerStats(towerType);
-            if (tower == null) return false;
 
-            int cost = tower.GetStatsForLevel(1).upgradeCost;
-
-            // MoneyManager'dan para harcama kontrolü
-            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(cost))
-            {
-                // MoneyManager'ı GameManager ile senkronize et
-                playerMoney = MoneyManager.Instance.currentMoney;
-                Debug.Log($"{tower.towerName} satın alındı! Kalan: {playerMoney}");
-                return true;
-            }
-
-            Debug.Log($"Yetersiz para!");
-            return false;
-        }
-
-        public bool UpgradeTower(string towerType, int currentLevel)
-        {
-            if (currentLevel >= 3) return false;
-
-            TowerStats tower = GetTowerStats(towerType);
-            if (tower == null) return false;
-
-            int upgradeCost = tower.GetStatsForLevel(currentLevel + 1).upgradeCost;
-
-            // MoneyManager'dan para harcama kontrolü
-            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(upgradeCost))
-            {
-                // MoneyManager'ı GameManager ile senkronize et
-                playerMoney = MoneyManager.Instance.currentMoney;
-                Debug.Log($"{tower.towerName} seviye {currentLevel + 1}'e yükseltildi! Kalan: {playerMoney}");
-                return true;
-            }
-
-            return false;
-        }
 
         private TowerStats GetTowerStats(string towerType)
         {
@@ -296,29 +257,6 @@ namespace TowerDefense.Core
             yield return new WaitForSeconds(heroRespawnDelay);
             SpawnHero();
         }
-        // GameManager.cs içine ekle:
 
-        public bool HasMoney(int amount)
-        {
-            // MoneyManager varsa ondan kontrol et, yoksa playerMoney'den
-            if (MoneyManager.Instance != null)
-            {
-                return MoneyManager.Instance.currentMoney >= amount;
-            }
-            return playerMoney >= amount;
-        }
-
-        public void SpendMoney(int amount)
-        {
-            // MoneyManager üzerinden para harca
-            if (MoneyManager.Instance != null && MoneyManager.Instance.SpendMoney(amount))
-            {
-                // MoneyManager başarıyla para harcadıysa GameManager'ı senkronize et
-                playerMoney = MoneyManager.Instance.currentMoney;
-
-                // UI güncelleme metodu varsa çağır (UpdateResourceUI gibi)
-                if (uiManager != null) uiManager.UpdateResourceUI();
-            }
-        }
     }
 }

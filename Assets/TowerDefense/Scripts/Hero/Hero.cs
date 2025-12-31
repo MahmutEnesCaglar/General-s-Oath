@@ -73,23 +73,56 @@ namespace TowerDefense.Hero
             abilities.hero = this;
 
             // Create health bar
+            Debug.Log($"[Hero Start] healthBarPrefab null? {(healthBarPrefab == null ? "YES - PREFAB ATANMAMIŞ!" : "NO")}");
+            
             if (healthBarPrefab != null)
             {
                 GameObject healthBarObj = Instantiate(healthBarPrefab);
-                healthBarInstance = healthBarObj.GetComponentInChildren<HeroHealthBar>();
+                Debug.Log($"[Hero Start] healthBarObj created: {healthBarObj.name}");
+                
+                healthBarInstance = healthBarObj.GetComponent<HeroHealthBar>();
+                
+                // Component yoksa runtime'da ekle
+                if (healthBarInstance == null)
+                {
+                    Debug.LogWarning("[Hero Start] HeroHealthBar component prefab'da yok! Runtime'da ekliyorum...");
+                    healthBarInstance = healthBarObj.AddComponent<HeroHealthBar>();
+                    
+                    // Fill Image'ı otomatik bul (prefab'da "Fill" isimli Image)
+                    var fillTransform = healthBarObj.transform.Find("Fill");
+                    if (fillTransform != null)
+                    {
+                        healthBarInstance.fillImage = fillTransform.GetComponent<UnityEngine.UI.Image>();
+                        Debug.Log("[Hero Start] Fill Image bulundu ve atandı!");
+                    }
+                    
+                    // Background Image'ı otomatik bul
+                    var bgTransform = healthBarObj.transform.Find("Background");
+                    if (bgTransform != null)
+                    {
+                        healthBarInstance.backgroundImage = bgTransform.GetComponent<UnityEngine.UI.Image>();
+                    }
+                    
+                    // Health Text'i otomatik bul
+                    var textTransform = healthBarObj.transform.Find("HealthText");
+                    if (textTransform != null)
+                    {
+                        healthBarInstance.healthText = textTransform.GetComponent<TMPro.TextMeshProUGUI>();
+                    }
+                }
+                
+                Debug.Log($"[Hero Start] healthBarInstance null? {(healthBarInstance == null ? "YES - COMPONENT YOK!" : "NO - TAMAM")}");
+                
                 if (healthBarInstance != null)
                 {
                     healthBarInstance.Initialize(transform);
                     healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
-                }
-                else
-                {
-                    Debug.LogError("HeroHealthBar component not found in prefab children!");
+                    Debug.Log($"[Hero Start] Health bar başarıyla initialize edildi!");
                 }
             }
             else
             {
-                Debug.LogWarning("Health bar prefab not assigned to Hero!");
+                Debug.LogError("[Hero Start] healthBarPrefab NULL! Inspector'da Health Bar Prefab'ı ata!");
             }
 
             // Initial sorting order
@@ -319,11 +352,18 @@ namespace TowerDefense.Hero
             damageAmount = abilities.ApplyBlockReduction(damageAmount);
 
             currentHealth -= damageAmount;
+            
+            Debug.Log($"[Hero] TakeDamage: {damageAmount}, CurrentHealth: {currentHealth}/{maxHealth}");
+            Debug.Log($"[Hero] healthBarInstance null? {(healthBarInstance == null ? "YES" : "NO")}");
 
             // Update health bar
             if (healthBarInstance != null)
             {
                 healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
+            }
+            else
+            {
+                Debug.LogError("[Hero] healthBarInstance is NULL! Can barı güncellenemiyor!");
             }
 
             // Damage flash

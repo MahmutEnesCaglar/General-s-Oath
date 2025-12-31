@@ -8,8 +8,9 @@ public class MainMenuController : MonoBehaviour
     public Button playButton;
     public Button quitButton;
     
-    [Header("Ses Ayarı")]
-    public Slider volumeSlider;
+    [Header("Ses Ayarları - Ayrı Kontrol")]
+    public Slider musicSlider;
+    public Slider sfxSlider;
 
     void Start()
     {
@@ -20,24 +21,22 @@ public class MainMenuController : MonoBehaviour
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
         
-        // Volume slider ayarla
-        if (volumeSlider != null)
+        // Music slider ayarla
+        if (musicSlider != null)
         {
-            // Kaydedilmiş ses seviyesini yükle ve uygula
-            if (PlayerPrefs.HasKey("MasterVolume"))
-            {
-                float savedVolume = PlayerPrefs.GetFloat("MasterVolume");
-                volumeSlider.value = savedVolume;
-                SetVolume(savedVolume); // Başlangıçta ses seviyesini uygula
-            }
-            else
-            {
-                volumeSlider.value = 0.5f; // Varsayılan
-                SetVolume(0.5f); // Varsayılan ses seviyesini uygula
-            }
-            
-            // Slider event'ini bağla
-            volumeSlider.onValueChanged.AddListener(SetVolume);
+            float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+            musicSlider.value = savedMusic;
+            SetMusicVolume(savedMusic); // Başlangıçta uygula
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+        
+        // SFX slider ayarla
+        if (sfxSlider != null)
+        {
+            float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 1f);
+            sfxSlider.value = savedSFX;
+            SetSFXVolume(savedSFX); // Başlangıçta uygula
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
         }
     }
 
@@ -60,27 +59,37 @@ public class MainMenuController : MonoBehaviour
         #endif
     }
 
-    public void SetVolume(float volume)
+    /// <summary>
+    /// Müzik sesini ayarla (sadece müzik)
+    /// </summary>
+    public void SetMusicVolume(float volume)
     {
-        // Global ses (SFX için)
-        AudioListener.volume = volume;
-        
-        // MusicManager'ı bul ve müzik sesini ayarla
         MusicManager musicManager = FindFirstObjectByType<MusicManager>();
         if (musicManager != null)
         {
             musicManager.SetMusicVolume(volume);
-            Debug.Log($"MainMenu - Müzik seviyesi güncellendi: {volume:F2}");
-        }
-        else
-        {
-            Debug.LogWarning("MusicManager bulunamadı!");
+            Debug.Log($"Müzik seviyesi: {volume:F2}");
         }
         
-        // Ses seviyesini kaydet
-        PlayerPrefs.SetFloat("MasterVolume", volume);
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// SFX sesini ayarla (oyun sesleri) - MÜZİĞE DOKUNMA!
+    /// </summary>
+    public void SetSFXVolume(float volume)
+    {
+        // SADECE SFXManager'ı güncelle
+        SFXManager sfxManager = SFXManager.Instance;
+        if (sfxManager != null)
+        {
+            sfxManager.SetSFXVolume(volume);
+        }
+        
+        PlayerPrefs.SetFloat("SFXVolume", volume);
         PlayerPrefs.Save();
         
-        Debug.Log($"MainMenu - Ses seviyesi: {volume:F2}");
+        Debug.Log($"SFX seviyesi: {volume:F2}");
     }
 }

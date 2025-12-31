@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Fast Enemy - Hızlı ama kırılgan düşman
     /// HP: 30, Damage to Hero: 3, Damage to Barrier: 3
-    /// Speed: 4.0, Reward: 9$
+    /// Speed: 4.0, Reward: 7$
     /// </summary>
     public class FastEnemy : BaseEnemy
     {
@@ -18,7 +18,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 3;
             damageToOthers = 3;
             moveSpeed = 4.0f;  // En hızlı düşman
-            moneyReward = 9;
+            moneyReward = 7;
 
             // Attack Settings
             attackCooldown = 1.2f;  // Hızlı saldırı

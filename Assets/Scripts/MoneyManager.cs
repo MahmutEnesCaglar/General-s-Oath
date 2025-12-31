@@ -5,22 +5,8 @@ public class MoneyManager : MonoBehaviour
 {
     public static MoneyManager Instance { get; private set; }
 
-    [Header("Para Ayarları")]
-    public int currentMoney = 100;  // Başlangıç parası
-
-    [Header("UI Referansları")]
-    public TMP_Text moneyText;
-
-    [Header("Ses Efektleri")]
-    public AudioClip moneySpentSound;
-    [Range(0f, 1f)]
-    public float sfxVolume = 1f;
-
-    private AudioSource audioSource;
-
-    void Awake()
+    private void Awake()
     {
-        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
@@ -28,16 +14,28 @@ public class MoneyManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
+    [Header("Para Ayarları")]
+    public int currentMoney = 1000;
+    
+    [Header("UI Referansları")]
+    public TMP_Text moneyText;
+    
+    [Header("Ses Efektleri")]
+    public AudioClip moneySpentSound;
+    [Range(0f, 1f)]
+    public float sfxVolume = 1f;
+    
+    private AudioSource audioSource;
+    
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.volume = sfxVolume;
-
+        
         UpdateMoneyUI();
     }
     
@@ -54,26 +52,24 @@ public class MoneyManager : MonoBehaviour
     {
         if (currentMoney >= amount)
         {
-            int oldMoney = currentMoney;
             currentMoney -= amount;
             UpdateMoneyUI();
             PlayMoneySound();
-            Debug.Log($"<color=red>[MoneyManager] Para harcandı: {oldMoney} - {amount} = {currentMoney}</color>");
+            Debug.Log($"Para harcandı: -{amount}. Kalan: {currentMoney}");
             return true;
         }
         else
         {
-            Debug.Log($"<color=yellow>[MoneyManager] Yetersiz para! İhtiyaç: {amount}, Mevcut: {currentMoney}</color>");
+            Debug.Log("Yetersiz para!");
             return false;
         }
     }
     
     public void AddMoney(int amount)
     {
-        int oldMoney = currentMoney;
         currentMoney += amount;
         UpdateMoneyUI();
-        Debug.Log($"<color=green>[MoneyManager] Para kazanıldı: {oldMoney} + {amount} = {currentMoney}</color>");
+        Debug.Log($"Para kazanıldı: +{amount}. Toplam: {currentMoney}");
     }
     
     public void UpdateMoneyUI()
@@ -86,9 +82,9 @@ public class MoneyManager : MonoBehaviour
     
     void PlayMoneySound()
     {
-        if (moneySpentSound != null && audioSource != null)
+        if (moneySpentSound != null && audioSource != null && SFXManager.Instance != null)
         {
-            audioSource.PlayOneShot(moneySpentSound, sfxVolume);
+            SFXManager.Instance.PlaySFX(moneySpentSound, audioSource);
         }
     }
 }

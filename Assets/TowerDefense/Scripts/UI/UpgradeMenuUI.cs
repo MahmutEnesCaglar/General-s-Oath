@@ -47,6 +47,9 @@ namespace TowerDefense.UI
             selectedTower = tower;
             if (selectedTower == null) return;
 
+            // YENİ: Menzil çemberini göster
+            selectedTower.ToggleRangeVisual(true);
+
             UpdateUI();
             
             if (panelObj != null) 
@@ -62,6 +65,12 @@ namespace TowerDefense.UI
 
         public void CloseMenu()
         {
+            // YENİ: Menzil çemberini gizle
+            if (selectedTower != null)
+            {
+                selectedTower.ToggleRangeVisual(false);
+            }
+
             if (panelObj != null) panelObj.SetActive(false);
             selectedTower = null;
         }

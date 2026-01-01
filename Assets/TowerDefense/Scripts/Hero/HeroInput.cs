@@ -119,6 +119,16 @@ namespace TowerDefense.Hero
                 if (hit.collider != null && hit.collider.CompareTag("Tower"))
                 {
                     Debug.Log($"🏰 Kule Algılandı! (Koordinat: {worldPoint}) - Hero duruyor, Upgrade Menüsü açılmalı.");
+                    
+                    // Kule scriptine eriş ve menüyü aç
+                    TowerDefense.Tower.Tower tower = hit.collider.GetComponent<TowerDefense.Tower.Tower>();
+                    if (tower == null) tower = hit.collider.GetComponentInParent<TowerDefense.Tower.Tower>();
+                    
+                    if (tower != null)
+                    {
+                        tower.ToggleUpgradeUI();
+                    }
+
                     return;
                 }
             }

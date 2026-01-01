@@ -46,15 +46,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   towerName: Kule
-  range: 5
-  fireRate: 1
-  damage: 10
+  range: 0
+  fireRate: 0
+  damage: 0
+  uiYOffset: 150
   verticalRangeModifier: 0.6
   enemiesInRange: []
   currentTarget: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  occupiedSpot: {fileID: 0}
+  buildCost: 50
   currentLevel: 1
   maxLevel: 3
+  totalSpent: 0
   upgradeCanvasPrefab: {fileID: 0}
   levels: []
 --- !u!1 &6778571357310804502

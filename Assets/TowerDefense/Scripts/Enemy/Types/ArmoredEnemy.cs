@@ -5,7 +5,7 @@ namespace TowerDefense.Enemy
     /// <summary>
     /// Armored Enemy - Ağır zırhlı, yavaş ama dayanıklı düşman
     /// HP: 110, Damage to Hero: 8, Damage to Barrier: 8
-    /// Speed: 1.0, Reward: 14$
+    /// Speed: 1.0, Reward: 10$
     /// </summary>
     public class ArmoredEnemy : BaseEnemy
     {
@@ -18,7 +18,7 @@ namespace TowerDefense.Enemy
             damageToBarrier = 8;
             damageToOthers = 8;
             moveSpeed = 1.0f;  // En yavaş düşman
-            moneyReward = 14;
+            moneyReward = 10;
 
             // Attack Settings
             attackCooldown = 2.0f;  // Yavaş saldırı

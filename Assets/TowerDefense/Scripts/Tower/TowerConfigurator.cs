@@ -7,19 +7,19 @@ namespace TowerDefense.Tower
     /// Tüm kule türlerinin konfigürasyonlarını oluşturur
     /// 
     /// KULE TİPLERİ:
-    /// 1. Archer Tower (Okçu Kulesi) - Sadece yerdeki düşmanlara saldırır
-    /// 2. Cannon (Bomba Kulesi) - Hem yere hem havaya saldırır
-    /// 3. Mortar (Havan topu) - Alan hasarı verir
+    /// 1. Ground Tower (Okçu Kulesi) - Sadece yerdeki düşmanlara saldırır
+    /// 2. Universal Tower (Büyücü Kulesi) - Hem yere hem havaya saldırır
+    /// 3. AOE Tower (Bomba Kulesi) - Alan hasarı verir
     /// </summary>
     public class TowerConfigurator : MonoBehaviour
     {
         /// <summary>
         /// GROUND TOWER (OKÇU KULESİ)
-        /// Yerleştirme: 75 coin
-        /// Seviye 2: 125 coin
-        /// Seviye 3: 200 coin
-        /// TOPLAM: 400 coin
-        ///
+        /// Yerleştirme: 30 coin
+        /// Seviye 2: 40 coin
+        /// Seviye 3: 80 coin
+        /// TOPLAM: 150 coin
+        /// 
         /// Özellikleri:
         /// - Sadece yerdeki düşmanlara saldırır
         /// - Yüksek saldırı hızı
@@ -40,7 +40,7 @@ namespace TowerDefense.Tower
                 damage: 15,
                 range: 3.5f,
                 attackSpeed: 1.0f,  // Her 1 saniyede bir ateş eder
-                upgradeCost: 75     // Yerleştirme maliyeti
+                upgradeCost: 30     // Yerleştirme maliyeti
             );
 
             // Seviye 2
@@ -49,7 +49,7 @@ namespace TowerDefense.Tower
                 damage: 25,         // +10 hasar
                 range: 4.5f,        // +1 menzil
                 attackSpeed: 0.8f,  // Daha hızlı
-                upgradeCost: 125    // Seviye 2'ye yükseltme maliyeti
+                upgradeCost: 40     // Seviye 2'ye yükseltme maliyeti
             );
 
             // Seviye 3
@@ -58,19 +58,19 @@ namespace TowerDefense.Tower
                 damage: 45,         // +20 hasar
                 range: 6.0f,        // +1.5 menzil
                 attackSpeed: 0.6f,  // En hızlı
-                upgradeCost: 200    // Seviye 3'e yükseltme maliyeti
+                upgradeCost: 80     // Seviye 3'e yükseltme maliyeti
             );
 
             return tower;
         }
 
         /// <summary>
-        /// UNIVERSAL TOWER (BÜYÜCÜ KULESİ / CANNON)
-        /// Yerleştirme: 60 coin
-        /// Seviye 2: 100 coin
-        /// Seviye 3: 160 coin
-        /// TOPLAM: 320 coin
-        ///
+        /// UNIVERSAL TOWER (BÜYÜCÜ KULESİ)
+        /// Yerleştirme: 50 coin
+        /// Seviye 2: 60 coin
+        /// Seviye 3: 120 coin
+        /// TOPLAM: 230 coin
+        /// 
         /// Özellikleri:
         /// - Hem yere hem havaya saldırır
         /// - Orta hasar
@@ -92,7 +92,7 @@ namespace TowerDefense.Tower
                 damage: 20,
                 range: 4.0f,
                 attackSpeed: 1.2f,
-                upgradeCost: 60     // Yerleştirme maliyeti
+                upgradeCost: 50     // Yerleştirme maliyeti
             );
 
             // Seviye 2
@@ -101,7 +101,7 @@ namespace TowerDefense.Tower
                 damage: 35,         // +15 hasar
                 range: 5.5f,        // +1.5 menzil
                 attackSpeed: 1.0f,
-                upgradeCost: 100    // Seviye 2'ye yükseltme maliyeti
+                upgradeCost: 60     // Seviye 2'ye yükseltme maliyeti
             );
 
             // Seviye 3
@@ -110,19 +110,19 @@ namespace TowerDefense.Tower
                 damage: 60,         // +25 hasar
                 range: 7.0f,        // +1.5 menzil
                 attackSpeed: 0.8f,
-                upgradeCost: 160    // Seviye 3'e yükseltme maliyeti
+                upgradeCost: 120    // Seviye 3'e yükseltme maliyeti
             );
 
             return tower;
         }
 
         /// <summary>
-        /// AOE TOWER (BOMBA KULESİ / MORTAR)
-        /// Yerleştirme: 125 coin
-        /// Seviye 2: 200 coin
-        /// Seviye 3: 300 coin
-        /// TOPLAM: 625 coin
-        ///
+        /// AOE TOWER (BOMBA KULESİ)
+        /// Yerleştirme: 40 coin
+        /// Seviye 2: 50 coin
+        /// Seviye 3: 100 coin
+        /// TOPLAM: 190 coin
+        /// 
         /// Özellikleri:
         /// - Alan hasarı verir
         /// - Yavaş ateş hızı
@@ -144,7 +144,7 @@ namespace TowerDefense.Tower
                 damage: 25,         // Alan hasarı
                 range: 4.0f,
                 attackSpeed: 2.0f,  // Yavaş
-                upgradeCost: 125    // Yerleştirme maliyeti
+                upgradeCost: 40     // Yerleştirme maliyeti
             );
 
             // Seviye 2
@@ -153,7 +153,7 @@ namespace TowerDefense.Tower
                 damage: 40,         // +15 hasar
                 range: 5.0f,        // +1 menzil
                 attackSpeed: 1.7f,
-                upgradeCost: 200    // Seviye 2'ye yükseltme maliyeti
+                upgradeCost: 50     // Seviye 2'ye yükseltme maliyeti
             );
 
             // Seviye 3
@@ -162,7 +162,7 @@ namespace TowerDefense.Tower
                 damage: 70,         // +30 hasar
                 range: 6.5f,        // +1.5 menzil
                 attackSpeed: 1.4f,
-                upgradeCost: 300    // Seviye 3'e yükseltme maliyeti
+                upgradeCost: 100    // Seviye 3'e yükseltme maliyeti
             );
 
             return tower;

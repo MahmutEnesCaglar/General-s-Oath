@@ -23,13 +23,13 @@ public class CloseButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerCli
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (hoverSound != null && audioSource != null)
-            audioSource.PlayOneShot(hoverSound, volume);
+        if (hoverSound != null && audioSource != null && SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(hoverSound, audioSource);
     }
-    
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (clickSound != null && audioSource != null)
-            audioSource.PlayOneShot(clickSound, volume);
+        if (clickSound != null && audioSource != null && SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(clickSound, audioSource);
     }
 }

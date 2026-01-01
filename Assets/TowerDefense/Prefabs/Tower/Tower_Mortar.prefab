@@ -241,9 +241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MortarTower
   towerName: havan
-  range: 8
+  range: 6
   fireRate: 1
-  damage: 15
+  damage: 13
+  uiYOffset: 150
   verticalRangeModifier: 0.6
   enemiesInRange: []
   currentTarget: {fileID: 0}

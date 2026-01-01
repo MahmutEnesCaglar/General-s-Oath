@@ -66,6 +66,13 @@ namespace TowerDefense.Tower
 
         public List<LevelData> levels;
 
+        // YENİ: Görsel Range Göstergesi
+        private LineRenderer rangeIndicator;
+        private GameObject currentRangeDetector; // Referans tutmak için
+        
+        // YENİ: Seçili kule takibi
+        private static Tower selectedTower;
+
         protected virtual void Start()
         {
             rotatableVisual = GetComponentInChildren<RotatableTowerSprite>();
@@ -75,10 +82,68 @@ namespace TowerDefense.Tower
 
             rotatableVisual = GetComponentInChildren<RotatableTowerSprite>();
             CreateOvalRangeDetector();
+            SetupRangeIndicator(); // LineRenderer'ı hazırla
             
             // ORİJİNAL DEĞERLERİ KAYDET (Rage bitince buna döneceğiz)
             baseFireRate = fireRate;
             baseDamage = damage;
+        }
+
+        // --- RANGE GÖRSELLEŞTİRME ---
+        private void SetupRangeIndicator()
+        {
+            // Eğer zaten varsa kullan, yoksa oluştur
+            rangeIndicator = GetComponent<LineRenderer>();
+            if (rangeIndicator == null)
+            {
+                rangeIndicator = gameObject.AddComponent<LineRenderer>();
+            }
+
+            rangeIndicator.useWorldSpace = false; // Kuleye bağlı olsun
+            rangeIndicator.loop = true; // Çember kapansın
+            rangeIndicator.startWidth = 0.05f;
+            rangeIndicator.endWidth = 0.05f;
+            rangeIndicator.positionCount = 50;
+            
+            // Basit bir materyal ata (Unity'nin default sprite materyali)
+            rangeIndicator.material = new Material(Shader.Find("Sprites/Default"));
+            rangeIndicator.startColor = new Color(1f, 1f, 0f, 0.5f); // Sarı, yarı şeffaf
+            rangeIndicator.endColor = new Color(1f, 1f, 0f, 0.5f);
+            
+            rangeIndicator.sortingOrder = 25; // Diğer spriteların üzerinde görünsün (İstek üzerine 25 yapıldı)
+            rangeIndicator.enabled = false; // Başlangıçta gizli
+        }
+
+        public void ToggleRangeVisual(bool isActive)
+        {
+            if (rangeIndicator != null)
+            {
+                rangeIndicator.enabled = isActive;
+                if (isActive) UpdateRangeVisual();
+            }
+        }
+
+        private void UpdateRangeVisual()
+        {
+            if (rangeIndicator == null) return;
+
+            int steps = 50;
+            rangeIndicator.positionCount = steps;
+            
+            // Kulenin scale değerini hesaba kat (World radius = range olması için)
+            float scaleFactor = transform.lossyScale.x;
+            if (scaleFactor == 0) scaleFactor = 1f;
+            float adjustedRange = range / scaleFactor;
+
+            for (int i = 0; i < steps; i++)
+            {
+                float angle = (2 * Mathf.PI * i) / steps;
+                float x = Mathf.Cos(angle) * adjustedRange;
+                float y = Mathf.Sin(angle) * adjustedRange * verticalRangeModifier;
+                
+                // Local pozisyon olarak ayarla (Kule merkezine göre)
+                rangeIndicator.SetPosition(i, new Vector3(x, y, 0));
+            }
         }
 
         protected virtual void Update()
@@ -147,10 +212,21 @@ namespace TowerDefense.Tower
         // --- OVAL COLLIDER OLUŞTURUCU ---
         public void CreateOvalRangeDetector()
         {
-            Transform oldDetector = transform.Find("RangeDetector");
-            if (oldDetector != null) Destroy(oldDetector.gameObject);
+            // Eski dedektörü yok et (Referans üzerinden)
+            if (currentRangeDetector != null)
+            {
+                Destroy(currentRangeDetector);
+            }
+            // İsimle de ara (Yedek plan)
+            else
+            {
+                Transform oldDetector = transform.Find("RangeDetector");
+                if (oldDetector != null) Destroy(oldDetector.gameObject);
+            }
 
             GameObject detector = new GameObject("RangeDetector");
+            currentRangeDetector = detector; // Referansı sakla
+
             detector.transform.SetParent(this.transform);
             detector.transform.localPosition = Vector3.zero;
             detector.transform.localScale = Vector3.one; 
@@ -159,14 +235,19 @@ namespace TowerDefense.Tower
             PolygonCollider2D polyCol = detector.AddComponent<PolygonCollider2D>();
             polyCol.isTrigger = true;
 
+            // Kulenin scale değerini hesaba kat (World radius = range olması için)
+            float scaleFactor = transform.lossyScale.x;
+            if (scaleFactor == 0) scaleFactor = 1f;
+            float adjustedRange = range / scaleFactor;
+
             int pointCount = 36;
             Vector2[] points = new Vector2[pointCount];
             
             for (int i = 0; i < pointCount; i++)
             {
                 float angle = (2 * Mathf.PI * i) / pointCount;
-                float x = Mathf.Cos(angle) * range; 
-                float y = Mathf.Sin(angle) * range * verticalRangeModifier;
+                float x = Mathf.Cos(angle) * adjustedRange; 
+                float y = Mathf.Sin(angle) * adjustedRange * verticalRangeModifier;
                 points[i] = new Vector2(x, y);
             }
 
@@ -277,27 +358,61 @@ namespace TowerDefense.Tower
         
         void OnMouseDown()
         {
-            // UI veya özel modlar (Bariyer vb.) açıksa tıklama
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
-            
-            ToggleUpgradeUI();
+            // ARTIK KULLANILMIYOR - Kontrol HeroInput.cs üzerinden yapılıyor
+            // Ancak yine de yedek olarak duralabilir, fakat HeroInput çağırırsa çift çalışmasın diye
+            // burayı boşaltıyoruz veya siliyoruz.
+            // Debug.Log(...) 
+        }
+
+        public void Deselect()
+        {
+            Debug.Log($"Deselect çağrıldı: {towerName}");
+            if (activeUpgradeUI != null)
+            {
+                Destroy(activeUpgradeUI);
+                activeUpgradeUI = null;
+            }
+            ToggleRangeVisual(false);
+            if (selectedTower == this) 
+            {
+                selectedTower = null;
+                Debug.Log("selectedTower NULL yapıldı.");
+            }
         }
 
         public void ToggleUpgradeUI()
         {
-            // Zaten açıksa kapat
+            // 1. Eğer başka bir kule seçiliyse ve bu biz değilsek, onu kapat
+            if (selectedTower != null && selectedTower != this)
+            {
+                Debug.Log($"Farklı kule seçili ({selectedTower.towerName}), kapatılıyor...");
+                selectedTower.Deselect();
+            }
+
+            // 2. Eğer zaten biz açıksak, kapat (Toggle mantığı)
             if (activeUpgradeUI != null)
             {
-                Destroy(activeUpgradeUI);
+                Debug.Log("UI zaten açık, kapatılıyor.");
+                Deselect();
                 return;
             }
 
-            // Maksimum seviyedeysek açma
+            // 3. Maksimum seviye kontrolü (İsteğe bağlı: Max level olsa bile menü açılıp satma butonu görünebilir, 
+            // ama orijinal kodda return vardı. Eğer satmak istiyorsak bunu kaldırmalıyız.)
+            // Şimdilik orijinal mantığı koruyorum ama log ekliyorum.
             if (currentLevel >= maxLevel)
             {
-                Debug.Log("Kule maksimum seviyede!");
-                return;
+                // NOT: Eğer max level kuleyi satmak istiyorsak burayı kaldırmalıyız.
+                // Şimdilik sadece log verip devam etsin ki menü açılsın (Sat butonu için)
+                // Debug.Log("Kule maksimum seviyede!");
+                // return; 
+                // YUKARIDAKİ RETURN'Ü KALDIRDIM Kİ SATABİLELİM.
             }
+
+            // 4. Yeni seçim biziz
+            selectedTower = this;
+            Debug.Log($"Yeni selectedTower: {towerName}");
+            ToggleRangeVisual(true);
 
             // UI oluştur (Kulenin tepesinde)
             if (upgradeCanvasPrefab != null)
@@ -357,6 +472,10 @@ namespace TowerDefense.Tower
                 // Base değerleri de güncelle (Rage sisteminin doğru çalışması için)
                 baseDamage = data.damage;
                 baseFireRate = data.fireRate;
+
+                // --- RANGE GÜNCELLEME ---
+                CreateOvalRangeDetector(); // Collider'ı güncelle
+                if (rangeIndicator != null && rangeIndicator.enabled) UpdateRangeVisual(); // Görseli güncelle
 
                 // --- GÖRSEL GÜNCELLEME ---
                 // Child objedeki scripti bul

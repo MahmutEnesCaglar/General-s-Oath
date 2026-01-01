@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7998c1a71d94a5a487e37ceb783ad8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Buildings.Barrier
-  maxHealth: 500
+  maxHealth: 150
   currentHealth: 0
   spriteRenderer: {fileID: 1013993287542315696}
   healthBarObj: {fileID: 7743398888459569821}

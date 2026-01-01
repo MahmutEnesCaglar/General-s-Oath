@@ -46,7 +46,7 @@ public class PauseManager : MonoBehaviour
             resumeButton.onClick.AddListener(ResumeGame);
         
         if (homeButton != null)
-            homeButton.onClick.AddListener(ReturnToMainMenu);
+            homeButton.onClick.AddListener(ReturnToMap);
         
         // Music slider yükle
         if (musicSlider != null)
@@ -141,9 +141,9 @@ public class PauseManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void ReturnToMainMenu()
+    public void ReturnToMap()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenuSahne");
+        SceneManager.LoadScene("WorldMap");
     }
 }

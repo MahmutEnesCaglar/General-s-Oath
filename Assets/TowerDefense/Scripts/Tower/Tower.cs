@@ -13,6 +13,11 @@ namespace TowerDefense.Tower
         public float range = 5f;
         public float fireRate = 1f;
         public int damage = 10;
+        
+        [Header("UI Ayarları")]
+        [Tooltip("Upgrade menüsünün kule üzerinde ne kadar yukarıda çıkacağını belirler.")]
+        public float uiYOffset = 150f; // Varsayılan değer
+
         private float baseFireRate;
         private int baseDamage;
         private bool isEnraged = false; // Şu an öfkeli mi?

@@ -110,6 +110,18 @@ namespace TowerDefense.Hero
                     return; 
                 }
             }
+
+            // YENİ: Kule Kontrolü (Upgrade Menüsü için)
+            // Eğer bir kuleye tıklanıyorsa Hero hareket etmemeli
+            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPoint, Vector2.zero);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.CompareTag("Tower"))
+                {
+                    Debug.Log($"🏰 Kule Algılandı! (Koordinat: {worldPoint}) - Hero duruyor, Upgrade Menüsü açılmalı.");
+                    return;
+                }
+            }
             
             // 3. HERO HAREKETİ (Mevcut kodunda devam eden kısım...)
              Debug.Log($"✅ Boş alana tıklandı. Hero şuraya gitmeli: {worldPoint}");

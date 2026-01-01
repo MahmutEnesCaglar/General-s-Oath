@@ -5,65 +5,79 @@ namespace TowerDefense.Tower
 {
     /// <summary>
     /// Kule mermisi - Hedefe doğru hareket eder ve hasar verir
-    /// Arkadaşın sistemi + damage desteği eklendi
+    /// GÜNCELLENDİ: Artık güdümlü değil, ilk hedeflenen yöne düz gider.
     /// </summary>
     public class Projectile : MonoBehaviour
     {
         [Header("Hareket")]
         public float speed = 12f;
-        private GameObject target;
+        private Vector3 moveDirection; // Sabit yön
         private int damage;
+        private float lifeTime = 3f; // Sonsuza kadar gitmesin diye ömür süresi
 
         /// <summary>
-        /// Projectile'ı başlatır (Arkadaşın API'si ile uyumlu)
+        /// Projectile'ı başlatır
         /// </summary>
         public void Setup(GameObject _target, int _damage)
         {
-            target = _target;
             damage = _damage;
+            
+            if (_target != null)
+            {
+                // Hedefin o anki pozisyonuna doğru yönü hesapla ve kilitle
+                moveDirection = (_target.transform.position - transform.position).normalized;
+                
+                // Görseli o yöne çevir
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
+            else
+            {
+                // Hedef yoksa mermiyi hemen yok et
+                Destroy(gameObject);
+            }
         }
 
         void Update()
         {
-            // Eğer hedef yok olmuşsa mermiyi yok et
-            if (target == null)
+            // Ömür kontrolü
+            lifeTime -= Time.deltaTime;
+            if (lifeTime <= 0)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            // Hedefe doğru yönel ve ilerle
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
+            // Sabit yönde ilerle (Güdümsüz)
+            transform.position += moveDirection * speed * Time.deltaTime;
 
-            // Mermiyi hedefe doğru döndür (opsiyonel - ok gibi görseller için)
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            // Çarpışma Kontrolü
+            CheckCollision();
+        }
 
-            // Hedefe ulaştı mı? (0.2 birim kala ulaştı sayıyoruz)
-            if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
+        private void CheckCollision()
+        {
+            // Merminin çok yakınında bir düşman var mı?
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            
+            foreach (Collider2D hit in hits)
             {
-                HitTarget();
+                // Sadece düşmanlara çarp
+                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    HitTarget(enemy);
+                    return; // İlk düşmana çarpınca işlemi bitir
+                }
             }
         }
 
-        /// <summary>
-        /// Hedefe çarptı - Hasar ver ve mermiyi yok et
-        /// </summary>
-        private void HitTarget()
+        private void HitTarget(BaseEnemy enemy)
         {
-            // Düşmana hasar ver
-            BaseEnemy enemy = target.GetComponent<BaseEnemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
-                Debug.Log($"[Projectile] {target.name}'e {damage} hasar verildi!");
             }
-            else
-            {
-                Debug.LogWarning($"[Projectile] {target.name}'de BaseEnemy component bulunamadı!");
-            }
-
             // Mermiyi yok et
             Destroy(gameObject);
         }

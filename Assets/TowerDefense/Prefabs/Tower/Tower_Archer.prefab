@@ -238,6 +238,7 @@ MonoBehaviour:
   range: 7
   fireRate: 3
   damage: 10
+  uiYOffset: 200
   verticalRangeModifier: 0.6
   enemiesInRange: []
   currentTarget: {fileID: 0}

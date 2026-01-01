@@ -41,6 +41,13 @@ namespace TowerDefense.Tower
 
         void Update()
         {
+            // YENİ: Menü açıksa pozisyonunu güncelle (Zoom/Pan yapınca kaymasın diye)
+            if (buildMenuPanel != null && buildMenuPanel.activeSelf)
+            {
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(selectedBuildPosition);
+                buildMenuPanel.transform.position = screenPos + new Vector3(0, 150, 0);
+            }
+
             if (Mouse.current == null) return;
             if (EventSystem.current.IsPointerOverGameObject()) return;
 

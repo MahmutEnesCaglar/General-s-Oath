@@ -1,56 +1,63 @@
 using UnityEngine;
-using TowerDefense.Enemy; // Enemy scriptine erişim için
+using TowerDefense.Enemy;
 
 namespace TowerDefense.Tower
 {
     public class ArrowProjectile : MonoBehaviour
     {
         public float speed = 15f;
-        private GameObject target;
-        private int damage; // EKLENDİ: Hasar miktarı
+        private Vector3 moveDirection; // Sabit yön
+        private int damage;
+        private float lifeTime = 3f;
 
         public void Setup(GameObject _target, int _damage)
         {
-            target = _target;
-            damage = _damage; // EKLENDİ: Hasarı hafızaya al
+            damage = _damage;
+            
+            if (_target != null)
+            {
+                // Hedefin o anki pozisyonuna doğru yönü hesapla ve kilitle
+                moveDirection = (_target.transform.position - transform.position).normalized;
+                
+                // Okun ucunu o yöne çevir
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         void Update()
         {
-            // Hedef öldüyse oku yok et
-            if (target == null)
+            lifeTime -= Time.deltaTime;
+            if (lifeTime <= 0)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            // 1. Hedefe Doğru Hareket
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
+            // Sabit yönde ilerle
+            transform.position += moveDirection * speed * Time.deltaTime;
 
-            // 2. Okun Ucunu Hedefe Çevir
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-
-            // 3. Mesafe Kontrolü (Vurma Anı)
-            if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
-            {
-                HitTarget();
-            }
+            CheckCollision();
         }
 
-        void HitTarget()
+        void CheckCollision()
         {
-            if (target != null)
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            
+            foreach (Collider2D hit in hits)
             {
-                BaseEnemy enemyScript = target.GetComponent<BaseEnemy>();
-                if (enemyScript != null)
+                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
+                if (enemy != null)
                 {
-                    enemyScript.TakeDamage(damage);
+                    enemy.TakeDamage(damage);
+                    Destroy(gameObject);
+                    return;
                 }
             }
-
-            Destroy(gameObject);
         }
     }
 }

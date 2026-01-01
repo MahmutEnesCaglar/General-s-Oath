@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using TowerDefense.Hero;
@@ -13,7 +15,8 @@ public class AbilityManager : MonoBehaviour
     public class AbilityData {
         public string name;
         public Button button;
-        public Image fillImage; 
+        public Image fillImage;
+        public TextMeshProUGUI usageText; // Kalan hakkı gösterecek Text
         public float cooldown = 10f;
         public int maxUsage = 5;
         
@@ -38,10 +41,59 @@ public class AbilityManager : MonoBehaviour
         InitAbility(heal);
         InitAbility(attack);
         InitAbility(barrier);
+
+        CheckSceneAbilities();
+    }
+
+    void CheckSceneAbilities()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene == "Map_Grifon")
+        {
+            // 1. Sahne: Sadece Heal ve Rage
+            SetAbilityActive(heal, true);
+            SetAbilityActive(rage, true);
+            SetAbilityActive(barrier, false);
+            SetAbilityActive(attack, false);
+        }
+        else if (currentScene == "Map_Kirin")
+        {
+            // 2. Sahne: Heal, Rage ve Barrier
+            SetAbilityActive(heal, true);
+            SetAbilityActive(rage, true);
+            SetAbilityActive(barrier, true);
+            SetAbilityActive(attack, false);
+        }
+        else if (currentScene == "Map_Dragon")
+        {
+            // 3. Sahne: Hepsi Açık
+            SetAbilityActive(heal, true);
+            SetAbilityActive(rage, true);
+            SetAbilityActive(barrier, true);
+            SetAbilityActive(attack, true);
+        }
+    }
+
+    void SetAbilityActive(AbilityData ability, bool isActive)
+    {
+        if (ability != null && ability.button != null)
+        {
+            ability.button.gameObject.SetActive(isActive);
+        }
     }
 
     void InitAbility(AbilityData data) {
         data.remainingUsage = data.maxUsage;
+        UpdateUsageText(data);
+    }
+
+    void UpdateUsageText(AbilityData data)
+    {
+        if (data.usageText != null)
+        {
+            data.usageText.text = data.remainingUsage.ToString();
+        }
         if (data.fillImage != null) data.fillImage.fillAmount = 0; 
     }
 
@@ -77,6 +129,8 @@ public class AbilityManager : MonoBehaviour
             if(data.button != null) data.button.interactable = false;
             if (data.fillImage != null) data.fillImage.fillAmount = 0;
             
+            UpdateUsageText(data); // Text'i güncelle
+
             Debug.Log($"{data.name} Kullanıldı! Kalan hak: {data.remainingUsage}");
         }
     }
@@ -127,7 +181,7 @@ public class AbilityManager : MonoBehaviour
 
         if (heroScript != null)
         {
-            heroScript.HealPercentage(0.5f);
+            heroScript.HealPercentage(1f);
             ExecuteAbility(heal);
             Debug.Log("<color=green>HEAL BASILDI! Hero iyileştirildi.</color>");
         }

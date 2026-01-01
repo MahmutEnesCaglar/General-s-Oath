@@ -31,6 +31,17 @@ namespace TowerDefense.UI
             if (closeButton != null) closeButton.onClick.AddListener(CloseMenu);
         }
 
+        void Update()
+        {
+            // YENİ: Menü açıksa ve bir kule seçiliyse pozisyonunu güncelle (Zoom/Pan yapınca kaymasın diye)
+            if (panelObj != null && panelObj.activeSelf && selectedTower != null)
+            {
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(selectedTower.transform.position);
+                // Kulenin kendi belirlediği offset değerini kullan
+                panelObj.transform.position = screenPos + new Vector3(0, selectedTower.uiYOffset, 0); 
+            }
+        }
+
         public void OpenMenu(TowerDefense.Tower.Tower tower)
         {
             selectedTower = tower;
@@ -44,7 +55,8 @@ namespace TowerDefense.UI
                 
                 // Paneli kulenin olduğu yere (biraz yukarısına) taşı
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(selectedTower.transform.position);
-                panelObj.transform.position = screenPos + new Vector3(0, 100, 0); // Y ekseninde biraz yukarı
+                // Kulenin kendi belirlediği offset değerini kullan
+                panelObj.transform.position = screenPos + new Vector3(0, selectedTower.uiYOffset, 0); 
             }
         }
 

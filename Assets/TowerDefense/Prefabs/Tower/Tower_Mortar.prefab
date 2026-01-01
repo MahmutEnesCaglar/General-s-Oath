@@ -9,28 +9,100 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 533039925163669583}
+  - component: {fileID: 6931913914317105464}
+  - component: {fileID: 3665586230184825273}
   m_Layer: 0
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &533039925163669583
-Transform:
+  m_IsActive: 0
+--- !u!224 &533039925163669583
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5696681852415775532}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.12152, y: -0.1028, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1248923863386213826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.013, y: 0.45}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6931913914317105464
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696681852415775532}
+  m_CullTransparentMesh: 1
+--- !u!212 &3665586230184825273
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696681852415775532}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -4457702700999965232, guid: 9cf6ee1daae40cfc2be3e8d9e6824524, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.71, y: 3.64}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &3905707367726663452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54,6 +126,14 @@ PrefabInstance:
     - target: {fileID: -5402582867162545519, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: towerName
       value: Havan Topu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,11 +177,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.z
@@ -109,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Name
@@ -124,7 +204,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 533039925163669583}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
@@ -173,15 +253,18 @@ MonoBehaviour:
   currentLevel: 1
   maxLevel: 3
   totalSpent: 0
+  upgradeCanvasPrefab: {fileID: 0}
   levels:
   - cost: 200
     range: 7
     fireRate: 0.4
     damage: 14
+    visualData: []
   - cost: 300
     range: 8
     fireRate: 0.5
     damage: 15
+    visualData: []
   explosionRadius: 1.5
 --- !u!58 &2624819298848655254
 CircleCollider2D:
@@ -217,7 +300,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.48}
+  m_Offset: {x: 0, y: 0.36}
   m_Radius: 1
 --- !u!4 &1248923863386213826 stripped
 Transform:
@@ -275,13 +358,13 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -616371365
   m_SortingLayer: 3
-  m_SortingOrder: 4970
-  m_Sprite: {fileID: 3197014013480624027, guid: f57c89a66b6aaf52e9c957e9fb5898cc, type: 3}
+  m_SortingOrder: 5016
+  m_Sprite: {fileID: -2540508594559095717, guid: 74b354d7eaafe954d809ad6611e8aa0b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.14, y: 0.15}
+  m_Size: {x: 3.85, y: 4.52}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -303,107 +386,107 @@ MonoBehaviour:
   - levelName: LVL1
     directionalData:
     - directionName: index1
-      sprite: {fileID: -3757980385129456325, guid: b28c8b7916a9c11ce86c9d28d56d6a0b, type: 3}
+      sprite: {fileID: 8771039930092714778, guid: b5e6f07c3e9f7821a930384d956d1716, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.831, y: 0.733}
+      firePointOffset: {x: 0.867, y: 1.806}
     - directionName: index2
-      sprite: {fileID: 4352308158331096266, guid: 2f9ae01e028e4e4c489a7488fa295de0, type: 3}
+      sprite: {fileID: 5289528844740061471, guid: a9110bdde23a5d0fdb5f28c3a2f2ea3d, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.011, y: 1.048}
+      firePointOffset: {x: 0, y: 2.1}
     - directionName: index3
-      sprite: {fileID: 4188977821117673382, guid: ebbe00a9635b649739a3afcc989881e6, type: 3}
+      sprite: {fileID: -5126555095145007534, guid: 408cfce8026ce53dbace858f5fb5d2a5, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.786, y: 0.687}
+      firePointOffset: {x: -0.872, y: 1.78}
     - directionName: index5
-      sprite: {fileID: -5752444100923160545, guid: fe2c8d3f7a63b7fb9bbae42a8ba20b80, type: 3}
+      sprite: {fileID: 4690478056772682707, guid: c57325aa0fb881f8c831a10b90408d08, type: 3}
       scale: {x: 0.35, y: 0.35, z: 0}
-      firePointOffset: {x: -0.643, y: 0.458}
+      firePointOffset: {x: -0.678, y: 1.562}
     - directionName: index6
-      sprite: {fileID: 8004925861451462671, guid: bfe5a4d3bf992eb5d92e62c8b8cfa450, type: 3}
-      scale: {x: 0.36, y: 0.36, z: 0}
-      firePointOffset: {x: 0.014, y: -0.549}
+      sprite: {fileID: -6703451496671190426, guid: 99b2b0bb3007700fcbf95e095293d50d, type: 3}
+      scale: {x: 0.33, y: 0.33, z: 0}
+      firePointOffset: {x: 0, y: 0.45}
     - directionName: index7
-      sprite: {fileID: 3197014013480624027, guid: f57c89a66b6aaf52e9c957e9fb5898cc, type: 3}
-      scale: {x: 0.35, y: 0.35, z: 0}
-      firePointOffset: {x: 0.621, y: 0.451}
+      sprite: {fileID: 563796577140205344, guid: 45798e2326e74a9f590060541cd8bac7, type: 3}
+      scale: {x: 0.45, y: 0.45, z: 0}
+      firePointOffset: {x: 0.621, y: 1.562}
   - levelName: LVL2
     directionalData:
     - directionName: index1
-      sprite: {fileID: 4434664401678859945, guid: 0a3c08f7ef30563b0b0cff36cfb67e19, type: 3}
+      sprite: {fileID: 4481266320447565638, guid: 5be364880bbf593a998a913c9a9f67f0, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.867, y: 1.806}
     - directionName: index2
-      sprite: {fileID: -1109297392548338207, guid: 3a72308eea3b2e372a3018ee50d23944, type: 3}
+      sprite: {fileID: 2678040115795955127, guid: 46ddc76b068f83abe96df64bbcacc6c0, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0, y: 2.1}
     - directionName: index3
-      sprite: {fileID: -5374449988133597000, guid: b042c55bdce8543d49b1f3533b3e918e, type: 3}
+      sprite: {fileID: 2204195393100504474, guid: fd1abac52d9ad212f865a3be1b3ea618, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.872, y: 1.78}
     - directionName: index5
-      sprite: {fileID: 3618123995066522756, guid: 7cef13cba6c3df34ab867de88a604f9a, type: 3}
+      sprite: {fileID: 6332273396065553548, guid: a1f0ec088e541ecc59cf655f5aef7f32, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.678, y: 1.562}
     - directionName: index6
-      sprite: {fileID: -5757633211995521519, guid: 792100a91d374b0358f53150988dbdc0, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      sprite: {fileID: 1815857754001187014, guid: e1391b3d58249b513b4ab47592a75dbc, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 0.45}
     - directionName: index7
-      sprite: {fileID: -7450411581121377068, guid: f27e5d69fd42c65008ebe1a9a9223d84, type: 3}
+      sprite: {fileID: -8592637024050178687, guid: e2923a4955cf1db40a7a5b14d8991d12, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.678, y: 1.562}
   - levelName: LVL3
     directionalData:
     - directionName: index1
-      sprite: {fileID: -1533736258066480814, guid: 03856017310c82518849faa75fea9bba, type: 3}
+      sprite: {fileID: -3744563131241176298, guid: 55f9ff846b32cca718fe9cf20d9f81b8, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.867, y: 1.806}
     - directionName: index2
-      sprite: {fileID: -3646430695213376830, guid: a64ad38e629c64bb293094db80cd1ebd, type: 3}
+      sprite: {fileID: 8363256048115144786, guid: 1dad9af310f93642bafc0b444186a280, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0, y: 2.1}
     - directionName: index3
-      sprite: {fileID: 6132843557986626113, guid: aed2afedae0c873548a0ed6ab038a037, type: 3}
+      sprite: {fileID: 470145545943271898, guid: 2944429702747814ca11c838103adb8d, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.872, y: 1.78}
     - directionName: index5
-      sprite: {fileID: 8143968400301912348, guid: df5609c75158a79e49e30afb070e5989, type: 3}
+      sprite: {fileID: 8402687246483361636, guid: 05c66e38b458328f29ae1cb1047e15e2, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.691, y: 1.562}
     - directionName: index6
-      sprite: {fileID: 3105815387007705103, guid: 211c5d760d2baba5d857654e7df97f3d, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      sprite: {fileID: 2992280525453144531, guid: 63a856e9c6d488a759da90e63bc23cfc, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 0.45}
     - directionName: index7
-      sprite: {fileID: -6354238636718462433, guid: ae903ea145410459ca7ebe2c101dd8da, type: 3}
+      sprite: {fileID: -2540508594559095717, guid: 74b354d7eaafe954d809ad6611e8aa0b, type: 3}
       scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0, y: 0}
-  currentLevelIndex: 1
+      firePointOffset: {x: 0.678, y: 1.562}
+  currentLevelIndex: 2
   currentDirectionalData:
   - directionName: index1
-    sprite: {fileID: -1533736258066480814, guid: 03856017310c82518849faa75fea9bba, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: -3744563131241176298, guid: 55f9ff846b32cca718fe9cf20d9f81b8, type: 3}
+    scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: 0.867, y: 1.806}
   - directionName: index2
-    sprite: {fileID: -3646430695213376830, guid: a64ad38e629c64bb293094db80cd1ebd, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: 8363256048115144786, guid: 1dad9af310f93642bafc0b444186a280, type: 3}
+    scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: 0, y: 2.1}
   - directionName: index3
-    sprite: {fileID: 6132843557986626113, guid: aed2afedae0c873548a0ed6ab038a037, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: 470145545943271898, guid: 2944429702747814ca11c838103adb8d, type: 3}
+    scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: -0.872, y: 1.78}
   - directionName: index5
-    sprite: {fileID: 8143968400301912348, guid: df5609c75158a79e49e30afb070e5989, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: 8402687246483361636, guid: 05c66e38b458328f29ae1cb1047e15e2, type: 3}
+    scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: -0.691, y: 1.562}
   - directionName: index6
-    sprite: {fileID: 3105815387007705103, guid: 211c5d760d2baba5d857654e7df97f3d, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: 2992280525453144531, guid: 63a856e9c6d488a759da90e63bc23cfc, type: 3}
+    scale: {x: 0.3, y: 0.3, z: 0}
+    firePointOffset: {x: 0, y: 0.45}
   - directionName: index7
-    sprite: {fileID: -6354238636718462433, guid: ae903ea145410459ca7ebe2c101dd8da, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0, y: 0}
+    sprite: {fileID: -2540508594559095717, guid: 74b354d7eaafe954d809ad6611e8aa0b, type: 3}
+    scale: {x: 0.35, y: 0.35, z: 0}
+    firePointOffset: {x: 0.678, y: 1.562}
   currentSegmentIndex: 5
 --- !u!114 &5233050000698886705
 MonoBehaviour:

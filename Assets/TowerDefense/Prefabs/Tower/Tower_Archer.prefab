@@ -1,5 +1,95 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5141944103922558471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2973772267230762223}
+  - component: {fileID: 850492804732003983}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2973772267230762223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141944103922558471}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6, y: 2.05, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 260085699697330738}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &850492804732003983
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141944103922558471}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: -1816347765
+  m_SortingLayer: 4
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -4457702700999965232, guid: 9cf6ee1daae40cfc2be3e8d9e6824524, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.87, y: 0.83}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &2664669842145263852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,11 +100,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 0.78
       objectReference: {fileID: 0}
     - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 0.78
       objectReference: {fileID: 0}
     - target: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -82,16 +172,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Size.x
-      value: 4.14
+      value: 3.85
       objectReference: {fileID: 0}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Size.y
-      value: 5.14
+      value: 4.69
       objectReference: {fileID: 0}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -6912519822022482156, guid: 7474d0c0a632fdc918a6d8e10e51862c, type: 3}
+      objectReference: {fileID: -7580733815989700268, guid: 2fff9c0da93cd676d8d9327a303f9aee, type: 3}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_SortingOrder
       value: 4981
@@ -107,7 +197,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: -5402582867162545519, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 2973772267230762223}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
@@ -118,10 +211,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8634758240397101114}
-    - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 729541883875690596}
   m_SourcePrefab: {fileID: 100100000, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+--- !u!4 &260085699697330738 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2839182610467228382, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+  m_PrefabInstance: {fileID: 2664669842145263852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1607945260240377179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3650834539122873783, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
@@ -152,15 +247,18 @@ MonoBehaviour:
   currentLevel: 1
   maxLevel: 3
   totalSpent: 0
+  upgradeCanvasPrefab: {fileID: 0}
   levels:
   - cost: 125
     range: 7.5
     fireRate: 1.5
     damage: 8
+    visualData: []
   - cost: 200
     range: 8
     fireRate: 1.8
     damage: 10
+    visualData: []
 --- !u!58 &7133591613437250769
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -218,88 +316,73 @@ MonoBehaviour:
   - levelName: LVL1
     directionalData:
     - directionName: index1
-      sprite: {fileID: -6912519822022482156, guid: 7474d0c0a632fdc918a6d8e10e51862c, type: 3}
+      sprite: {fileID: 786507015809441681, guid: 0440164e8e9d8965e877674e797b8400, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0.359, y: 1.145}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index2
-      sprite: {fileID: -7115864776621549456, guid: 5954934ab06e891cb954434b8a181763, type: 3}
+      sprite: {fileID: 442074379674674296, guid: ad0f7ece733202c7ab5e9bb255b180e6, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: -0.472, y: 1.13}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index3
-      sprite: {fileID: -4975044728960347273, guid: e1f7a085aa264ae58bee8a8444a5e62f, type: 3}
+      sprite: {fileID: 1912471718753472187, guid: e675abdb572eef0c5ab5e84229e327a0, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: -0.446, y: 0.777}
+      firePointOffset: {x: -0.6, y: 2.01}
     - directionName: index4
-      sprite: {fileID: -3805774032090215806, guid: 8993799f235ab548fa24d8b80e591bb0, type: 3}
+      sprite: {fileID: -345350253570335462, guid: 5991c156902b6c2578a91c40362bcdf9, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0.385, y: 0.859}
+      firePointOffset: {x: -0.6, y: 2.05}
   - levelName: LVL2
     directionalData:
     - directionName: index1
-      sprite: {fileID: 8761484638757995368, guid: ce264c2d9f6f99b48b7dbf51e1a6beeb, type: 3}
+      sprite: {fileID: -6533861924235682216, guid: f13eeef6dcd36d6448f45bd1735b523b, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index2
-      sprite: {fileID: 8620180294374563742, guid: d2ca9cf4315b36bc09ffce0090ed2b5e, type: 3}
+      sprite: {fileID: -2602351525764180979, guid: 75e4bcba6b6340c5d9f9e7be8030c657, type: 3}
       scale: {x: 0.9, y: 0.9, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index3
-      sprite: {fileID: 8815362633290462786, guid: 65ea817eb845501348d32765513e3452, type: 3}
+      sprite: {fileID: 7996780663037054501, guid: 402442480b568e9f7a98376e222a213f, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.6, y: 2.01}
     - directionName: index4
-      sprite: {fileID: -3511027342226765338, guid: 5f39b07039e31bc1c98beebdf73bf81e, type: 3}
+      sprite: {fileID: -1694396731174174784, guid: 62ae08553c0cfffeaa25bb59d01fed3f, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.6, y: 2.01}
   - levelName: LVL3
     directionalData:
     - directionName: index1
-      sprite: {fileID: 6585365102481021439, guid: e2d8467a322bbff0a8454da1f6fb5d1d, type: 3}
+      sprite: {fileID: -6986323445879007913, guid: 6ee25b9644519bf76ace9ef83112bc01, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index2
-      sprite: {fileID: -5197601890128960650, guid: 6855b52544f93e0869fff283bf11d744, type: 3}
+      sprite: {fileID: -7580733815989700268, guid: 2fff9c0da93cd676d8d9327a303f9aee, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: 0.6, y: 2.05}
     - directionName: index3
-      sprite: {fileID: -1031163408686741369, guid: 79b820ccce4378055a4a517153d9b4bb, type: 3}
+      sprite: {fileID: -4299211483604675686, guid: b47b00172ebd8787598ea03ccda2a926, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.6, y: 2.01}
     - directionName: index4
-      sprite: {fileID: 7284157387934476113, guid: 8f7edc3693f948a00802c00b101a9475, type: 3}
+      sprite: {fileID: -3494729055454076091, guid: b23745618cd1d48a490019c30510eef8, type: 3}
       scale: {x: 0.8, y: 0.8, z: 0}
-      firePointOffset: {x: 0, y: 0}
+      firePointOffset: {x: -0.6, y: 2.01}
   currentLevelIndex: 2
   currentDirectionalData:
   - directionName: index1
-    sprite: {fileID: 6585365102481021439, guid: e2d8467a322bbff0a8454da1f6fb5d1d, type: 3}
+    sprite: {fileID: -6986323445879007913, guid: 6ee25b9644519bf76ace9ef83112bc01, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
     firePointOffset: {x: 0, y: 0}
   - directionName: index2
-    sprite: {fileID: -5197601890128960650, guid: 6855b52544f93e0869fff283bf11d744, type: 3}
+    sprite: {fileID: -7580733815989700268, guid: 2fff9c0da93cd676d8d9327a303f9aee, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
     firePointOffset: {x: 0, y: 0}
   - directionName: index3
-    sprite: {fileID: -1031163408686741369, guid: 79b820ccce4378055a4a517153d9b4bb, type: 3}
+    sprite: {fileID: -4299211483604675686, guid: b47b00172ebd8787598ea03ccda2a926, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
     firePointOffset: {x: 0, y: 0}
   - directionName: index4
-    sprite: {fileID: 7284157387934476113, guid: 8f7edc3693f948a00802c00b101a9475, type: 3}
+    sprite: {fileID: -3494729055454076091, guid: b23745618cd1d48a490019c30510eef8, type: 3}
     scale: {x: 0.8, y: 0.8, z: 0}
     firePointOffset: {x: 0, y: 0}
   currentSegmentIndex: 3
---- !u!114 &729541883875690596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856502004955357946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be07abd6a59cf238a986c953a10f828, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.DepthSorter
-  sortingOrderBase: 5000
-  offset: -0.5
-  runOnlyOnce: 1

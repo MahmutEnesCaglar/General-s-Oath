@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.962, y: 0.912}
+  m_AnchoredPosition: {x: 0.016, y: 0.114}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4237244252034190646
@@ -185,11 +185,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2868482632617250478, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_LocalScale.z
@@ -260,15 +260,18 @@ MonoBehaviour:
   currentLevel: 1
   maxLevel: 3
   totalSpent: 0
+  upgradeCanvasPrefab: {fileID: 0}
   levels:
   - cost: 100
     range: 6.5
     fireRate: 0.6
     damage: 11
+    visualData: []
   - cost: 200
     range: 7
     fireRate: 0.7
     damage: 14
+    visualData: []
 --- !u!58 &2731123061827921478
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -362,12 +365,12 @@ SpriteRenderer:
   m_SortingLayerID: -616371365
   m_SortingLayer: 3
   m_SortingOrder: 5026
-  m_Sprite: {fileID: 3367191846994755705, guid: eb7099e3cc0299637b138d6e97071a67, type: 3}
+  m_Sprite: {fileID: 7026406210717521179, guid: 9c5dbd80399b326beae2aa07e9353b73, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.14, y: 4.1}
+  m_Size: {x: 2.52, y: 2.19}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -389,137 +392,137 @@ MonoBehaviour:
   - levelName: LVL1
     directionalData:
     - directionName: 0
-      sprite: {fileID: -6912519822022482156, guid: 1a072de43bf1ab88b95ee23e3e699323, type: 3}
-      scale: {x: 0.36, y: 0.345, z: 0}
-      firePointOffset: {x: 0.764, y: 0.466}
+      sprite: {fileID: 5256407709046670639, guid: 985c42573346fc829a25fc389185ff08, type: 3}
+      scale: {x: 0.35, y: 0.338, z: 0}
+      firePointOffset: {x: 0.826, y: 0.74}
     - directionName: 1
-      sprite: {fileID: -7115864776621549456, guid: d7fb3bfefb26ca7bcab4a3326ef4a4dd, type: 3}
+      sprite: {fileID: 4464044757279328439, guid: 20dc4a3d9b5c91089859ab977b53ff30, type: 3}
       scale: {x: 0.42, y: 0.37, z: 0}
-      firePointOffset: {x: 0.502, y: 0.802}
+      firePointOffset: {x: 0.708, y: 0.9}
     - directionName: 2
-      sprite: {fileID: 577809931620228447, guid: 56b407faead7d1b7a8c398a82c763350, type: 3}
+      sprite: {fileID: -3849654322671932060, guid: 71426c6fb730cb8b8bbd30512260bafe, type: 3}
       scale: {x: 0.4, y: 0.35, z: 0}
-      firePointOffset: {x: 0.01, y: 0.9}
+      firePointOffset: {x: 0, y: 1}
     - directionName: 3
-      sprite: {fileID: -4975044728960347273, guid: 26f253827c7d558bba5cffb7160bc65e, type: 3}
+      sprite: {fileID: -6435221159292409811, guid: c516a882de815707083d0ab70005d8cc, type: 3}
       scale: {x: 0.47, y: 0.4, z: 0}
-      firePointOffset: {x: -0.513, y: 0.767}
+      firePointOffset: {x: -0.7, y: 0.9}
     - directionName: 4
-      sprite: {fileID: -3805774032090215806, guid: 19dd3a46d25de5270949907f86dd6677, type: 3}
+      sprite: {fileID: -8494731174379910494, guid: c484677bf3c9c1f6f887b52145720f4b, type: 3}
       scale: {x: 0.36, y: 0.31, z: 0}
       firePointOffset: {x: -0.622, y: 0.618}
     - directionName: 5
-      sprite: {fileID: 3367191846994755705, guid: eb7099e3cc0299637b138d6e97071a67, type: 3}
+      sprite: {fileID: -7611623747300906517, guid: ead21c1bdc2a7ba349c37e3fb7f6816c, type: 3}
       scale: {x: 0.71, y: 0.6, z: 0}
-      firePointOffset: {x: -0.457, y: 0.328}
+      firePointOffset: {x: -0.6, y: 0.2}
     - directionName: 6
-      sprite: {fileID: 8004925861451462671, guid: 049c35d0a7280298a9c203239aa3cf37, type: 3}
-      scale: {x: 0.4, y: 0.37, z: 0}
-      firePointOffset: {x: 0.014, y: 0.244}
+      sprite: {fileID: 2278407366652973845, guid: b468c0e7d82ea29f0a061e33052b7863, type: 3}
+      scale: {x: 0.4, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 0.1}
     - directionName: 7
-      sprite: {fileID: -8292917871870162833, guid: f54e670e97998cd66a83b2ed838709c4, type: 3}
-      scale: {x: 0.39, y: 0.37, z: 0}
-      firePointOffset: {x: 0.531, y: 0.338}
+      sprite: {fileID: 6215111086223580448, guid: 51453ac2685e33280837deabf7343f1b, type: 3}
+      scale: {x: 0.39, y: 0.33, z: 0}
+      firePointOffset: {x: 0.6, y: 0.2}
   - levelName: LVL2
     directionalData:
     - directionName: index0
-      sprite: {fileID: 8761484638757995368, guid: 73e77bb5f2f54e573bd7934ac91826eb, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.962, y: 0.912}
+      sprite: {fileID: -8381621447431409479, guid: 4fb18c79735642a5db576b41bc853115, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.826, y: 0.74}
     - directionName: index1
-      sprite: {fileID: 8620180294374563742, guid: 1a614ce51772e89069715366d2411fcc, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.806, y: 1}
+      sprite: {fileID: -8269464908188043653, guid: 6aef3d6869e37aff281ad185a4f73039, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.708, y: 0.9}
     - directionName: index2
-      sprite: {fileID: 7388082663849961530, guid: c026ef2bd8e633acabd507405a174604, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.024, y: 1.275}
+      sprite: {fileID: 3008496405792646079, guid: 2458c3a8d1949ac4bb0ed09fff92c717, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 1}
     - directionName: index3
-      sprite: {fileID: 8815362633290462786, guid: 7a59bc10514ddd059b8c0c6ddd26a45b, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.837, y: 1.039}
+      sprite: {fileID: -93039818903597768, guid: 704a40f1b57e3e914a4dd7f85272edf1, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: -0.7, y: 0.9}
     - directionName: index4
-      sprite: {fileID: -3511027342226765338, guid: e7fb178e913a2b656be25e68db8ef506, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
+      sprite: {fileID: 3615105031975056462, guid: 54c90c5299e7f132aa454a24494bdaca, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
       firePointOffset: {x: -0.891, y: 0.873}
     - directionName: index5
-      sprite: {fileID: 176044354435522525, guid: 78120b50340e9d6c0b2f2e961b5e766f, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.709, y: 0.393}
+      sprite: {fileID: -2485953027120858190, guid: 0f73ead8a6b7d9557b67ef5380d6634f, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: -0.6, y: 0.2}
     - directionName: index6
-      sprite: {fileID: -5757633211995521519, guid: 3ee5f5273137d8b70ad70850c4a530cc, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.019, y: 0.186}
+      sprite: {fileID: 7026406210717521179, guid: 9c5dbd80399b326beae2aa07e9353b73, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 0.1}
     - directionName: index7
-      sprite: {fileID: 7670684905506147137, guid: 96da324451b56245c85494253f4ae448, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.695, y: 0.383}
+      sprite: {fileID: 3848605565124635473, guid: c3db011ecaf645a4697eaab6e566826c, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.695, y: 0.2}
   - levelName: LVL3
     directionalData:
     - directionName: index0
-      sprite: {fileID: 6585365102481021439, guid: 6f91f5ddbbf07cbbaaa58b3a29b10225, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.962, y: 0.912}
+      sprite: {fileID: 68379227948645163, guid: 0de338bbfe3bd0ccba9f423aafd5a68e, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.826, y: 0.74}
     - directionName: index1
-      sprite: {fileID: -5197601890128960650, guid: 9882597771b4ca4f2a634a59f035a07c, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.806, y: 1}
+      sprite: {fileID: 6037765798353940600, guid: 99b8dba4aebde8be19e83ef6a1b8cd5d, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.708, y: 0.9}
     - directionName: index2
-      sprite: {fileID: 5536299627199380731, guid: 70af50913cef76f8ba8d2cb37f665cea, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.024, y: 1.275}
+      sprite: {fileID: 3472249991465726633, guid: b733b937967e75ee4bb63bd93c7a60ca, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 1}
     - directionName: index3
-      sprite: {fileID: -1031163408686741369, guid: ae466289bc0070820a28d250c6eaa508, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.837, y: 1.039}
+      sprite: {fileID: 4763975169519539666, guid: 3d95ca600ca91975d81bd715e9c3cd8c, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: -0.7, y: 0.9}
     - directionName: index4
-      sprite: {fileID: 7284157387934476113, guid: 9bb80fb2457d1eb3a8862b25eb58ec70, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
+      sprite: {fileID: 8199367001165006629, guid: 7968adca65e46477aaa690bc9978812e, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
       firePointOffset: {x: -0.891, y: 0.873}
     - directionName: index5
-      sprite: {fileID: 7385425542235585632, guid: dbb6cc8a78252ad9189839c5814130f2, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.709, y: 0.393}
+      sprite: {fileID: 7036664125307544328, guid: 37b4e8a9a829fffd5afe32f57df81297, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: -0.6, y: 0.2}
     - directionName: index6
-      sprite: {fileID: 3105815387007705103, guid: 6c30954e0a340eb6c9619fbafa47d6c9, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: -0.019, y: 0.186}
+      sprite: {fileID: -309418161606183065, guid: 3568c11983d3452b090b842f9f6c2678, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0, y: 0.1}
     - directionName: index7
-      sprite: {fileID: -7905673191367254083, guid: 7d31600b43bb299dcaf18bab81cc78d4, type: 3}
-      scale: {x: 0.4, y: 0.4, z: 0}
-      firePointOffset: {x: 0.695, y: 0.383}
-  currentLevelIndex: 1
+      sprite: {fileID: -7934067009957222227, guid: 856e932fad8b791e88e5ae652af0e27c, type: 3}
+      scale: {x: 0.35, y: 0.35, z: 0}
+      firePointOffset: {x: 0.695, y: 0.2}
+  currentLevelIndex: 0
   currentDirectionalData:
-  - directionName: index0
-    sprite: {fileID: 8761484638757995368, guid: 73e77bb5f2f54e573bd7934ac91826eb, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0.962, y: 0.912}
-  - directionName: index1
-    sprite: {fileID: 8620180294374563742, guid: 1a614ce51772e89069715366d2411fcc, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0.806, y: 1}
-  - directionName: index2
-    sprite: {fileID: 7388082663849961530, guid: c026ef2bd8e633acabd507405a174604, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: -0.024, y: 1.275}
-  - directionName: index3
-    sprite: {fileID: 8815362633290462786, guid: 7a59bc10514ddd059b8c0c6ddd26a45b, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: -0.837, y: 1.039}
-  - directionName: index4
-    sprite: {fileID: -3511027342226765338, guid: e7fb178e913a2b656be25e68db8ef506, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: -0.891, y: 0.873}
-  - directionName: index5
-    sprite: {fileID: 176044354435522525, guid: 78120b50340e9d6c0b2f2e961b5e766f, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: -0.709, y: 0.393}
-  - directionName: index6
-    sprite: {fileID: -5757633211995521519, guid: 3ee5f5273137d8b70ad70850c4a530cc, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: -0.019, y: 0.186}
-  - directionName: index7
-    sprite: {fileID: 7670684905506147137, guid: 96da324451b56245c85494253f4ae448, type: 3}
-    scale: {x: 0.4, y: 0.4, z: 0}
-    firePointOffset: {x: 0.695, y: 0.383}
+  - directionName: 0
+    sprite: {fileID: 5256407709046670639, guid: 985c42573346fc829a25fc389185ff08, type: 3}
+    scale: {x: 0.35, y: 0.338, z: 0}
+    firePointOffset: {x: 0.826, y: 0.74}
+  - directionName: 1
+    sprite: {fileID: 4464044757279328439, guid: 20dc4a3d9b5c91089859ab977b53ff30, type: 3}
+    scale: {x: 0.42, y: 0.37, z: 0}
+    firePointOffset: {x: 0.708, y: 0.9}
+  - directionName: 2
+    sprite: {fileID: -3849654322671932060, guid: 71426c6fb730cb8b8bbd30512260bafe, type: 3}
+    scale: {x: 0.4, y: 0.35, z: 0}
+    firePointOffset: {x: 0, y: 1}
+  - directionName: 3
+    sprite: {fileID: -6435221159292409811, guid: c516a882de815707083d0ab70005d8cc, type: 3}
+    scale: {x: 0.47, y: 0.4, z: 0}
+    firePointOffset: {x: -0.7, y: 0.9}
+  - directionName: 4
+    sprite: {fileID: -8494731174379910494, guid: c484677bf3c9c1f6f887b52145720f4b, type: 3}
+    scale: {x: 0.36, y: 0.31, z: 0}
+    firePointOffset: {x: -0.622, y: 0.618}
+  - directionName: 5
+    sprite: {fileID: -7611623747300906517, guid: ead21c1bdc2a7ba349c37e3fb7f6816c, type: 3}
+    scale: {x: 0.71, y: 0.6, z: 0}
+    firePointOffset: {x: -0.6, y: 0.2}
+  - directionName: 6
+    sprite: {fileID: 2278407366652973845, guid: b468c0e7d82ea29f0a061e33052b7863, type: 3}
+    scale: {x: 0.4, y: 0.35, z: 0}
+    firePointOffset: {x: 0, y: 0.1}
+  - directionName: 7
+    sprite: {fileID: 6215111086223580448, guid: 51453ac2685e33280837deabf7343f1b, type: 3}
+    scale: {x: 0.39, y: 0.33, z: 0}
+    firePointOffset: {x: 0.6, y: 0.2}
   currentSegmentIndex: 7

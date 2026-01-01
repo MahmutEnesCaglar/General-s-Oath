@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/Okcu/LVL2/seffaf/copper_index1.png.meta
+guid: d2ca9cf4315b36bc09ffce0090ed2b5e
+========
 guid: 6a8b146f9f417a50bbaac2d9e1e1635d
+>>>>>>>> main:Assets/Sprites/Havan/LVL2/copper_index1.png.meta
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -103,12 +107,21 @@ TextureImporter:
       name: copper_index1_0
       rect:
         serializedVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/Okcu/LVL2/seffaf/copper_index1.png.meta
+        x: 55
+        y: 18
+        width: 330
+        height: 535
+      alignment: 9
+      pivot: {x: 0.5, y: 0.38}
+========
         x: 0
         y: 0
         width: 919
         height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
+>>>>>>>> main:Assets/Sprites/Havan/LVL2/copper_index1.png.meta
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b5d031b1f800cc4bdab84594b0a535da
     internalID: 0
     vertices: []
     indices: 

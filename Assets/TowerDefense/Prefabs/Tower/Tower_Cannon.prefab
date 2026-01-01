@@ -256,19 +256,16 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   projectilePrefab: {fileID: 2284121689837625060, guid: 9766464d27bb1024d94abdd06250f777, type: 3}
   occupiedSpot: {fileID: 0}
+  buildCost: 60
   currentLevel: 1
   maxLevel: 3
   totalSpent: 0
   levels:
-  - cost: 60
-    range: 6
-    fireRate: 0.5
-    damage: 8
   - cost: 100
     range: 6.5
     fireRate: 0.6
     damage: 11
-  - cost: 160
+  - cost: 200
     range: 7
     fireRate: 0.7
     damage: 14

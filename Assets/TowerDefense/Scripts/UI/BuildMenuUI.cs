@@ -52,13 +52,13 @@ namespace TowerDefense.UI
                 {
                     int cost = 0;
                     
-                    // 1. Öncelik: Prefab üzerindeki Tower scriptinden maliyeti oku
+                    // 1. Öncelik: Prefab üzerindeki Tower scriptinden buildCost'u oku
                     if (buildManager.towerPrefabs[i] != null)
                     {
                         TowerDefense.Tower.Tower tower = buildManager.towerPrefabs[i].GetComponent<TowerDefense.Tower.Tower>();
-                        if (tower != null && tower.levels != null && tower.levels.Count > 0)
+                        if (tower != null)
                         {
-                            cost = tower.levels[0].cost;
+                            cost = tower.buildCost;
                         }
                     }
                     

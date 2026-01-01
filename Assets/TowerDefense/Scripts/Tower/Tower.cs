@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TowerDefense.Enemy;
 using TowerDefense.Core; // GameManager için
+using TowerDefense.UI; // <--- BU SATIRI EN ÜSTE EKLE
 
 namespace TowerDefense.Tower
 {
@@ -28,14 +29,19 @@ namespace TowerDefense.Tower
         [Header("Setup")]
         public GameObject projectilePrefab;
         protected RotatableTowerSprite rotatableVisual;
-        
+
         // Kule inşa edildiğinde hangi BuildSpot üzerine kurulduğunu saklayalım
         [HideInInspector] public GameObject occupiedSpot;
 
         [Header("Upgrade Sistemi")]
+        public int buildCost = 50; // İlk yerleştirme maliyeti
         public int currentLevel = 1;
         public int maxLevel = 3;
         public int totalSpent = 0; // Toplam harcanan para (Satış için)
+
+        [Header("UI Referansı")]
+        public GameObject upgradeCanvasPrefab; // Kuleye tıklayınca çıkacak buton prefabı
+        private GameObject activeUpgradeUI;    // O an açık olan UI
 
         [System.Serializable]
         public struct LevelData
@@ -45,7 +51,8 @@ namespace TowerDefense.Tower
             public float fireRate;
             public int damage;
             
-            // Visual Data artık RotatableTowerSprite.cs içinde tutuluyor
+            // BURASI DEĞİŞTİ: Artık her level kendi tam paketini taşıyor (Resim + Scale + Offset)
+            public List<DirectionalData> visualData; 
         }
 
         // Değişiklik kontrolü
@@ -263,6 +270,54 @@ namespace TowerDefense.Tower
             Debug.Log($"{towerName} sakinleşti.");
         }
         
+        void OnMouseDown()
+        {
+            // UI veya özel modlar (Bariyer vb.) açıksa tıklama
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+            
+            ToggleUpgradeUI();
+        }
+
+        public void ToggleUpgradeUI()
+        {
+            // Zaten açıksa kapat
+            if (activeUpgradeUI != null)
+            {
+                Destroy(activeUpgradeUI);
+                return;
+            }
+
+            // Maksimum seviyedeysek açma
+            if (currentLevel >= maxLevel)
+            {
+                Debug.Log("Kule maksimum seviyede!");
+                return;
+            }
+
+            // UI oluştur (Kulenin tepesinde)
+            if (upgradeCanvasPrefab != null)
+            {
+                // Diğer tüm açık UI'ları kapatmak istersen burada bir Event çağırabilirsin
+                
+                activeUpgradeUI = Instantiate(upgradeCanvasPrefab, transform.position + Vector3.up * 1.5f, Quaternion.identity);
+                
+                // UI içindeki scripti bul ve ayarla (Birazdan yazacağız: TowerUpgradeUI)
+                TowerUpgradeUI uiScript = activeUpgradeUI.GetComponent<TowerUpgradeUI>();
+                if (uiScript != null)
+                {
+                    // Sıradaki seviyenin verisini bul (Level 1 isek index 0, Level 2 verisini alacağız)
+                    // Logic: currentLevel 1 ise, levels[0] bize Level 2 bilgilerini verir.
+                    // Çünkü levels listesine sadece YÜKSELTMELERİ koyacağız.
+                    
+                    if (currentLevel - 1 < levels.Count)
+                    {
+                        LevelData nextLevel = levels[currentLevel - 1];
+                        uiScript.Setup(this, nextLevel.cost);
+                    }
+                }
+            }
+        }
+
         public void Initialize(int cost)
         {
             totalSpent = cost;
@@ -271,9 +326,9 @@ namespace TowerDefense.Tower
         public bool Upgrade()
         {
             int nextLevelIndex = currentLevel - 1;
-            
+
             // Index ve Liste güvenliği kontrolü
-            if (levels == null || nextLevelIndex >= levels.Count) 
+            if (levels == null || nextLevelIndex >= levels.Count)
             {
                 Debug.LogWarning("Yükseltilecek seviye verisi bulunamadı!");
                 return false;
@@ -285,15 +340,18 @@ namespace TowerDefense.Tower
             if (MoneyManager.Instance != null && MoneyManager.Instance.currentMoney >= data.cost)
             {
                 MoneyManager.Instance.SpendMoney(data.cost);
-                
+
                 currentLevel++;
                 totalSpent += data.cost; // Harcanan parayı ekle
-                
+
                 // İstatistikleri güncelle
                 this.range = data.range;
                 this.fireRate = data.fireRate;
-                // Hasarı güncelle (Projectile scriptin bunu okumalı)
-                // this.damage = data.damage; 
+                this.damage = data.damage;
+
+                // Base değerleri de güncelle (Rage sisteminin doğru çalışması için)
+                baseDamage = data.damage;
+                baseFireRate = data.fireRate;
 
                 // --- GÖRSEL GÜNCELLEME ---
                 // Child objedeki scripti bul
@@ -307,6 +365,9 @@ namespace TowerDefense.Tower
                 }
 
                 Debug.Log($"Kule Level {currentLevel} oldu!");
+
+                // Menüyü kapat
+                if (activeUpgradeUI != null) Destroy(activeUpgradeUI);
                 return true;
             }
             else
@@ -323,14 +384,14 @@ namespace TowerDefense.Tower
             {
                 MoneyManager.Instance.AddMoney(refundAmount);
             }
-            
+
             // BuildSpot'u tekrar aktif et
             if (occupiedSpot != null)
             {
                 Collider2D col = occupiedSpot.GetComponent<Collider2D>();
                 if (col != null) col.enabled = true;
             }
-            
+
             Destroy(gameObject);
         }
     }

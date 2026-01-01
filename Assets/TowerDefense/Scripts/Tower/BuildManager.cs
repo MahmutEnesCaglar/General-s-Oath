@@ -59,13 +59,15 @@ namespace TowerDefense.Tower
             Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z)));
 
-            // 2D Raycast atıyoruz - Sadece "BuildSpot" tag'li objeleri arıyoruz
-            // Vector2.zero, "tam bu noktada bir şey var mı" demektir.
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+            // TÜM çarpışmaları kontrol et
+            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPoint, Vector2.zero);
 
-            if (hit.collider != null && hit.collider.CompareTag("BuildSpot"))
+            foreach (RaycastHit2D hit in hits)
             {
-                return true;
+                if (hit.collider != null && hit.collider.CompareTag("BuildSpot"))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -76,27 +78,13 @@ namespace TowerDefense.Tower
             Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z)));
 
-            // Tıklanan yerde ne var?
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+            // TÜM çarpışmaları al (RaycastAll kullanarak overlap sorununu çöz)
+            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPoint, Vector2.zero);
 
-            if (hit.collider != null)
+            // ÖNCELİK: Kuleler (Tower'a tıklamak BuildSpot'tan daha önemli)
+            foreach (RaycastHit2D hit in hits)
             {
-                // 1. Durum: BuildSpot'a tıklandı
-                if (hit.collider.CompareTag("BuildSpot"))
-                {
-                    // Upgrade menüsünü kapat
-                    if (upgradeMenu != null) upgradeMenu.CloseMenu();
-
-                    // Bulduk! Tıklanan objenin (Spot_1 vb.) tam merkezini alıyoruz
-                    selectedSpotObj = hit.collider.gameObject;
-                    selectedBuildPosition = hit.transform.position;
-                    
-                    // Menüyü aç
-                    OpenBuildMenu(selectedBuildPosition);
-                    return;
-                }
-                // 2. Durum: Kuleye tıklandı (Tag: "Tower" olmalı)
-                else if (hit.collider.CompareTag("Tower"))
+                if (hit.collider != null && hit.collider.CompareTag("Tower"))
                 {
                     // Build menüsünü kapat
                     CloseBuildMenu();
@@ -110,7 +98,25 @@ namespace TowerDefense.Tower
                     return;
                 }
             }
-            
+
+            // İKİNCİ ÖNCELİK: BuildSpot
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.CompareTag("BuildSpot"))
+                {
+                    // Upgrade menüsünü kapat
+                    if (upgradeMenu != null) upgradeMenu.CloseMenu();
+
+                    // Bulduk! Tıklanan objenin (Spot_1 vb.) tam merkezini alıyoruz
+                    selectedSpotObj = hit.collider.gameObject;
+                    selectedBuildPosition = hit.transform.position;
+
+                    // Menüyü aç
+                    OpenBuildMenu(selectedBuildPosition);
+                    return;
+                }
+            }
+
             // Boşluğa tıklandıysa hepsini kapat
             CloseBuildMenu();
             if (upgradeMenu != null) upgradeMenu.CloseMenu();
@@ -143,17 +149,17 @@ namespace TowerDefense.Tower
                 return;
             }
 
-            // Kule maliyetini al (Önce prefabdan, yoksa listeden)
+            // Kule maliyetini al (Önce prefabdan buildCost'u al, yoksa listeden)
             int cost = 0;
             if (towerPrefabs[towerIndex] != null)
             {
                 Tower tower = towerPrefabs[towerIndex].GetComponent<Tower>();
-                if (tower != null && tower.levels != null && tower.levels.Count > 0)
+                if (tower != null)
                 {
-                    cost = tower.levels[0].cost;
+                    cost = tower.buildCost;
                 }
             }
-            
+
             // Eğer prefabdan alınamadıysa manuel listeden al
             if (cost == 0 && towerIndex < towerCosts.Length)
             {

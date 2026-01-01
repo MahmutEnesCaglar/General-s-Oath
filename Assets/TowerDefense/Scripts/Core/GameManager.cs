@@ -1,5 +1,4 @@
 using UnityEngine;
-using TowerDefense.Data;
 using TowerDefense.Tower;
 using TowerDefense.Enemy;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace TowerDefense.Core
 
         [Header("Referanslar")]
         public WaveManager waveManager;
-        public TowerConfigurator towerConfigurator;
         public FinalBossConfigurator bossConfigurator;
 
         [Header("Hero System")]
@@ -56,9 +54,6 @@ namespace TowerDefense.Core
 
             if (waveManager == null)
                 waveManager = FindAnyObjectByType<WaveManager>();
-
-            if (towerConfigurator == null)
-                towerConfigurator = gameObject.AddComponent<TowerConfigurator>();
 
             if (bossConfigurator == null)
                 bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
@@ -150,16 +145,7 @@ namespace TowerDefense.Core
 
 
 
-        private TowerStats GetTowerStats(string towerType)
-        {
-            switch (towerType.ToLower())
-            {
-                case "ground": return towerConfigurator.CreateGroundTower();
-                case "universal": return towerConfigurator.CreateUniversalTower();
-                case "aoe": return towerConfigurator.CreateAOETower();
-                default: return null;
-            }
-        }
+        // GetTowerStats() metodu kaldırıldı - Artık BuildManager prefab-based sistem kullanıyor
 
         public void OnEnemyReachedBase(int damage)
         {
@@ -202,8 +188,7 @@ namespace TowerDefense.Core
             Debug.Log("\n" + new string('=', 70));
             Debug.Log("TOWER DEFENSE - GAME CONFIGURATION");
             Debug.Log(new string('=', 70));
-            if (towerConfigurator != null)
-                towerConfigurator.PrintAllTowerStats();
+            Debug.Log("Tower sistemi BuildManager tarafından yönetiliyor (Prefab-based)");
             Debug.Log("\n" + new string('=', 70));
             if (bossConfigurator != null)
                 bossConfigurator.PrintAllBossInfo();

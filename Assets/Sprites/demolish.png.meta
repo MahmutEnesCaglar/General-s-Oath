@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/demolish.png.meta
 guid: 3efa821ffddc1648d81543502cc9cfaf
 TextureImporter:
   internalIDToNameTable:
@@ -14,6 +15,14 @@ TextureImporter:
   - first:
       213: -4505485810020509934
     second: demolish_3
+========
+guid: 92696e3ed6f35062a9859648d9880cb1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6552139727597232115
+    second: CanBar_Background_0
+>>>>>>>> main:Assets/Sprites/Can-Bari/CanBar_Background.png.meta
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,6 +118,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/demolish.png.meta
       name: demolish_3
       rect:
         serializedVersion: 2
@@ -116,6 +126,15 @@ TextureImporter:
         y: 142
         width: 284
         height: 282
+========
+      name: CanBar_Background_0
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 214
+        width: 440
+        height: 71
+>>>>>>>> main:Assets/Sprites/Can-Bari/CanBar_Background.png.meta
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,8 +143,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
+<<<<<<<< HEAD:Assets/Sprites/demolish.png.meta
       spriteID: 2171a21e68c4971c0800000000000000
       internalID: -4505485810020509934
+========
+      spriteID: 3ff58261e50edea50800000000000000
+      internalID: 6552139727597232115
+>>>>>>>> main:Assets/Sprites/Can-Bari/CanBar_Background.png.meta
       vertices: []
       indices: 
       edges: []
@@ -134,8 +158,13 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
+<<<<<<<< HEAD:Assets/Sprites/demolish.png.meta
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 1537655665
+========
+    spriteID: 
+    internalID: 0
+>>>>>>>> main:Assets/Sprites/Can-Bari/CanBar_Background.png.meta
     vertices: []
     indices: 
     edges: []
@@ -144,11 +173,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+<<<<<<<< HEAD:Assets/Sprites/demolish.png.meta
       demolish_0: 5052260255910455469
       demolish_1: 906804063190373512
       demolish_2: -2775805203706578251
       demolish_3: -4505485810020509934
       demolish_4: -292025107
+========
+      CanBar_Background_0: 6552139727597232115
+>>>>>>>> main:Assets/Sprites/Can-Bari/CanBar_Background.png.meta
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

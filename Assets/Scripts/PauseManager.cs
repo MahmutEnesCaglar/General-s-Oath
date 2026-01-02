@@ -144,6 +144,7 @@ public class PauseManager : MonoBehaviour
     public void ReturnToMap()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("WorldMap");
+        // SceneManager.LoadScene("WorldMap");
+        SceneTransition.Instance.LoadScene("WorldMap");
     }
 }

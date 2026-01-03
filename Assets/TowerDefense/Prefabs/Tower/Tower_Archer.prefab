@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: -7580733815989700268, guid: 2fff9c0da93cd676d8d9327a303f9aee, type: 3}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_SortingOrder
-      value: 4981
+      value: 4983
       objectReference: {fileID: 0}
     - target: {fileID: 6615052812716034972, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       propertyPath: m_WasSpriteAssigned
@@ -211,6 +211,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8634758240397101114}
+    - targetCorrespondingSourceObject: {fileID: 6778571357310804502, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7347817436910947514}
   m_SourcePrefab: {fileID: 100100000, guid: 65d80a44f4b00a8f9acbb8207cd530fb, type: 3}
 --- !u!4 &260085699697330738 stripped
 Transform:
@@ -387,3 +390,18 @@ MonoBehaviour:
     scale: {x: 0.8, y: 0.8, z: 0}
     firePointOffset: {x: 0, y: 0}
   currentSegmentIndex: 3
+--- !u!114 &7347817436910947514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8856502004955357946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be07abd6a59cf238a986c953a10f828, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.DepthSorter
+  sortingOrderBase: 5000
+  offset: -0.6
+  runOnlyOnce: 0

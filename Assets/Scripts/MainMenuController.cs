@@ -44,7 +44,8 @@ public class MainMenuController : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Oyun başlatılıyor...");
-        SceneManager.LoadScene("WorldMap");
+        // SceneManager.LoadScene("WorldMap");
+        SceneTransition.Instance.LoadScene("WorldMap");
     }
 
     // QUIT

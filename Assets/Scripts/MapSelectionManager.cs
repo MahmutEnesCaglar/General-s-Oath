@@ -79,7 +79,9 @@ public class MapSelectionManager : MonoBehaviour
         if (!string.IsNullOrEmpty(selectedMapScene))
         {
             Debug.Log($"Harita başlatılıyor: {selectedMapScene}");
-            SceneManager.LoadScene(selectedMapScene);
+            // SceneManager.LoadScene(selectedMapScene);
+            SceneTransition.Instance.LoadScene(selectedMapScene);
+
         }
     }
     /// <summary>

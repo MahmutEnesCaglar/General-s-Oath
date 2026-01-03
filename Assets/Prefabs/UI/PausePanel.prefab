@@ -841,13 +841,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SFXSliderFeather
   volumeSlider: {fileID: 2141925518068933148}
-  Ses: {fileID: 3159051280190386916}
-  Ses_5: {fileID: 4663685803862370344, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_4: {fileID: -7717657575175492132, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_3: {fileID: -1896254629732729449, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_2: {fileID: -8385310973829938317, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_1: {fileID: 406519825177547223, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_0: {fileID: -9158905544887706743, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
+  Ses: {fileID: 7163798705923933682}
+  beyazTuy: {fileID: 21300000, guid: 4c201a1c9bb06dab68e7168a625f3fc1, type: 3}
+  kirmiziTuy: {fileID: 21300000, guid: afce1e7ef697c47618cbba70043a729b, type: 3}
 --- !u!1 &3920163063313212619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1807,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -9158905544887706743, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: afce1e7ef697c47618cbba70043a729b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1886,7 +1882,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -9158905544887706743, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: afce1e7ef697c47618cbba70043a729b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2231,12 +2227,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VolumeSliderFeather
   volumeSlider: {fileID: 94447309605583826}
   Ses: {fileID: 5182603919974993866}
-  Ses_5: {fileID: 4663685803862370344, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_4: {fileID: -7717657575175492132, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_3: {fileID: -1896254629732729449, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_2: {fileID: -8385310973829938317, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_1: {fileID: 406519825177547223, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_0: {fileID: -9158905544887706743, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
+  beyazTuy: {fileID: 21300000, guid: 4c201a1c9bb06dab68e7168a625f3fc1, type: 3}
+  kirmiziTuy: {fileID: 21300000, guid: afce1e7ef697c47618cbba70043a729b, type: 3}
 --- !u!114 &94447309605583826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2302,12 +2294,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MusicSliderFeather
   volumeSlider: {fileID: 94447309605583826}
   Ses: {fileID: 2832807412535983777}
-  Ses_5: {fileID: 4663685803862370344, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_4: {fileID: -7717657575175492132, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_3: {fileID: -1896254629732729449, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_2: {fileID: -8385310973829938317, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_1: {fileID: 406519825177547223, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
-  Ses_0: {fileID: -9158905544887706743, guid: 5fecf92b42ebb0ee6b3bb0ba56792a2b, type: 3}
+  beyazTuy: {fileID: 0}
+  kirmiziTuy: {fileID: 0}
 --- !u!1 &8384794307405274457
 GameObject:
   m_ObjectHideFlags: 0

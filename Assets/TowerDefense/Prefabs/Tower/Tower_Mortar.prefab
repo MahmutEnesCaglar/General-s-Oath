@@ -254,6 +254,7 @@ MonoBehaviour:
   currentLevel: 1
   maxLevel: 3
   totalSpent: 0
+  upgradeSound: {fileID: 8300000, guid: dd0095546fabdafc69c77ee3b1223a03, type: 3}
   upgradeCanvasPrefab: {fileID: 0}
   levels:
   - cost: 200
@@ -267,6 +268,7 @@ MonoBehaviour:
     damage: 15
     visualData: []
   explosionRadius: 1.5
+  shootSound: {fileID: 8300000, guid: 588f60cfc4cac1f61bcecd61243005e8, type: 3}
 --- !u!58 &2624819298848655254
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -126,7 +126,9 @@ namespace TowerDefense.Hero
                     
                     if (tower != null)
                     {
-                        tower.ToggleUpgradeUI();
+                        // tower.ToggleUpgradeUI(); // ARTIK BURADAN ÇAĞIRMIYORUZ
+                        // BuildManager zaten bu tıklamayı yakalayıp UpgradeMenuUI'ı açacak.
+                        // Biz sadece Hero'nun hareket etmesini engelliyoruz.
                     }
 
                     return;

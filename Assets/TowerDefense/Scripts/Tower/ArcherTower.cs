@@ -7,10 +7,20 @@ namespace TowerDefense.Tower
     {
         private ArcherRotation archerVisual;
 
+        [Header("Audio")]
+        public AudioClip[] shootSounds;
+        private AudioSource audioSource;
+
         protected override void Start()
         {
             base.Start();
             archerVisual = GetComponentInChildren<ArcherRotation>();
+            
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
         }
 
         protected override void Update()
@@ -40,6 +50,15 @@ namespace TowerDefense.Tower
                 if (arrow != null)
                 {
                     arrow.Setup(currentTarget, damage);
+                }
+
+                if (shootSounds != null && shootSounds.Length > 0 && audioSource != null)
+                {
+                    int index = Random.Range(0, shootSounds.Length);
+                    if (shootSounds[index] != null)
+                    {
+                        audioSource.PlayOneShot(shootSounds[index]);
+                    }
                 }
             }
         }

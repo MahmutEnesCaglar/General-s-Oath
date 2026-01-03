@@ -44,6 +44,9 @@ namespace TowerDefense.Tower
         public int maxLevel = 3;
         public int totalSpent = 0; // Toplam harcanan para (Satış için)
 
+        [Header("Audio")]
+        public AudioClip upgradeSound;
+
         [Header("UI Referansı")]
         public GameObject upgradeCanvasPrefab; // Kuleye tıklayınca çıkacak buton prefabı
         private GameObject activeUpgradeUI;    // O an açık olan UI
@@ -390,12 +393,18 @@ namespace TowerDefense.Tower
             }
 
             // 2. Eğer zaten biz açıksak, kapat (Toggle mantığı)
+            // DÜZELTME: activeUpgradeUI null olsa bile selectedTower biz isek, 
+            // menü kapalı ama kule seçili demektir. Bu durumda menüyü açmalıyız.
+            // Ancak "Toggle" mantığı gereği, eğer menü zaten açıksa kapatmalıyız.
             if (activeUpgradeUI != null)
             {
                 Debug.Log("UI zaten açık, kapatılıyor.");
                 Deselect();
                 return;
             }
+            
+            // Eğer selectedTower biz isek ama UI yoksa (ilk tıklama veya UI kapanmış ama seçim kalmış)
+            // devam et ve UI'ı aç.
 
             // 3. Maksimum seviye kontrolü (İsteğe bağlı: Max level olsa bile menü açılıp satma butonu görünebilir, 
             // ama orijinal kodda return vardı. Eğer satmak istiyorsak bunu kaldırmalıyız.)
@@ -463,6 +472,11 @@ namespace TowerDefense.Tower
 
                 currentLevel++;
                 totalSpent += data.cost; // Harcanan parayı ekle
+
+                // Ses çal
+                AudioSource src = GetComponent<AudioSource>();
+                if (src == null) src = gameObject.AddComponent<AudioSource>();
+                if (upgradeSound != null) src.PlayOneShot(upgradeSound);
 
                 // İstatistikleri güncelle
                 this.range = data.range;

@@ -96,8 +96,10 @@ namespace TowerDefense.Tower
                     // Build menüsünü kapat
                     CloseBuildMenu();
 
-                    // Kule scriptini al
+                    // Kule scriptini al (Parent'ta olabilir)
                     Tower towerScript = hit.collider.GetComponent<Tower>();
+                    if (towerScript == null) towerScript = hit.collider.GetComponentInParent<Tower>();
+
                     if (towerScript != null && upgradeMenu != null)
                     {
                         upgradeMenu.OpenMenu(towerScript);

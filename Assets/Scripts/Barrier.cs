@@ -16,10 +16,30 @@ namespace TowerDefense.Buildings
         public GameObject healthBarObj; // Canvas içindeki bar
         public Image healthFillImage;   // Doluluk oranı resmi
 
+        [Header("Audio")]
+        public AudioClip placeSound;
+        private AudioSource audioSource;
+
+        [HideInInspector] public bool isGhost = false;
+
         private void Start()
         {
             currentHealth = maxHealth;
             UpdateHealthBar();
+
+            if (isGhost) return;
+
+            // Ses çalma
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            if (placeSound != null)
+            {
+                audioSource.PlayOneShot(placeSound);
+            }
         }
 
         // Bariyer kurulurken doğru sprite'ı atamak için

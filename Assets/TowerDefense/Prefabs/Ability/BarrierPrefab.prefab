@@ -327,6 +327,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1013993287542315696}
   healthBarObj: {fileID: 7743398888459569821}
   healthFillImage: {fileID: 5015353741342549125}
+  placeSound: {fileID: 8300000, guid: cdb57ed9b8a9d5f7aa4ac9c9191789b5, type: 3}
 --- !u!212 &8018658999074026854
 SpriteRenderer:
   m_ObjectHideFlags: 0

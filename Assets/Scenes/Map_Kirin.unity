@@ -722,17 +722,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &129109574 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 94447309605583826, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
-  m_PrefabInstance: {fileID: 572091090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &146720147
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,11 +812,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &283040473 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4654708300572632039, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
-  m_PrefabInstance: {fileID: 572091090}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &407971114
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +982,7 @@ MonoBehaviour:
   waveManager: {fileID: 0}
   bossConfigurator: {fileID: 413839661}
   heroPrefab: {fileID: 6323719953710832613, guid: 39162a992c8fb1844ba31651a54bba98, type: 3}
-  heroSpawnPoint: {fileID: 39609368}
+  heroSpawnPoint: {fileID: 598762094}
   currentHero: {fileID: 0}
   enableHeroRespawn: 0
   heroRespawnDelay: 5
@@ -1072,7 +1056,7 @@ PrefabInstance:
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: sfxSlider
       value: 
-      objectReference: {fileID: 670808048}
+      objectReference: {fileID: 0}
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: cameraZoom
       value: 
@@ -1080,7 +1064,7 @@ PrefabInstance:
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: homeButton
       value: 
-      objectReference: {fileID: 535878367}
+      objectReference: {fileID: 0}
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: muteButton
       value: 
@@ -1088,7 +1072,7 @@ PrefabInstance:
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: pausePanel
       value: 
-      objectReference: {fileID: 283040473}
+      objectReference: {fileID: 0}
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: volumeText
       value: 
@@ -1096,7 +1080,7 @@ PrefabInstance:
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: musicSlider
       value: 
-      objectReference: {fileID: 129109574}
+      objectReference: {fileID: 0}
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: pauseButton
       value: 
@@ -1104,7 +1088,7 @@ PrefabInstance:
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: resumeButton
       value: 
-      objectReference: {fileID: 916087728}
+      objectReference: {fileID: 0}
     - target: {fileID: 404621810026065144, guid: 9233093b8155d16498afae2ffa028c2a, type: 3}
       propertyPath: volumeSlider
       value: 
@@ -1322,17 +1306,6 @@ MonoBehaviour:
   maxX: 20
   minY: -20
   maxY: 20
---- !u!114 &535878367 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3472931448291827012, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
-  m_PrefabInstance: {fileID: 572091090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &572091090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1532,6 +1505,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e75d8511fc3b29d92071c3c613f214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.UI.UpgradeMenuUI
+--- !u!1 &598762092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 598762094}
+  - component: {fileID: 598762093}
+  m_Layer: 0
+  m_Name: SpawnPointHero
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &598762093
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598762092}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 100
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0.12319422, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.5625, y: 2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &598762094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598762092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.97, y: -1.14, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,17 +1690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b585c3efadf523e7bb8215432cf94dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
---- !u!114 &670808048 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2141925518068933148, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
-  m_PrefabInstance: {fileID: 572091090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &731347428
 GameObject:
   m_ObjectHideFlags: 0
@@ -2500,17 +2552,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &916087728 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2630888673149710482, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
-  m_PrefabInstance: {fileID: 572091090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &916296414
 GameObject:
   m_ObjectHideFlags: 0
@@ -5265,6 +5306,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 39609368}
+  - {fileID: 598762094}
   - {fileID: 833012912}
   - {fileID: 78046098}
   - {fileID: 792001286}

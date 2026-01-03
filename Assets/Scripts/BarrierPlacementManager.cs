@@ -62,6 +62,13 @@ namespace TowerDefense.Environment
                 ghostObject = Instantiate(barrierPrefab);
                 ghostObject.name = "Ghost_Barrier";
                 
+                // Ghost objesinde ses çalmasını engelle
+                Barrier barrierScript = ghostObject.GetComponentInChildren<Barrier>();
+                if (barrierScript != null)
+                {
+                    barrierScript.isGhost = true;
+                }
+
                 ghostController = ghostObject.GetComponentInChildren<BarrierSpriteController>();
                 ghostRenderer = ghostObject.GetComponentInChildren<SpriteRenderer>();
 

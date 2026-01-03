@@ -10,10 +10,20 @@ namespace TowerDefense.Tower
 
         private MortarRotation mortarVisual;
 
+        [Header("Audio")]
+        public AudioClip shootSound;
+        private AudioSource audioSource;
+
         protected override void Start()
         {
             base.Start();
             mortarVisual = GetComponentInChildren<MortarRotation>();
+
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
         }
 
         protected override void Update()
@@ -46,6 +56,11 @@ namespace TowerDefense.Tower
                     // GÜNCELLEME BURADA:
                     // setup fonksiyonuna kendi 'explosionRadius' değerimizi de gönderiyoruz.
                     projScript.Setup(currentTarget, damage, explosionRadius);
+                }
+
+                if (shootSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(shootSound);
                 }
             }
         }

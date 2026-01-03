@@ -44,6 +44,19 @@ namespace TowerDefense.UI
 
         public void OpenMenu(TowerDefense.Tower.Tower tower)
         {
+            // Eğer aynı kuleye tıklandıysa ve menü açıksa, kapat (Toggle)
+            if (selectedTower == tower && panelObj != null && panelObj.activeSelf)
+            {
+                CloseMenu();
+                return;
+            }
+
+            // Farklı bir kule seçildiyse, önce eskisinin menzilini kapat
+            if (selectedTower != null && selectedTower != tower)
+            {
+                selectedTower.ToggleRangeVisual(false);
+            }
+
             selectedTower = tower;
             if (selectedTower == null) return;
 
@@ -60,6 +73,9 @@ namespace TowerDefense.UI
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(selectedTower.transform.position);
                 // Kulenin kendi belirlediği offset değerini kullan
                 panelObj.transform.position = screenPos + new Vector3(0, selectedTower.uiYOffset, 0); 
+                
+                // Layout'u zorla güncelle (Bazen ilk açılışta görünmeme sorunu için)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(panelObj.GetComponent<RectTransform>());
             }
         }
 

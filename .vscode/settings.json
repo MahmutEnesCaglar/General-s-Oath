@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "General's Oath_V_maho.sln"
+    "dotnet.defaultSolution": "Generals-Oath.sln"
 }

@@ -12,7 +12,7 @@ namespace TowerDefense.Core
 
         [Header("Oyun Durumu")]
         public int currentWave = 0;
-        public int playerMoney = 1000;  // Başlangıç parası
+        public int playerMoney;  // Başlangıç parası
         public int playerLives = 5;
         public bool isGameActive = false;
 

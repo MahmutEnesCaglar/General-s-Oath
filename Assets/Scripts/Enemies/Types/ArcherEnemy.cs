@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace TowerDefense.Enemy
 {
@@ -18,7 +19,7 @@ namespace TowerDefense.Enemy
             damageToHero = 6;
             damageToBarrier = 6;
             damageToOthers = 6;
-            moveSpeed = 1.5f;
+            moveSpeed = 1f;
             moneyReward = 8;
 
             // Attack Settings
@@ -29,34 +30,46 @@ namespace TowerDefense.Enemy
             // Properties
             isBoss = false;
             isRanged = true;  // ÖNEMLI: Archer ranged saldırı yapar
-
-            Debug.Log($"<color=cyan>ArcherEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed} RANGE:{archerRange}");
         }
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            // Okçu spawn'landığında yay germe animasyonu olabilir
+        }
+
+        // Override movement to stop at ranged attack distance
+        protected override void MoveTowardsHero()
+        {
+            if (currentHeroTarget == null) return;
+            if (isAttacking) return;
+
+            // Check if in attack range
+            float distanceToHero = Vector2.Distance(transform.position, currentHeroTarget.transform.position);
+
+            // If within archer range, stop and attack
+            if (distanceToHero <= archerRange)
+            {
+                AttackHero();
+                return;
+            }
+
+            // Move closer to attack range
+            Vector2 directionToHero = (currentHeroTarget.transform.position - transform.position).normalized;
+            Vector2 movement = directionToHero * moveSpeed + CalculateSeparation() * separationForce;
+
+            transform.position += (Vector3)movement * Time.deltaTime;
+            FlipSprite(movement.x);
         }
 
         protected override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
-            // Okçu saldırısında ok fırlatma efekti/ses eklenebilir
-            // Gelecekte: Projectile sistemi
+            // Future: Add arrow shooting effect/sound
         }
 
         protected override void OnDeath()
         {
             base.OnDeath();
-            // Okçu öldüğünde yayını düşürme efekti
         }
-
-        // Gelecek için: Ok fırlatma sistemi
-        // protected override void PerformRangedAttack()
-        // {
-        //     GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-        //     arrow.GetComponent<Projectile>().Initialize(currentHeroTarget, damageToHero);
-        // }
     }
 }

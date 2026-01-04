@@ -164,7 +164,7 @@ MonoBehaviour:
   gridInnerDepth: 0.85
   gridOuterMultiplier: 1.3
   meleReachOffset: 0.3
-  archerRange: 3.5
+  archerRange: 6
   separationRadius: 0.4
   separationForce: 5
   maxPathDeviation: 2.5
@@ -220,6 +220,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95000013227593822, guid: a3c1faf915dc240bca8ed7566d46910c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 95000013227593822, guid: a3c1faf915dc240bca8ed7566d46910c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d802920b5f1124a778f16c31c3373388, type: 2}
     - target: {fileID: 212000012153660448, guid: a3c1faf915dc240bca8ed7566d46910c, type: 3}
       propertyPath: m_SortingOrder
       value: 5011

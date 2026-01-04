@@ -18,7 +18,7 @@ namespace TowerDefense.Enemy
             damageToHero = 10;     // Yüksek hasar
             damageToBarrier = 10;
             damageToOthers = 10;
-            moveSpeed = 2.5f;      // Hızlı
+            moveSpeed = 1.5f;      // Hızlı
             moneyReward = 15;
 
             // Attack Settings

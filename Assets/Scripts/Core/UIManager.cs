@@ -147,7 +147,8 @@ namespace TowerDefense.Core
         /// </summary>
         public void ReturnToMainMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            Time.timeScale = 1f; // Zamanı normalleştir
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuSahne");
         }
     }
 }

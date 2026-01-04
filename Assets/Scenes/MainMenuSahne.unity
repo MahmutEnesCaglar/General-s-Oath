@@ -829,8 +829,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9d779c44bf84d52957dd4c61179abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
-  mainMenuMusic: {fileID: 0}
-  gameMusic: {fileID: 0}
+  mainMenuMusic: {fileID: 8300000, guid: 7c063f31db95f2d36bd8bdc7e6c42af3, type: 3}
+  gameMusic: {fileID: 8300000, guid: 63d9df65dc1acfbc886218847fc4d59a, type: 3}
   musicVolume: 0.5
 --- !u!1 &803446699
 GameObject:
@@ -1632,7 +1632,8 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 158990543286355029, guid: eeb5c2e662b4b4198ad7d424678102ca, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

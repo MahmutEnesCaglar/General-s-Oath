@@ -1147,7 +1147,7 @@ GameObject:
   - component: {fileID: 4313048437721626695}
   - component: {fileID: 2491231199838329956}
   - component: {fileID: 6644704727546286399}
-  - component: {fileID: 3308146596223468776}
+  - component: {fileID: 6357497010074287555}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -1354,7 +1354,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3308146596223468776
+--- !u!114 &6357497010074287555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1363,12 +1363,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2818072308670236737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79e7e96df21121b6eafd2c13fa676ebb, type: 3}
+  m_Script: {fileID: 11500000, guid: f686354da888e582d9b834a8e54e7067, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CloseButtonSound
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.UI.UISoundController
   hoverSound: {fileID: 8300000, guid: 4ead1cfb32a35bb3e9842579d4a41432, type: 3}
   clickSound: {fileID: 8300000, guid: 60f83d96837c9cac5b698f86e07cf9a4, type: 3}
-  volume: 1
 --- !u!1 &2869829959784768222
 GameObject:
   m_ObjectHideFlags: 0

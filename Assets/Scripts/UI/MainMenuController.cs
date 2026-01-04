@@ -14,6 +14,9 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
+        // Zamanı normalleştir (Pause'dan dönülmüş olabilir)
+        Time.timeScale = 1f;
+
         // Buton click event'lerini bağla
         if (playButton != null)
             playButton.onClick.AddListener(PlayGame);
@@ -92,5 +95,22 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.Save();
         
         Debug.Log($"SFX seviyesi: {volume:F2}");
+    }
+
+    public void RefreshSliders()
+    {
+        // Music slider güncelle
+        if (musicSlider != null)
+        {
+            float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+            musicSlider.value = savedMusic;
+        }
+        
+        // SFX slider güncelle
+        if (sfxSlider != null)
+        {
+            float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 1f);
+            sfxSlider.value = savedSFX;
+        }
     }
 }

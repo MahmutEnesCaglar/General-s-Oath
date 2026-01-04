@@ -84,6 +84,12 @@ public class AbilityManager : MonoBehaviour
     }
 
     void InitAbility(AbilityData data) {
+        // Eğer usageText inspector'da atanmamışsa, butonun içindeki text'i bul
+        if (data.usageText == null && data.button != null)
+        {
+            data.usageText = data.button.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
         data.remainingUsage = data.maxUsage;
         UpdateUsageText(data);
     }

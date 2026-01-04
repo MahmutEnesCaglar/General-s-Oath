@@ -22,11 +22,16 @@ public class SFXSliderFeather : MonoBehaviour
     
     void OnVolumeChanged(float value)
     {
-        // Sadece müzik sesini ayarla
-        MainMenuController menuController = FindFirstObjectByType<MainMenuController>();
-        if (menuController != null)
+        // SFXManager üzerinden güncelle (MainMenuController'a bağımlı kalmadan)
+        if (SFXManager.Instance != null)
         {
-            menuController.SetSFXVolume(value);
+            SFXManager.Instance.SetSFXVolume(value);
+        }
+        else
+        {
+            // Manager yoksa bile PlayerPrefs'e kaydet
+            PlayerPrefs.SetFloat("SFXVolume", value);
+            PlayerPrefs.Save();
         }
         
         UpdateFeatherSprite(value);

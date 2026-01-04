@@ -47,8 +47,8 @@ MonoBehaviour:
   pausePanel: {fileID: 4194984243534485301}
   pauseButton: {fileID: 4567844216242926461}
   darkOverlay: {fileID: 516012814858343207}
-  pauseNormalSprite: {fileID: -968695952991756943, guid: ffe39b2e9314646d29b4dcf4c297584c, type: 3}
-  pauseActiveSprite: {fileID: 5391151425167730730, guid: 7c70e2919306ac761aa0741af7000cb8, type: 3}
+  pauseNormalSprite: {fileID: -8635883343129537376, guid: e8283ac971d91fd96af0e551be680953, type: 3}
+  pauseActiveSprite: {fileID: 246120346928505992, guid: 048cd1c9897299a8185e3ba42d86f753, type: 3}
   homeButton: {fileID: 5376488406731581846}
   resumeButton: {fileID: 6786221187365438528}
   musicSlider: {fileID: 8926345755812318976}
@@ -3781,7 +3781,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -968695952991756943, guid: ffe39b2e9314646d29b4dcf4c297584c, type: 3}
+  m_Sprite: {fileID: -8635883343129537376, guid: e8283ac971d91fd96af0e551be680953, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

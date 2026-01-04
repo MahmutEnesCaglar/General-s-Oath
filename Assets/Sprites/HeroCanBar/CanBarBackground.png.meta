@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6447913159a026449aeb3d2148fbab38
+guid: 575517ae921a45ebf9b7af9255434317
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -97,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: VisionOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -116,10 +116,10 @@ TextureImporter:
       name: CanBarBackground_0
       rect:
         serializedVersion: 2
-        x: 30
-        y: 214
-        width: 440
-        height: 71
+        x: 369
+        y: 410
+        width: 2846
+        height: 365
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

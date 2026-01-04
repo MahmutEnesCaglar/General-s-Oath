@@ -79,8 +79,13 @@ public class MapSelectionManager : MonoBehaviour
         if (!string.IsNullOrEmpty(selectedMapScene))
         {
             Debug.Log($"Harita başlatılıyor: {selectedMapScene}");
-            // SceneManager.LoadScene(selectedMapScene);
-            SceneTransition.Instance.LoadScene(selectedMapScene);
+            if (SceneTransition.Instance != null)
+                SceneTransition.Instance.LoadScene(selectedMapScene);
+            else
+            {
+                SceneManager.LoadScene(selectedMapScene);
+                Debug.LogWarning("SceneTransition yok, normal yani animasyonsuz yükleme yapılıyor...");
+            }
 
         }
     }

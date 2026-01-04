@@ -144,7 +144,12 @@ public class PauseManager : MonoBehaviour
     public void ReturnToMap()
     {
         Time.timeScale = 1f;
-        // SceneManager.LoadScene("WorldMap");
-        SceneTransition.Instance.LoadScene("WorldMap");
+        if (SceneTransition.Instance != null)
+            SceneTransition.Instance.LoadScene("WorldMap");
+        else
+        {
+            Debug.LogWarning("SceneTransition yok, normal yani animasyonsuz yükleme yapılıyor...");
+            SceneManager.LoadScene("WorldMap");
+        }
     }
 }

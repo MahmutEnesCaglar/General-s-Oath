@@ -16,7 +16,14 @@ public class WorldMapManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         Debug.Log("Ana menüye dönülüyor...");
-        // SceneManager.LoadScene("MainMenuSahne"); // veya SceneManager.LoadScene(0);
-        SceneTransition.Instance.LoadScene("MainMenuSahne");
+        
+        // NULL check
+        if (SceneTransition.Instance != null)
+            SceneTransition.Instance.LoadScene("MainMenuSahne");
+        else
+        {
+            Debug.LogWarning("SceneTransition yok, normal yani animasyonsuz yükleme yapılıyor...");
+            SceneManager.LoadScene("MainMenuSahne");
+        }
     }
 }

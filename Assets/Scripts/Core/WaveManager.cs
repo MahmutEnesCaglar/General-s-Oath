@@ -84,7 +84,9 @@ namespace TowerDefense.Core
             // Wave 1: 8 Basic
             waves.Add(new Wave(new WaveEnemy[]
             {
-                new WaveEnemy(EnemyTypeEnum.Basic, 8)
+                new WaveEnemy(EnemyTypeEnum.Basic, 1),
+                new WaveEnemy(EnemyTypeEnum.Boss, 1) // Test amaçlı Boss ekledim
+
             }));
 
             // Wave 2: 10 Basic

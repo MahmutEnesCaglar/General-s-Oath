@@ -283,3 +283,4 @@ MonoBehaviour:
   maxPathDeviation: 2.5
   spawnEffect: {fileID: 0}
   deathEffect: {fileID: 0}
+  bossHealthBarPrefab: {fileID: 3599636922349628497, guid: 5bf2845604d39b281a10b3f4b0a277bb, type: 3}

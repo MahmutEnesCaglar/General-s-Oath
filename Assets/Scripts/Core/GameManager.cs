@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // Eklendi
 using TowerDefense.Tower;
 using TowerDefense.Enemy;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace TowerDefense.Core
 
         [Header("Oyun Durumu")]
         public int currentWave = 0;
-        public int playerMoney = 1000;  // Başlangıç parası
+        public int playerMoney;  // Başlangıç parası
         public int playerLives = 5;
         public bool isGameActive = false;
 
@@ -48,15 +49,44 @@ namespace TowerDefense.Core
             InitializeGame();
         }
 
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            // MainMenu veya WorldMap değilse, oyun sahnesidir
+            // Bu sahnelerde GameManager'ı yeniden başlatıyoruz
+            if (scene.name != "MainMenuSahne" && scene.name != "WorldMap")
+            {
+                Debug.Log($"[GameManager] Yeni sahne yüklendi: {scene.name}. Oyun başlatılıyor...");
+                InitializeGame();
+                StartGame();
+            }
+        }
+
         private void InitializeGame()
         {
             Debug.Log("=== TOWER DEFENSE OYUNU BAŞLIYOR ===\n");
+            
+            // Zamanı normalleştir
+            Time.timeScale = 1f;
 
             if (waveManager == null)
                 waveManager = FindAnyObjectByType<WaveManager>();
 
             if (bossConfigurator == null)
                 bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
+            
+            // UI Manager'ı bul
+            if (uiManager == null)
+                uiManager = FindAnyObjectByType<UIManager>();
 
             PrintGameConfiguration();
         }
@@ -200,18 +230,33 @@ namespace TowerDefense.Core
         {
             if (heroPrefab == null) return;
 
+            // Eğer sahnede zaten bir hero varsa (örn. yanlışlıkla çift spawn), onu temizle
+            if (currentHero != null)
+            {
+                // Unity null check (destroyed object check)
+                if (currentHero.gameObject != null)
+                    Destroy(currentHero.gameObject);
+            }
+
             Vector3 spawnPos = GetHeroSpawnPosition();
             GameObject heroObj = Instantiate(heroPrefab, spawnPos, Quaternion.identity);
             currentHero = heroObj.GetComponent<TowerDefense.Hero.Hero>();
 
-            Debug.Log($"✓ Hero spawned");
+            Debug.Log($"✓ Hero spawned at {spawnPos}");
         }
 
         private Vector3 GetHeroSpawnPosition()
         {
+            // 1. Inspector referansı (İlk yüklemede çalışır)
             if (heroSpawnPoint != null)
                 return heroSpawnPoint.position;
 
+            // 2. İsimle bulma (Sahne yeniden yüklendiğinde çalışır)
+            GameObject spawnPointObj = GameObject.Find("HeroSpawnPoint");
+            if (spawnPointObj != null)
+                return spawnPointObj.transform.position;
+
+            // 3. EnemyPath fallback
             GameObject pathObj = GameObject.Find("EnemyPath");
             if (pathObj != null && pathObj.transform.childCount > 0)
             {

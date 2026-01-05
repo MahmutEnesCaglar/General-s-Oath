@@ -476,7 +476,11 @@ namespace TowerDefense.Tower
                 // Ses çal
                 AudioSource src = GetComponent<AudioSource>();
                 if (src == null) src = gameObject.AddComponent<AudioSource>();
-                if (upgradeSound != null) src.PlayOneShot(upgradeSound);
+                
+                if (upgradeSound != null)
+                {
+                    SFXManager.PlaySound(upgradeSound, src);
+                }
 
                 // İstatistikleri güncelle
                 this.range = data.range;

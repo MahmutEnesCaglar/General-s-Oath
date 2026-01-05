@@ -27,7 +27,7 @@ namespace TowerDefense.Tower
             {
                 if (shootSound != null && audioSource != null)
                 {
-                    audioSource.PlayOneShot(shootSound);
+                    SFXManager.PlaySound(shootSound, audioSource);
                 }
             }
         }

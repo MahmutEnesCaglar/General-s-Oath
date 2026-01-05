@@ -57,7 +57,8 @@ namespace TowerDefense.Tower
                     int index = Random.Range(0, shootSounds.Length);
                     if (shootSounds[index] != null)
                     {
-                        audioSource.PlayOneShot(shootSounds[index]);
+                        // Statik metod kullanımı - Instance yoksa bile çalışır
+                        SFXManager.PlaySound(shootSounds[index], audioSource);
                     }
                 }
             }

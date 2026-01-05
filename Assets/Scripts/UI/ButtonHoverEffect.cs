@@ -116,10 +116,10 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         isHovered = true;
         
-        // Hover sesi çal - SFXManager ile
-        if (hoverSound != null && audioSource != null && SFXManager.Instance != null)
+        // Hover sesi çal - SFXManager ile (Statik metod)
+        if (hoverSound != null && audioSource != null)
         {
-            SFXManager.Instance.PlaySFX(hoverSound, audioSource);
+            SFXManager.PlaySound(hoverSound, audioSource);
         }
     }
 
@@ -132,10 +132,10 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         isPressed = true;
         
-        // Click sesi çal - SFXManager ile
-        if (clickSound != null && audioSource != null && SFXManager.Instance != null)
+        // Click sesi çal - SFXManager ile (Statik metod)
+        if (clickSound != null && audioSource != null)
         {
-            SFXManager.Instance.PlaySFX(clickSound, audioSource);
+            SFXManager.PlaySound(clickSound, audioSource);
         }
     }
 

@@ -38,7 +38,7 @@ namespace TowerDefense.Buildings
 
             if (placeSound != null)
             {
-                audioSource.PlayOneShot(placeSound);
+                SFXManager.PlaySound(placeSound, audioSource);
             }
         }
 

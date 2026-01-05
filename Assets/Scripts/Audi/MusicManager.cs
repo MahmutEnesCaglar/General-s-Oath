@@ -21,14 +21,17 @@ public class MusicManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            
+            // Eğer Canvas altındaysa DontDestroyOnLoad çalışmaz. Root'a taşıyoruz.
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
             
             audioSource = GetComponent<AudioSource>();
             
             // Kaydedilmiş ses seviyesini yükle
-            if (PlayerPrefs.HasKey("MasterVolume"))
+            if (PlayerPrefs.HasKey("MusicVolume"))
             {
-                musicVolume = PlayerPrefs.GetFloat("MasterVolume");
+                musicVolume = PlayerPrefs.GetFloat("MusicVolume");
                 audioSource.volume = musicVolume;
             }
             
@@ -62,10 +65,11 @@ public class MusicManager : MonoBehaviour
     {
         AudioClip clipToPlay = null;
         
-        if (sceneName == "MainMenuSahne")
+        // MainMenu veya WorldMap sahnelerinde ana menü müziği çalsın
+        if (sceneName == "MainMenuSahne" || sceneName == "WorldMap")
         {
             clipToPlay = mainMenuMusic;
-            Debug.Log("MainMenu müziği seçildi");
+            Debug.Log("MainMenu/WorldMap müziği seçildi");
         }
         else if (sceneName == "Map_Grifon")
         {
@@ -76,11 +80,20 @@ public class MusicManager : MonoBehaviour
         // Müzik değiştir
         if (clipToPlay != null)
         {
-            if (audioSource.clip != clipToPlay)
+            // Eğer müzik farklıysa VEYA şu an çalmıyorsa (örn. ilk açılışta)
+            if (audioSource.clip != clipToPlay || !audioSource.isPlaying)
             {
                 audioSource.clip = clipToPlay;
                 audioSource.volume = musicVolume;
                 audioSource.loop = true;
+                
+                // Eğer AudioSource disable edilmişse (kapalıysa) aç
+                if (!audioSource.enabled) 
+                {
+                    audioSource.enabled = true;
+                    Debug.Log("AudioSource kapalıydı, açıldı.");
+                }
+
                 audioSource.Play();
                 Debug.Log($"Müzik çalıyor: {clipToPlay.name}");
             }

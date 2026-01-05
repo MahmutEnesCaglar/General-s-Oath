@@ -29,12 +29,11 @@ public class PopupManager : MonoBehaviour
     {
         if (isAnimating) return;
         
-        // Slider değerini yükle
-        Slider volumeSlider = optionsPopup.GetComponentInChildren<Slider>();
-        if (volumeSlider != null)
+        // Slider değerlerini güncelle (MainMenuController üzerinden)
+        MainMenuController mainMenu = FindFirstObjectByType<MainMenuController>();
+        if (mainMenu != null)
         {
-            float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
-            volumeSlider.value = savedVolume;
+            mainMenu.RefreshSliders();
         }
         
         StartCoroutine(OpenPopupAnimation(optionsPopup));

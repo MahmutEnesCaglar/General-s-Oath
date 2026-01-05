@@ -1,4 +1,5 @@
 using UnityEngine;
+using TowerDefense.UI; // BossHealthBar için
 
 namespace TowerDefense.Enemy
 {
@@ -12,7 +13,7 @@ namespace TowerDefense.Enemy
     ///
     /// ASSETS: Evil Wizard 2 kullanılacak (kullanıcı sonra ayarlayacak)
     /// </summary>
-    public class BossEnemy : BaseEnemyRefactored
+    public class BossEnemy : BaseEnemy
     {
         [Header("Boss Özellikleri")]
         [Tooltip("Boss'un özel giriş efekti/animasyonu")]
@@ -20,6 +21,12 @@ namespace TowerDefense.Enemy
 
         [Tooltip("Boss'un ölüm efekti")]
         public GameObject deathEffect;
+
+        [Header("UI")]
+        [Tooltip("Boss Health Bar Prefabı (BossHealthBar scripti içermeli)")]
+        public GameObject bossHealthBarPrefab;
+        private BossHealthBar healthBarScript;
+        private GameObject healthBarInstance;
 
         private bool hasSpawnedMinions = false; // Gelecek için: minion spawn sistemi
 
@@ -30,6 +37,7 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 25;
             damageToBarrier = 50;
+            damageToOthers = 20;
             moveSpeed = 1f;
             moneyReward = 50;
 
@@ -47,7 +55,7 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=red>BossEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -57,18 +65,80 @@ namespace TowerDefense.Enemy
                 Instantiate(spawnEffect, transform.position, Quaternion.identity);
             }
 
+            // Health Bar Oluştur
+            CreateHealthBar();
+
             Debug.Log($"<color=red>═══════════════════════════════════</color>");
             Debug.Log($"<color=red>BOSS SPAWNED: EVIL WIZARD!</color>");
             Debug.Log($"<color=red>HP: {currentHealth} | Damage: {damageToHero}</color>");
             Debug.Log($"<color=red>═══════════════════════════════════</color>");
         }
 
-        public override void OnDeath()
+        private void CreateHealthBar()
+        {
+            if (bossHealthBarPrefab == null)
+            {
+                Debug.LogError("❌ BossHealthBar Prefab atanmamış! Inspector'dan atayın.");
+                return;
+            }
+
+            // Hero.cs mantığı: Canvas aramıyoruz, direkt instantiate ediyoruz.
+            // Prefab'ın kendi içinde Canvas'ı olması veya World Space olması bekleniyor.
+            healthBarInstance = Instantiate(bossHealthBarPrefab);
+            healthBarInstance.name = "BossHealthBar"; // İsim verelim ki karışmasın
+
+            Debug.Log($"✅ Boss Health Bar oluşturuldu: {healthBarInstance.name}");
+
+            healthBarScript = healthBarInstance.GetComponent<BossHealthBar>();
+            
+            if (healthBarScript != null)
+            {
+                healthBarScript.Initialize("Evil Wizard", maxHealth);
+                Debug.Log("✅ Boss Health Bar scripti initialize edildi.");
+            }
+            else
+            {
+                // Script yoksa eklemeyi dene (Hero.cs gibi)
+                Debug.LogWarning("⚠️ BossHealthBar scripti prefabda bulunamadı, runtime'da ekleniyor...");
+                healthBarScript = healthBarInstance.AddComponent<BossHealthBar>();
+                
+                // Otomatik referans bulma (Hero.cs gibi)
+                var fillTransform = healthBarInstance.transform.Find("Fill");
+                if (fillTransform != null) healthBarScript.fillImage = fillTransform.GetComponent<UnityEngine.UI.Image>();
+                
+                var bgTransform = healthBarInstance.transform.Find("Background");
+                if (bgTransform != null) healthBarScript.backgroundImage = bgTransform.GetComponent<UnityEngine.UI.Image>();
+                
+                var textTransform = healthBarInstance.transform.Find("HealthText");
+                if (textTransform != null) healthBarScript.healthText = textTransform.GetComponent<TMPro.TextMeshProUGUI>();
+
+                healthBarScript.Initialize("Evil Wizard", maxHealth);
+            }
+        }
+
+        public override void TakeDamage(int damageAmount)
+        {
+            base.TakeDamage(damageAmount);
+            
+            // Health Bar Güncelle
+            if (healthBarScript != null)
+            {
+                healthBarScript.UpdateHealthBar(currentHealth, maxHealth);
+            }
+        }
+
+        protected override void OnDeath()
         {
             // Boss ölüm efekti
             if (deathEffect != null)
             {
                 Instantiate(deathEffect, transform.position, Quaternion.identity);
+            }
+
+            // Health Bar'ı yok et
+            if (healthBarInstance != null)
+            {
+                Destroy(healthBarInstance);
             }
 
             Debug.Log($"<color=yellow>═══════════════════════════════════</color>");
@@ -81,7 +151,7 @@ namespace TowerDefense.Enemy
             // Boss öldüğünde oyun kazanılır (WaveManager bunu dinler)
         }
 
-        public override void OnAttackPerformed()
+        protected override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
             // Boss saldırısı çok güçlü ve görsel efektli

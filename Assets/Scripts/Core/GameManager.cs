@@ -29,9 +29,9 @@ namespace TowerDefense.Core
 
         [Header("UI System")]
         public HealthBar healthBar; // Can barı görseli (Inspector'dan atanacak)
-        
+                
         [Header("UI Yöneticisi")]
-        public UIManager uiManager; // <--- BU SATIRI EKLE
+        public VictoryDefeatManager victoryDefeatManager;
 
         private void Awake()
         {
@@ -66,46 +66,9 @@ namespace TowerDefense.Core
             if (scene.name != "MainMenuSahne" && scene.name != "WorldMap")
             {
                 Debug.Log($"[GameManager] Yeni sahne yüklendi: {scene.name}. Oyun başlatılıyor...");
-                
-                // NOT: BuildManager artık her sahnede ayrı bir GameObject'te olmalı
-                // GameManager'a bağlı değil, dolayısıyla otomatik olarak yeniden başlayacak
-                
                 InitializeGame();
                 StartGame();
             }
-        }
-
-        private void InitializeGame()
-        {
-            Debug.Log("=== TOWER DEFENSE OYUNU BAŞLIYOR ===\n");
-            
-            // Zamanı normalleştir
-            Time.timeScale = 1f;
-
-            // Her sahne yüklendiğinde tüm referansları yeniden bul
-            waveManager = FindAnyObjectByType<WaveManager>();
-            if (waveManager == null)
-                Debug.LogWarning("[GameManager] WaveManager bulunamadı!");
-
-            if (bossConfigurator == null)
-                bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
-            
-            // UI Manager'ı her seferinde yeniden bul
-            uiManager = FindAnyObjectByType<UIManager>();
-            if (uiManager == null)
-                Debug.LogWarning("[GameManager] UIManager bulunamadı!");
-            
-            // MoneyManager'ı kontrol et (her sahnede yeni instance olacak)
-            if (MoneyManager.Instance != null)
-            {
-                Debug.Log($"[GameManager] MoneyManager bulundu: {MoneyManager.Instance.gameObject.name}");
-            }
-            else
-            {
-                Debug.LogWarning("[GameManager] MoneyManager bulunamadı!");
-            }
-
-            PrintGameConfiguration();
         }
 
         public void StartGame()
@@ -130,18 +93,64 @@ namespace TowerDefense.Core
             SpawnHero();
         }
 
+        private void InitializeGame()
+        {
+            Debug.Log("=== TOWER DEFENSE OYUNU BAŞLIYOR ===\n");
+            
+            Time.timeScale = 1f;
+
+            if (waveManager == null)
+                waveManager = FindAnyObjectByType<WaveManager>();
+
+            if (bossConfigurator == null)
+                bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
+            
+            // ÖNCE tüm VictoryDefeatManager'ları bul
+            if (victoryDefeatManager == null)
+            {
+                VictoryDefeatManager[] allManagers = FindObjectsOfType<VictoryDefeatManager>();
+                Debug.Log($"Toplam {allManagers.Length} adet VictoryDefeatManager bulundu");
+                
+                // UIManager GameObject'indekini bul
+                foreach (var manager in allManagers)
+                {
+                    Debug.Log($"Manager GameObject adı: {manager.gameObject.name}");
+                    
+                    if (manager.gameObject.name == "UIManager")
+                    {
+                        victoryDefeatManager = manager;
+                        Debug.Log("✓ UIManager'daki VictoryDefeatManager bulundu!");
+                        break;
+                    }
+                }
+                
+                // Hala null ise ilk bulduğunu al
+                if (victoryDefeatManager == null && allManagers.Length > 0)
+                {
+                    victoryDefeatManager = allManagers[0];
+                    Debug.LogWarning($"⚠️ UIManager bulunamadı, {allManagers[0].gameObject.name} kullanılıyor!");
+                }
+            }
+            
+            if (victoryDefeatManager != null)
+                Debug.Log($"✓ VictoryDefeatManager bulundu: {victoryDefeatManager.gameObject.name}");
+            else
+                Debug.LogWarning("⚠️ VictoryDefeatManager bulunamadı!");
+
+            PrintGameConfiguration();
+        }
+
         private void InitializeHealthBar()
         {
             if (healthBar == null)
             {
-                healthBar = FindAnyObjectByType<HealthBar>(); // ← DEĞİŞTİ
+                healthBar = FindAnyObjectByType<HealthBar>();
             }
 
             if (healthBar != null)
             {
                 healthBar.maxHealth = 5;
                 healthBar.currentHealth = 5;
-                // UpdateHealthSprite() yok artık, direkt UpdateHealth() çağrılacak
                 Debug.Log("✓ Can barı başlatıldı: 5/5");
             }
             else
@@ -171,7 +180,6 @@ namespace TowerDefense.Core
 
         public void OnEnemyKilled(int moneyReward)
         {
-            Debug.Log($"<color=cyan>[GameManager] OnEnemyKilled çağrıldı - Reward: {moneyReward}</color>");
 
             // MoneyManager üzerinden para ekle
             if (MoneyManager.Instance != null)
@@ -180,13 +188,11 @@ namespace TowerDefense.Core
                 // MoneyManager'ı GameManager ile senkronize et
                 int oldPlayerMoney = playerMoney;
                 playerMoney = MoneyManager.Instance.currentMoney;
-                Debug.Log($"<color=cyan>[GameManager] Senkronize: {oldPlayerMoney} → {playerMoney}</color>");
             }
             else
             {
                 // Fallback: MoneyManager yoksa sadece GameManager'ı güncelle
                 playerMoney += moneyReward;
-                Debug.LogWarning("<color=orange>[GameManager] MoneyManager bulunamadı! Fallback kullanıldı.</color>");
             }
         }
 
@@ -224,9 +230,28 @@ namespace TowerDefense.Core
             Debug.Log("\n💀 OYUN BİTTİ 💀");
             isGameActive = false;
 
-            if (UIManager.Instance != null)
+            if (victoryDefeatManager != null)
+                victoryDefeatManager.ShowGameOver(); // ← DEĞİŞTİ
+        }
+
+        /// <summary>
+        /// Tüm wave'ler tamamlandığında çağrılır
+        /// </summary>
+        public void OnAllWavesCompleted()
+        {
+            Debug.Log("\n🎉 TÜM WAVE'LER TAMAMLANDI 🎉");
+            isGameActive = false;
+            
+            Debug.Log($"victoryDefeatManager null mu? {victoryDefeatManager == null}"); // ← EKLE
+            
+            if (victoryDefeatManager != null)
             {
-                UIManager.Instance.ShowGameOver();
+                Debug.Log("ShowVictory() çağrılıyor..."); // ← EKLE
+                victoryDefeatManager.ShowVictory();
+            }
+            else
+            {
+                Debug.LogError("❌ victoryDefeatManager NULL!"); // ← EKLE
             }
         }
 

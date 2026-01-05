@@ -110,7 +110,7 @@ namespace TowerDefense.Hero
 
             foreach (var col in hits)
             {
-                BaseEnemy enemy = col.GetComponent<BaseEnemy>();
+                BaseEnemyRefactored enemy = col.GetComponent<BaseEnemyRefactored>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(specialAbilityDamage);

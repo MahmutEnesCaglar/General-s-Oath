@@ -18,7 +18,7 @@ namespace TowerDefense.Hero
         public int maxHealth = 150;
         public int currentHealth;
         public float moveSpeed = 3.5f;
-        public int meleeDamage = 25;
+        public int meleeDamage = 20;
 
         [Header("Attack Range (4 Köşe Sistemi)")]
         [Tooltip("Saldırı menzili 4 köşe noktasıyla tanımlanır - her köşeyi ayrı ayarlayabilirsin!")]
@@ -34,7 +34,7 @@ namespace TowerDefense.Hero
         private bool isMoving = false;
 
         [Header("Combat")]
-        private BaseEnemy currentTarget;
+        private BaseEnemyRefactored currentTarget;
         private float attackTimer = 0f;
         private int attackComboIndex = 0; // 0,1,2 for Attack1/2/3
 
@@ -111,13 +111,11 @@ namespace TowerDefense.Hero
                     }
                 }
                 
-                Debug.Log($"[Hero Start] healthBarInstance null? {(healthBarInstance == null ? "YES - COMPONENT YOK!" : "NO - TAMAM")}");
                 
                 if (healthBarInstance != null)
                 {
                     healthBarInstance.Initialize(transform);
                     healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
-                    Debug.Log($"[Hero Start] Health bar başarıyla initialize edildi!");
                 }
             }
             else
@@ -220,7 +218,7 @@ namespace TowerDefense.Hero
         /// <summary>
         /// Düşmanın 4 köşe ile tanımlanan attack range içinde olup olmadığını kontrol eder
         /// </summary>
-        private bool IsEnemyInAttackRange(BaseEnemy enemy, float multiplier = 1.0f)
+        private bool IsEnemyInAttackRange(BaseEnemyRefactored enemy, float multiplier = 1.0f)
         {
             if (enemy == null) return false;
 
@@ -249,8 +247,8 @@ namespace TowerDefense.Hero
         /// </summary>
         private void FindNearestEnemy()
         {
-            BaseEnemy[] allEnemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
-            BaseEnemy closestEnemy = null;
+            BaseEnemyRefactored[] allEnemies = FindObjectsByType<BaseEnemyRefactored>(FindObjectsSortMode.None);
+            BaseEnemyRefactored closestEnemy = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (var enemy in allEnemies)
@@ -354,7 +352,6 @@ namespace TowerDefense.Hero
             currentHealth -= damageAmount;
             
             Debug.Log($"[Hero] TakeDamage: {damageAmount}, CurrentHealth: {currentHealth}/{maxHealth}");
-            Debug.Log($"[Hero] healthBarInstance null? {(healthBarInstance == null ? "YES" : "NO")}");
 
             // Update health bar
             if (healthBarInstance != null)

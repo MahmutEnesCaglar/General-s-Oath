@@ -7,7 +7,7 @@ namespace TowerDefense.Enemy
     /// HP: 110, Damage to Hero: 8, Damage to Barrier: 8
     /// Speed: 1.0, Reward: 10$
     /// </summary>
-    public class ArmoredEnemy : BaseEnemy
+    public class ArmoredEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -16,8 +16,7 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 8;
             damageToBarrier = 8;
-            damageToOthers = 8;
-            moveSpeed = 1.0f;  // En yavaş düşman
+            moveSpeed = 0.7f;  // En yavaş düşman
             moneyReward = 10;
 
             // Attack Settings
@@ -31,13 +30,13 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=cyan>ArmoredEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             // ArmoredEnemy spawn'landığında ağır adım sesi çalınabilir
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
             // Zırhlı düşman öldüğünde farklı ölüm efekti olabilir

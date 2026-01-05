@@ -50,7 +50,7 @@ namespace TowerDefense.Tower
             
             foreach (Collider2D hit in hits)
             {
-                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
+                BaseEnemyRefactored enemy = hit.GetComponent<BaseEnemyRefactored>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damage);

@@ -228,8 +228,15 @@ namespace TowerDefense.Enemy
         {
             if (hasReachedBase) return;
             hasReachedBase = true;
+            
+            // GameManager'a can kaybını bildir
             if (GameManager.Instance != null)
                 GameManager.Instance.OnEnemyReachedBase(1);
+            
+            // WaveManager'a düşmanın gittiğini bildir (activeEnemies'ten çıksın)
+            if (WaveManager.Instance != null)
+                WaveManager.Instance.OnEnemyKilled(gameObject);
+            
             Destroy(gameObject);
         }
 

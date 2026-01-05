@@ -60,11 +60,10 @@ public static class BuildSettingsHelper
         if (addedCount > 0)
         {
             EditorBuildSettings.scenes = existingScenes.ToArray();
-            Debug.Log($"[BuildSettings] {addedCount} scene Build Settings'e eklendi!");
         }
         else
         {
-            Debug.Log("[BuildSettings] Tüm scene'ler zaten Build Settings'te mevcut.");
+            
         }
     }
 }

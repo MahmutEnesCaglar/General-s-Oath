@@ -7,7 +7,7 @@ namespace TowerDefense.Enemy
     /// HP: 30, Damage to Hero: 3, Damage to Barrier: 3
     /// Speed: 4.0, Reward: 7$
     /// </summary>
-    public class FastEnemy : BaseEnemy
+    public class FastEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -16,8 +16,7 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 3;
             damageToBarrier = 3;
-            damageToOthers = 3;
-            moveSpeed = 4.0f;  // En hızlı düşman
+            moveSpeed = 2f;  // En hızlı düşman
             moneyReward = 7;
 
             // Attack Settings
@@ -31,13 +30,13 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=cyan>FastEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             // FastEnemy spawn'landığında hızlı koşu efekti eklenebilir
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
             // Hızlı düşman öldüğünde özel animasyon olabilir

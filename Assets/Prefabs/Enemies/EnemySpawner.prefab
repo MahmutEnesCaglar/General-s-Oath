@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4802769730812798649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5217130769892628567}
+  - component: {fileID: 6524504385728948845}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5217130769892628567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4802769730812798649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.06, y: -0.4264, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6524504385728948845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4802769730812798649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758c9c22421e1104785de3d59672427b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.WaveManager
+  timeBetweenWaves: 5
+  timeBetweenSpawns: 1.5
+  waypoints:
+  - {fileID: 0}
+  basicEnemyPrefab: {fileID: 5969436530590249289, guid: bd8d51f38d5c571478a2f644f7053f68, type: 3}
+  fastEnemyPrefab: {fileID: 4549937988352056916, guid: 7f45fdbdedf3a7e4eaf468738803b99a, type: 3}
+  armoredEnemyPrefab: {fileID: 4549937988352056916, guid: 0b954d5b852dfe84fbd977352aeddd59, type: 3}
+  archerEnemyPrefab: {fileID: 4549937988352056916, guid: e2f8106a710d23641927b211d9600547, type: 3}
+  eliteEnemyPrefab: {fileID: 5969436530590249289, guid: 1bc8b11ba6efd6045a6ce65d3f128588, type: 3}
+  bossEnemyPrefab: {fileID: 6928239815621483463, guid: 5dcf681300420d34ba24300044808533, type: 3}
+  currentWaveIndex: 0
+  isSpawning: 0
+  isWaveActive: 0
+  dialogManager: {fileID: 0}

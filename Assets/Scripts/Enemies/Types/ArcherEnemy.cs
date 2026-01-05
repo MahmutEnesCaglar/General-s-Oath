@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace TowerDefense.Enemy
 {
@@ -8,7 +9,7 @@ namespace TowerDefense.Enemy
     /// Speed: 1.5, Reward: 8$
     /// isRanged = true (archerRange 3.5f kullanır)
     /// </summary>
-    public class ArcherEnemy : BaseEnemy
+    public class ArcherEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -17,8 +18,7 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 6;
             damageToBarrier = 6;
-            damageToOthers = 6;
-            moveSpeed = 1.5f;
+            moveSpeed = 1f;
             moneyReward = 8;
 
             // Attack Settings
@@ -29,34 +29,25 @@ namespace TowerDefense.Enemy
             // Properties
             isBoss = false;
             isRanged = true;  // ÖNEMLI: Archer ranged saldırı yapar
-
-            Debug.Log($"<color=cyan>ArcherEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed} RANGE:{archerRange}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
-            // Okçu spawn'landığında yay germe animasyonu olabilir
         }
 
-        protected override void OnAttackPerformed()
+        // Note: Archer-specific movement behavior (stopping at range) is now handled by EnemyCombat component
+        // The isRanged flag and archerRange settings control the behavior automatically
+
+        public override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
-            // Okçu saldırısında ok fırlatma efekti/ses eklenebilir
-            // Gelecekte: Projectile sistemi
+            // Future: Add arrow shooting effect/sound
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
-            // Okçu öldüğünde yayını düşürme efekti
         }
-
-        // Gelecek için: Ok fırlatma sistemi
-        // protected override void PerformRangedAttack()
-        // {
-        //     GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-        //     arrow.GetComponent<Projectile>().Initialize(currentHeroTarget, damageToHero);
-        // }
     }
 }

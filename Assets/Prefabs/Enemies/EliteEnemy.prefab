@@ -224,6 +224,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 5010
       objectReference: {fileID: 0}
+    - target: {fileID: 95000011895321844, guid: 978fa2fb617654f5eaeff9da6fc7d116, type: 3}
+      propertyPath: m_Controller
+      value:
+      objectReference: {fileID: 9100000, guid: 2deec9488aaac47ad9c09eed3aed072e, type: 2}
+    - target: {fileID: 95000011895321844, guid: 978fa2fb617654f5eaeff9da6fc7d116, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

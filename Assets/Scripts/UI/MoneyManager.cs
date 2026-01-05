@@ -69,7 +69,6 @@ public class MoneyManager : MonoBehaviour
     {
         currentMoney += amount;
         UpdateMoneyUI();
-        Debug.Log($"Para kazanıldı: +{amount}. Toplam: {currentMoney}");
     }
     
     public void UpdateMoneyUI()

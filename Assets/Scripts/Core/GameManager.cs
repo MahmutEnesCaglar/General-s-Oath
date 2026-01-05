@@ -12,7 +12,7 @@ namespace TowerDefense.Core
 
         [Header("Oyun Durumu")]
         public int currentWave = 0;
-        public int playerMoney = 1000;  // Başlangıç parası
+        public int playerMoney;  // Başlangıç parası
         public int playerLives = 5;
         public bool isGameActive = false;
 
@@ -180,7 +180,6 @@ namespace TowerDefense.Core
 
         public void OnEnemyKilled(int moneyReward)
         {
-            Debug.Log($"<color=cyan>[GameManager] OnEnemyKilled çağrıldı - Reward: {moneyReward}</color>");
 
             // MoneyManager üzerinden para ekle
             if (MoneyManager.Instance != null)
@@ -189,13 +188,11 @@ namespace TowerDefense.Core
                 // MoneyManager'ı GameManager ile senkronize et
                 int oldPlayerMoney = playerMoney;
                 playerMoney = MoneyManager.Instance.currentMoney;
-                Debug.Log($"<color=cyan>[GameManager] Senkronize: {oldPlayerMoney} → {playerMoney}</color>");
             }
             else
             {
                 // Fallback: MoneyManager yoksa sadece GameManager'ı güncelle
                 playerMoney += moneyReward;
-                Debug.LogWarning("<color=orange>[GameManager] MoneyManager bulunamadı! Fallback kullanıldı.</color>");
             }
         }
 

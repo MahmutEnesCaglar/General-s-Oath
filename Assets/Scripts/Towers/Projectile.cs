@@ -76,7 +76,8 @@ namespace TowerDefense.Tower
         {
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                // Tower'dan gelen hasarı enemy'nin damageFromTower değeri ile uygula
+                enemy.TakeDamageFromTower(damage);
             }
             // Mermiyi yok et
             Destroy(gameObject);

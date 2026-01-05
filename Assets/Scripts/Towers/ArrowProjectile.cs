@@ -47,13 +47,14 @@ namespace TowerDefense.Tower
         void CheckCollision()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-            
+
             foreach (Collider2D hit in hits)
             {
                 BaseEnemyRefactored enemy = hit.GetComponent<BaseEnemyRefactored>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(damage);
+                    // Tower'dan gelen hasarı enemy'nin damageFromTower değeri ile uygula
+                    enemy.TakeDamageFromTower(damage);
                     Destroy(gameObject);
                     return;
                 }

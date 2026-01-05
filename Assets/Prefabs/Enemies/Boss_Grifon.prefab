@@ -126,8 +126,12 @@ GameObject:
   - component: {fileID: 4421314125046677035}
   - component: {fileID: 492955653589738965}
   - component: {fileID: 9135888668055742466}
+  - component: {fileID: 2333201768647672722}
+  - component: {fileID: 6870394178337697826}
+  - component: {fileID: 5824837956235520008}
+  - component: {fileID: 6469745261632005877}
   m_Layer: 0
-  m_Name: BossEnemy
+  m_Name: Boss_Grifon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,3 +288,51 @@ MonoBehaviour:
   spawnEffect: {fileID: 0}
   deathEffect: {fileID: 0}
   bossHealthBarPrefab: {fileID: 3599636922349628497, guid: 5bf2845604d39b281a10b3f4b0a277bb, type: 3}
+--- !u!114 &2333201768647672722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928239815621483463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ece1632226c0b34e923ad396956f867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.Components.EnemyHealth
+--- !u!114 &6870394178337697826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928239815621483463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d9d95067e6638408a2c876ad1d3e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.Components.EnemyAnimation
+--- !u!114 &5824837956235520008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928239815621483463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce80d6de5ba7a434897392f5416a2aa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.Components.EnemyMovement
+--- !u!114 &6469745261632005877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928239815621483463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05145c66e844e24fbc158e0f7808c89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Enemy.Components.EnemyCombat

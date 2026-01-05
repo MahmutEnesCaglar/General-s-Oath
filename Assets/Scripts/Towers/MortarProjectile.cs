@@ -68,7 +68,8 @@ namespace TowerDefense.Tower
                     BaseEnemyRefactored enemyScript = hitCol.GetComponent<BaseEnemyRefactored>();
                     if (enemyScript != null)
                     {
-                        enemyScript.TakeDamage(damage);
+                        // Tower'dan gelen hasarı enemy'nin damageFromTower değeri ile uygula
+                        enemyScript.TakeDamageFromTower(damage);
                     }
                 }
             }

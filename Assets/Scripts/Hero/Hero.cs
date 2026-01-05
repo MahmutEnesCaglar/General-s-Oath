@@ -7,7 +7,6 @@ namespace TowerDefense.Hero
 {
     /// <summary>
     /// Hero character controller - General Altay (Hero Knight)
-    /// Handles movement, combat, health, and integration with abilities
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Rigidbody2D))]
@@ -287,8 +286,8 @@ namespace TowerDefense.Hero
             animator.SetTrigger(attackTrigger);
             attackComboIndex = (attackComboIndex + 1) % 3; // Cycle 1->2->3->1
 
-            // Deal damage
-            currentTarget.TakeDamage(meleeDamage);
+            // Deal damage - Enemy'nin damageFromHero değerini kullan
+            currentTarget.TakeDamageFromHero(meleeDamage);
 
             // Reset cooldown
             attackTimer = attackCooldown;

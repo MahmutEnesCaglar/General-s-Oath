@@ -40,6 +40,8 @@ namespace TowerDefense.Enemy
         // Stats set by derived classes
         protected int damageToHero;
         protected int damageToBarrier;
+        protected int damageFromHero;      // Hero'dan alınacak hasar
+        protected int damageFromTower;     // Tower'dan alınacak hasar
         protected float moveSpeed;
         protected int moneyReward;
         protected bool isBoss;
@@ -73,6 +75,13 @@ namespace TowerDefense.Enemy
             if (col == null) col = gameObject.AddComponent<CircleCollider2D>();
             col.radius = 0.3f;
             col.isTrigger = false;
+
+            // CRITICAL: Ensure Enemy tag is set (for Tower detection)
+            if (!gameObject.CompareTag("Enemy"))
+            {
+                Debug.LogWarning($"[{GetType().Name}] Missing 'Enemy' tag! Setting it now...");
+                gameObject.tag = "Enemy";
+            }
         }
 
         protected virtual void Start()
@@ -163,9 +172,27 @@ namespace TowerDefense.Enemy
             movementComponent.SetWaypoints(waypoints);
         }
 
-        public void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage)
         {
             healthComponent.TakeDamage(damage);
+        }
+
+        /// <summary>
+        /// Hero'dan hasar al - damageFromHero değerine göre hasar hesaplanır
+        /// </summary>
+        public virtual void TakeDamageFromHero(int baseDamage)
+        {
+            int actualDamage = damageFromHero > 0 ? damageFromHero : baseDamage;
+            healthComponent.TakeDamage(actualDamage);
+        }
+
+        /// <summary>
+        /// Tower'dan hasar al - damageFromTower değerine göre hasar hesaplanır
+        /// </summary>
+        public virtual void TakeDamageFromTower(int baseDamage)
+        {
+            int actualDamage = damageFromTower > 0 ? damageFromTower : baseDamage;
+            healthComponent.TakeDamage(actualDamage);
         }
 
         public float GetAttackRange()

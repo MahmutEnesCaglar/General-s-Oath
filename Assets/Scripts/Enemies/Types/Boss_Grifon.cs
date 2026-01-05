@@ -3,17 +3,7 @@ using TowerDefense.UI; // BossHealthBar için
 
 namespace TowerDefense.Enemy
 {
-    /// <summary>
-    /// Boss Enemy - Evil Wizard 2 (Final Boss)
-    /// HP: 500, Damage to Hero: 20, Damage to Barrier: 20
-    /// Speed: 1.5, Reward: 50$
-    ///
-    /// Wave 10'daki tüm Elite'ler öldükten sonra Anka Simurg dialog'u gösterir,
-    /// ardından bu Boss spawn'lanır.
-    ///
-    /// ASSETS: Evil Wizard 2 kullanılacak (kullanıcı sonra ayarlayacak)
-    /// </summary>
-    public class BossEnemy : BaseEnemy
+    public class Boss_Grifon : BaseEnemyRefactored
     {
         [Header("Boss Özellikleri")]
         [Tooltip("Boss'un özel giriş efekti/animasyonu")]
@@ -28,34 +18,42 @@ namespace TowerDefense.Enemy
         private BossHealthBar healthBarScript;
         private GameObject healthBarInstance;
 
-        private bool hasSpawnedMinions = false; // Gelecek için: minion spawn sistemi
-
         protected override void InitializeStats()
         {
             // Combat Stats
             maxHealth = 2000;
             currentHealth = maxHealth;
-            damageToHero = 25;
-            damageToBarrier = 50;
-            damageToOthers = 20;
+            damageToHero = 20;
+            damageToBarrier = 20;
+            damageFromHero = 15;
+            damageFromTower = 5;
             moveSpeed = 1f;
             moneyReward = 50;
 
             // Attack Settings
             attackCooldown = 1.5f;
-            aggroRange = 3f;  // Geniş aggro range
+            aggroRange = 4f;
+            meleReachOffset = 11f;
+            maxPathDeviation = 50f;
 
             // Properties
-            isBoss = true;  // BOSS!
+            isBoss = true;
             isRanged = false;
 
-            // Boss scale (daha büyük)
-            transform.localScale = Vector3.one * 1.5f;
+            // Boss scale (daha büyük) - X eksenini negatif yaparak sprite yönünü düzelt
+            transform.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
 
-            Debug.Log($"<color=red>BossEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
+            // Boss collider'ı büyüt (Tower detection için)
+            CircleCollider2D col = GetComponent<CircleCollider2D>();
+            if (col != null)
+            {
+                col.radius = 0.6f; // Boss daha büyük olduğu için radius artırıldı
+            }
+
+            Debug.Log($"<color=red>BossEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed} Range:{meleReachOffset}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -67,6 +65,18 @@ namespace TowerDefense.Enemy
 
             // Health Bar Oluştur
             CreateHealthBar();
+
+            // DEBUG: Tag ve Collider kontrolü
+            Debug.Log($"<color=red>BOSS TAG CHECK: Tag={gameObject.tag}, Layer={LayerMask.LayerToName(gameObject.layer)}</color>");
+            CircleCollider2D col = GetComponent<CircleCollider2D>();
+            if (col != null)
+            {
+                Debug.Log($"<color=red>BOSS COLLIDER: Enabled={col.enabled}, IsTrigger={col.isTrigger}, Radius={col.radius}</color>");
+            }
+            else
+            {
+                Debug.LogError("<color=red>BOSS HAS NO COLLIDER!</color>");
+            }
 
             Debug.Log($"<color=red>═══════════════════════════════════</color>");
             Debug.Log($"<color=red>BOSS SPAWNED: EVIL WIZARD!</color>");
@@ -119,15 +129,40 @@ namespace TowerDefense.Enemy
         public override void TakeDamage(int damageAmount)
         {
             base.TakeDamage(damageAmount);
-            
-            // Health Bar Güncelle
-            if (healthBarScript != null)
+
+            // Health Bar Güncelle - healthComponent'ten güncel can değerini al
+            if (healthBarScript != null && healthComponent != null)
             {
-                healthBarScript.UpdateHealthBar(currentHealth, maxHealth);
+                healthBarScript.UpdateHealthBar(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+                Debug.Log($"<color=yellow>Boss Damaged!</color> Damage: {damageAmount}, Current HP: {healthComponent.CurrentHealth}/{healthComponent.MaxHealth}");
             }
         }
 
-        protected override void OnDeath()
+        public override void TakeDamageFromHero(int baseDamage)
+        {
+            base.TakeDamageFromHero(baseDamage);
+
+            // Health Bar Güncelle
+            if (healthBarScript != null && healthComponent != null)
+            {
+                healthBarScript.UpdateHealthBar(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+                Debug.Log($"<color=cyan>Boss Damaged by HERO!</color> Base: {baseDamage}, Actual: {damageFromHero}, Current HP: {healthComponent.CurrentHealth}/{healthComponent.MaxHealth}");
+            }
+        }
+
+        public override void TakeDamageFromTower(int baseDamage)
+        {
+            base.TakeDamageFromTower(baseDamage);
+
+            // Health Bar Güncelle
+            if (healthBarScript != null && healthComponent != null)
+            {
+                healthBarScript.UpdateHealthBar(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+                Debug.Log($"<color=green>Boss Damaged by TOWER!</color> Base: {baseDamage}, Actual: {damageFromTower}, Current HP: {healthComponent.CurrentHealth}/{healthComponent.MaxHealth}");
+            }
+        }
+
+        public override void OnDeath()
         {
             // Boss ölüm efekti
             if (deathEffect != null)
@@ -151,30 +186,11 @@ namespace TowerDefense.Enemy
             // Boss öldüğünde oyun kazanılır (WaveManager bunu dinler)
         }
 
-        protected override void OnAttackPerformed()
+        public override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
             // Boss saldırısı çok güçlü ve görsel efektli
             Debug.Log($"<color=red>BOSS ATTACK!</color> Dealing {damageToHero} damage!");
         }
-
-        // Gelecek için: Boss özel yetenekleri
-        // protected override void Update()
-        // {
-        //     base.Update();
-        //
-        //     // HP %50'nin altına düştüğünde minion spawn
-        //     if (!hasSpawnedMinions && currentHealth <= maxHealth / 2)
-        //     {
-        //         SpawnMinions();
-        //         hasSpawnedMinions = true;
-        //     }
-        // }
-        //
-        // private void SpawnMinions()
-        // {
-        //     // Boss HP %50'de 3-5 Fast Enemy spawn'lar
-        //     Debug.Log("<color=red>BOSS SUMMONS REINFORCEMENTS!</color>");
-        // }
     }
 }

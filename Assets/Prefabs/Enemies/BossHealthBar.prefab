@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 6670244455586741530}
   - component: {fileID: 7114049279448582084}
   - component: {fileID: 8057398932523773358}
-  - component: {fileID: 6327677128777340696}
+  - component: {fileID: 3023235684516548045}
   m_Layer: 5
   m_Name: BossHealthBar
   m_TagString: Untagged
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6327677128777340696
+--- !u!114 &3023235684516548045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,8 +162,8 @@ MonoBehaviour:
   barHeight: 60
   barPosition: {x: 0, y: 280, z: 0}
   fullHealthColor: {r: 0.2921808, g: 0, b: 0.5405596, a: 1}
-  lowHealthColor: {r: 0.22249772, g: 0, b: 0.40939564, a: 1}
-  backgroundColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  lowHealthColor: {r: 0.2768664, g: 0, b: 0.509434, a: 1}
+  backgroundColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &6933339156076702094
 GameObject:
   m_ObjectHideFlags: 0

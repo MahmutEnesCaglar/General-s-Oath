@@ -77,11 +77,11 @@ namespace TowerDefense.Hero
         /// </summary>
         public void UpdateHealthBar(int currentHealth, int maxHealth)
         {
-            Debug.Log($"[HeroHealthBar] UpdateHealthBar called: {currentHealth}/{maxHealth}");
+            // Debug.Log($"[HeroHealthBar] UpdateHealthBar called: {currentHealth}/{maxHealth}");
             
             if (fillImage == null)
             {
-                Debug.LogError("[HeroHealthBar] fillImage NULL! Prefab'da Fill Image referansını ata!");
+                // Debug.LogError("[HeroHealthBar] fillImage NULL! Prefab'da Fill Image referansını ata!");
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace TowerDefense.Hero
             float fillAmount = Mathf.Clamp01((float)currentHealth / maxHealth);
             fillImage.fillAmount = fillAmount;
             
-            Debug.Log($"[HeroHealthBar] fillAmount set to: {fillAmount} (fillImage.fillAmount = {fillImage.fillAmount})");
+            // Debug.Log($"[HeroHealthBar] fillAmount set to: {fillAmount} (fillImage.fillAmount = {fillImage.fillAmount})");
 
             // Renk değişimi (can azaldıkça: yeşil -> sarı -> kırmızı)
             if (fillAmount > 0.5f)

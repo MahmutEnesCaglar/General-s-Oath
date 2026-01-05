@@ -323,13 +323,13 @@ namespace TowerDefense.Enemy
         protected virtual IEnumerator PerformHeroAttack()
         {
             isAttacking = true;
-            if (animator != null) animator.Play("attack");
+            if (animator != null) animator.Play("attack", -1, 0f);
 
             yield return new WaitForSeconds(attackAnimationDuration * 0.5f);
 
             if (currentHeroTarget != null && !currentHeroTarget.isDead && CanAttackHero())
             {
-                currentHeroTarget.TakeDamage(damageToHero);  // Hero'ya özel hasar
+                currentHeroTarget.TakeDamage(damageToHero);
                 OnAttackPerformed();
             }
 
@@ -567,15 +567,17 @@ namespace TowerDefense.Enemy
             float distanceMoved = Vector3.Distance(transform.position, lastPosition);
             bool isMoving = distanceMoved > 0.001f;
 
+            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+
             if (isMoving)
             {
-                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                if (!stateInfo.IsName("walk")) animator.CrossFade("walk", 0.1f);
+                if (!currentState.IsName("walk"))
+                    animator.Play("walk", -1, 0f);
             }
             else
             {
-                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                if (!stateInfo.IsName("idle")) animator.CrossFade("idle", 0.1f);
+                if (!currentState.IsName("idle"))
+                    animator.Play("idle", -1, 0f);
             }
         }
 
@@ -589,4 +591,3 @@ namespace TowerDefense.Enemy
         }
     }
 }
-

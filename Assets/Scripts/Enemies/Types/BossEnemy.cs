@@ -26,12 +26,12 @@ namespace TowerDefense.Enemy
         protected override void InitializeStats()
         {
             // Combat Stats
-            maxHealth = 500;  // Çok yüksek HP
+            maxHealth = 2000;
             currentHealth = maxHealth;
-            damageToHero = 20;     // Çok yüksek hasar
-            damageToBarrier = 20;
+            damageToHero = 25;
+            damageToBarrier = 50;
             damageToOthers = 20;
-            moveSpeed = 1.5f;
+            moveSpeed = 1f;
             moneyReward = 50;
 
             // Attack Settings

@@ -18,7 +18,7 @@ namespace TowerDefense.Core
         public float timeBetweenWaves = 5f;
 
         [Tooltip("Her düşman spawn arasındaki süre (saniye)")]
-        public float timeBetweenSpawns = 0.5f;
+        public float timeBetweenSpawns = 1.5f;
 
         [Header("Spawn Settings")]
         [Tooltip("Düşmanların takip edeceği waypoint sistemi - İLK waypoint spawn noktasıdır")]
@@ -84,7 +84,7 @@ namespace TowerDefense.Core
             // Wave 1: 8 Basic
             waves.Add(new Wave(new WaveEnemy[]
             {
-                new WaveEnemy(EnemyTypeEnum.Basic, 8)
+                new WaveEnemy(EnemyTypeEnum.Basic, 1)
             }));
 
             // Wave 2: 10 Basic

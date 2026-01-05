@@ -18,7 +18,7 @@ namespace TowerDefense.Hero
         public int maxHealth = 150;
         public int currentHealth;
         public float moveSpeed = 3.5f;
-        public int meleeDamage = 25;
+        public int meleeDamage = 20;
 
         [Header("Attack Range (4 Köşe Sistemi)")]
         [Tooltip("Saldırı menzili 4 köşe noktasıyla tanımlanır - her köşeyi ayrı ayarlayabilirsin!")]
@@ -111,13 +111,11 @@ namespace TowerDefense.Hero
                     }
                 }
                 
-                Debug.Log($"[Hero Start] healthBarInstance null? {(healthBarInstance == null ? "YES - COMPONENT YOK!" : "NO - TAMAM")}");
                 
                 if (healthBarInstance != null)
                 {
                     healthBarInstance.Initialize(transform);
                     healthBarInstance.UpdateHealthBar(currentHealth, maxHealth);
-                    Debug.Log($"[Hero Start] Health bar başarıyla initialize edildi!");
                 }
             }
             else
@@ -354,7 +352,6 @@ namespace TowerDefense.Hero
             currentHealth -= damageAmount;
             
             Debug.Log($"[Hero] TakeDamage: {damageAmount}, CurrentHealth: {currentHealth}/{maxHealth}");
-            Debug.Log($"[Hero] healthBarInstance null? {(healthBarInstance == null ? "YES" : "NO")}");
 
             // Update health bar
             if (healthBarInstance != null)

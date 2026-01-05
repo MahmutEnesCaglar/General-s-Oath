@@ -17,7 +17,7 @@ namespace TowerDefense.Enemy
             damageToHero = 5;
             damageToBarrier = 5;
             damageToOthers = 5;  // Gelecekte diğer düşmanlara saldırı için
-            moveSpeed = 2.0f;
+            moveSpeed = 1.2f;
             moneyReward = 5;
 
             // Attack Settings

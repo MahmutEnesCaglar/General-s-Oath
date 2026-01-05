@@ -11,6 +11,7 @@ namespace TowerDefense.Environment
         
         [Header("Referanslar")]
         public PathSystem pathSystem;
+        public PathSystem pathSystem2; // İkinci path (Kirin haritası için)
         public GameObject barrierPrefab;
         
         [Header("Ayarlar")]
@@ -50,15 +51,29 @@ namespace TowerDefense.Environment
 
         public void StartPlacement()
         {
-            // BuildManager çakışması varsa kapat (Opsiyonel ama önerilir)
-            // if (BuildManager.main != null) BuildManager.main.DeselectNode();
+            Debug.Log("[BarrierPlacement] StartPlacement() çağrıldı!");
+            
+            // PathSystem kontrolü
+            if (pathSystem == null)
+            {
+                Debug.LogError("❌ PathSystem NULL! BarrierPlacementManager Inspector'ına PathSystem objesini ata!");
+                return;
+            }
+            
+            if (barrierPrefab == null)
+            {
+                Debug.LogError("❌ BarrierPrefab NULL! Inspector'a Barrier prefab'ını ata!");
+                return;
+            }
 
             if (isPlacingMode) CancelPlacement();
 
             isPlacingMode = true;
+            Debug.Log("[BarrierPlacement] Placement modu açıldı!");
 
             if (ghostObject == null)
             {
+                Debug.Log("[BarrierPlacement] Ghost objesi oluşturuluyor...");
                 ghostObject = Instantiate(barrierPrefab);
                 ghostObject.name = "Ghost_Barrier";
                 
@@ -81,6 +96,7 @@ namespace TowerDefense.Environment
                     c.a = 0.5f;
                     ghostRenderer.color = c;
                 }
+                Debug.Log("[BarrierPlacement] Ghost objesi oluşturuldu!");
             }
             ghostObject.SetActive(false);
         }
@@ -89,40 +105,92 @@ namespace TowerDefense.Environment
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             
-            if (pathSystem.GetClosestPointOnPath(mousePos, out Vector2 closestPoint, out Vector2 pathDirection))
+            // İlk olarak path1'i dene
+            bool foundOnPath1 = false;
+            Vector2 closestPoint1 = Vector2.zero;
+            Vector2 pathDirection1 = Vector2.right;
+            float distance1 = float.MaxValue;
+            
+            if (pathSystem != null && pathSystem.GetClosestPointOnPath(mousePos, out closestPoint1, out pathDirection1))
             {
-                float distance = Vector2.Distance(mousePos, closestPoint);
-
-                if (distance <= placementRange)
+                distance1 = Vector2.Distance(mousePos, closestPoint1);
+                if (distance1 <= placementRange)
                 {
-                    ghostObject.SetActive(true);
-                    ghostObject.transform.position = closestPoint;
-
-                    float pathAngle = Mathf.Atan2(pathDirection.y, pathDirection.x) * Mathf.Rad2Deg;
-                    float barrierAngle = pathAngle + angleCorrection;
-                    int spriteIndex = GetDirectionIndex(barrierAngle);
-                    
-                    // Önce yönü ayarla
-                    if (ghostController != null)
-                    {
-                        ghostController.SetBarrierDirection(spriteIndex);
-                    }
-
-                    // --- DÜZELTME BURADA ---
-                    // Tek bir renderer yerine, child'lardaki hepsini bul ve şeffaf yap
-                    SpriteRenderer[] allRenderers = ghostObject.GetComponentsInChildren<SpriteRenderer>();
-                    foreach (var sr in allRenderers)
-                    {
-                        Color c = sr.color;
-                        c.a = 0.5f; // %50 Şeffaflık
-                        sr.color = c;
-                    }
-                    // -----------------------
+                    foundOnPath1 = true;
+                }
+            }
+            
+            // İkinci path'i dene (varsa)
+            bool foundOnPath2 = false;
+            Vector2 closestPoint2 = Vector2.zero;
+            Vector2 pathDirection2 = Vector2.right;
+            float distance2 = float.MaxValue;
+            
+            if (pathSystem2 != null && pathSystem2.GetClosestPointOnPath(mousePos, out closestPoint2, out pathDirection2))
+            {
+                distance2 = Vector2.Distance(mousePos, closestPoint2);
+                if (distance2 <= placementRange)
+                {
+                    foundOnPath2 = true;
+                }
+            }
+            
+            // Hangisi daha yakınsa onu kullan
+            Vector2 selectedPoint;
+            Vector2 selectedDirection;
+            
+            if (foundOnPath1 && foundOnPath2)
+            {
+                // Her ikisi de menzilde, daha yakın olanı seç
+                if (distance1 <= distance2)
+                {
+                    selectedPoint = closestPoint1;
+                    selectedDirection = pathDirection1;
                 }
                 else
                 {
-                    ghostObject.SetActive(false);
+                    selectedPoint = closestPoint2;
+                    selectedDirection = pathDirection2;
                 }
+            }
+            else if (foundOnPath1)
+            {
+                selectedPoint = closestPoint1;
+                selectedDirection = pathDirection1;
+            }
+            else if (foundOnPath2)
+            {
+                selectedPoint = closestPoint2;
+                selectedDirection = pathDirection2;
+            }
+            else
+            {
+                // Hiçbir path menzilde değil
+                ghostObject.SetActive(false);
+                return;
+            }
+            
+            // Ghost'u konumlandır
+            ghostObject.SetActive(true);
+            ghostObject.transform.position = selectedPoint;
+
+            float pathAngle = Mathf.Atan2(selectedDirection.y, selectedDirection.x) * Mathf.Rad2Deg;
+            float barrierAngle = pathAngle + angleCorrection;
+            int spriteIndex = GetDirectionIndex(barrierAngle);
+            
+            // Önce yönü ayarla
+            if (ghostController != null)
+            {
+                ghostController.SetBarrierDirection(spriteIndex);
+            }
+
+            // Tüm sprite renderer'ları şeffaf yap
+            SpriteRenderer[] allRenderers = ghostObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var sr in allRenderers)
+            {
+                Color c = sr.color;
+                c.a = 0.5f;
+                sr.color = c;
             }
         }
         

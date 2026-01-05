@@ -902,144 +902,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &413839658
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 413839659}
-  - component: {fileID: 413839664}
-  - component: {fileID: 413839661}
-  - component: {fileID: 413839660}
-  - component: {fileID: 413839665}
-  - component: {fileID: 413839666}
-  - component: {fileID: 413839667}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &413839659
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48102, y: -0.05033, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &413839660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf9f0e4f95855e246a8215353d206194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.StartMapHelper
---- !u!114 &413839661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ceb8defdb72e347ad9d5c3472dc983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.FinalBossConfigurator
---- !u!114 &413839664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08e731140d93474997e2d908d1a71d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.GameManager
-  currentWave: 0
-  playerMoney: 100
-  playerLives: 20
-  isGameActive: 0
-  waveManager: {fileID: 0}
-  bossConfigurator: {fileID: 413839661}
-  heroPrefab: {fileID: 6323719953710832613, guid: 39162a992c8fb1844ba31651a54bba98, type: 3}
-  heroSpawnPoint: {fileID: 598762094}
-  currentHero: {fileID: 0}
-  enableHeroRespawn: 0
-  heroRespawnDelay: 5
-  healthBar: {fileID: 670755357}
-  victoryDefeatManager: {fileID: 0}
---- !u!114 &413839665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0231e05a61f532b89117fb04f455c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BuildManager
-  buildMenuPanel: {fileID: 477820302}
-  upgradeMenu: {fileID: 572091097}
-  towerPrefabs:
-  - {fileID: 331439550093857451, guid: 338719e88f8a6bff1bc3a945d55c5b96, type: 3}
-  - {fileID: 1607945260240377179, guid: 3bd3ba96312b062c6b5945bfd4965510, type: 3}
-  - {fileID: 858613000073198604, guid: 2b82798ff38637a5cb85c821190da4e7, type: 3}
-  towerCosts: 7d0000004b0000003c000000
---- !u!114 &413839666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e06307e46028dc948524864d057bc98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Environment.BarrierPlacementManager
-  pathSystem: {fileID: 78046099}
-  barrierPrefab: {fileID: 5905329019139852549, guid: 7282c2ef64de00588a3a7722813af446, type: 3}
-  placementRange: 2
-  angleCorrection: 90
---- !u!114 &413839667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413839658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00aefaf419758ecab911ed0779b6731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.AttackManager
-  meteorPrefab: {fileID: 2799679565068693481, guid: 985ebd23a61309080bf645571739a868, type: 3}
-  targetIndicatorPrefab: {fileID: 1925918820797187701, guid: 4071d58a55b4b9980bb1ae54da537e59, type: 3}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &477820302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4233934737155899876, guid: f1696f27af1569b42acf63864ef7154b, type: 3}
@@ -2669,6 +2531,57 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1034199292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034199294}
+  - component: {fileID: 1034199293}
+  m_Layer: 0
+  m_Name: BuildManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1034199293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034199292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0231e05a61f532b89117fb04f455c6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuildManager
+  buildMenuPanel: {fileID: 477820302}
+  upgradeMenu: {fileID: 572091097}
+  towerPrefabs:
+  - {fileID: 331439550093857451, guid: 338719e88f8a6bff1bc3a945d55c5b96, type: 3}
+  - {fileID: 1607945260240377179, guid: 3bd3ba96312b062c6b5945bfd4965510, type: 3}
+  - {fileID: 858613000073198604, guid: 2b82798ff38637a5cb85c821190da4e7, type: 3}
+  towerCosts: 7d0000004b0000003c000000
+--- !u!4 &1034199294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034199292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 889.45734, y: 517.8503, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1076484262
 GameObject:
   m_ObjectHideFlags: 0
@@ -4658,9 +4571,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.WaveManager
   timeBetweenWaves: 5
-  timeBetweenSpawns: 0.5
+  timeBetweenSpawns: 1
   waypoints:
   - {fileID: 857071625}
+  - {fileID: 750786748}
+  - {fileID: 1625655569}
+  - {fileID: 1407996568}
+  - {fileID: 771119005}
+  - {fileID: 856685780}
+  - {fileID: 18756634}
+  - {fileID: 1006021195}
+  - {fileID: 2118715339}
+  - {fileID: 1118515482}
+  - {fileID: 731347429}
+  - {fileID: 1274838895}
+  - {fileID: 1559686533}
+  - {fileID: 1087709208}
+  - {fileID: 1191321139}
+  - {fileID: 916296415}
+  - {fileID: 1935356379}
+  - {fileID: 1610685414}
+  - {fileID: 872983756}
+  waypointsPath2:
+  - {fileID: 1487371451}
+  - {fileID: 1543237188}
+  - {fileID: 1465875759}
+  - {fileID: 407971115}
+  - {fileID: 1240024769}
+  - {fileID: 14784808}
+  - {fileID: 1712667285}
+  - {fileID: 1761031109}
+  - {fileID: 1483875958}
+  - {fileID: 16571853}
+  - {fileID: 1076484263}
+  - {fileID: 2028542853}
+  - {fileID: 805238028}
+  - {fileID: 1368531192}
+  - {fileID: 1536982172}
+  - {fileID: 5960540}
+  - {fileID: 146720148}
+  - {fileID: 1595585485}
+  - {fileID: 88857306}
+  useMultiplePaths: 1
   basicEnemyPrefab: {fileID: 5969436530590249289, guid: bd8d51f38d5c571478a2f644f7053f68, type: 3}
   fastEnemyPrefab: {fileID: 4549937988352056916, guid: 7f45fdbdedf3a7e4eaf468738803b99a, type: 3}
   armoredEnemyPrefab: {fileID: 4549937988352056916, guid: 0b954d5b852dfe84fbd977352aeddd59, type: 3}
@@ -5190,11 +5142,84 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb66001eb28badf7a91a120375c27460, type: 3}
+--- !u!1001 &8492525160129438405
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1913701033489433586, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: pathSystem
+      value: 
+      objectReference: {fileID: 78046099}
+    - target: {fileID: 1913701033489433586, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: pathSystem2
+      value: 
+      objectReference: {fileID: 792001285}
+    - target: {fileID: 3846736812846481758, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 670755357}
+    - target: {fileID: 3846736812846481758, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: heroSpawnPoint
+      value: 
+      objectReference: {fileID: 598762094}
+    - target: {fileID: 5872317493879452160, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.48102
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05033
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194235969010006746, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2eadb02f5dcd22982aaf628e21c2d94b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 413839659}
+  - {fileID: 8492525160129438405}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 39609368}
@@ -5208,3 +5233,4 @@ SceneRoots:
   - {fileID: 967019811}
   - {fileID: 1864151872}
   - {fileID: 4859282156574403414}
+  - {fileID: 1034199294}

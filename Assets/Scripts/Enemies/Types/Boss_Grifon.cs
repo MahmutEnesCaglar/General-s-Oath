@@ -21,7 +21,7 @@ namespace TowerDefense.Enemy
         protected override void InitializeStats()
         {
             // Combat Stats
-            maxHealth = 2000;
+            maxHealth = 1000;
             currentHealth = maxHealth;
             damageToHero = 20;
             damageToBarrier = 20;

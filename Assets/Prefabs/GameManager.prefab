@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5872317493879452160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9194235969010006746}
+  - component: {fileID: 3846736812846481758}
+  - component: {fileID: 2801575077751827612}
+  - component: {fileID: 4571102055150460763}
+  - component: {fileID: 1913701033489433586}
+  - component: {fileID: 2470630800436172106}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9194235969010006746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.48102, y: -0.05033, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3846736812846481758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08e731140d93474997e2d908d1a71d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.GameManager
+  currentWave: 0
+  playerMoney: 100
+  playerLives: 20
+  isGameActive: 0
+  waveManager: {fileID: 0}
+  bossConfigurator: {fileID: 2801575077751827612}
+  heroPrefab: {fileID: 6323719953710832613, guid: 39162a992c8fb1844ba31651a54bba98, type: 3}
+  heroSpawnPoint: {fileID: 0}
+  currentHero: {fileID: 0}
+  enableHeroRespawn: 0
+  heroRespawnDelay: 5
+  healthBar: {fileID: 0}
+  victoryDefeatManager: {fileID: 0}
+--- !u!114 &2801575077751827612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ceb8defdb72e347ad9d5c3472dc983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.FinalBossConfigurator
+--- !u!114 &4571102055150460763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf9f0e4f95855e246a8215353d206194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.StartMapHelper
+--- !u!114 &1913701033489433586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e06307e46028dc948524864d057bc98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Environment.BarrierPlacementManager
+  pathSystem: {fileID: 0}
+  pathSystem2: {fileID: 0}
+  barrierPrefab: {fileID: 5905329019139852549, guid: 7282c2ef64de00588a3a7722813af446, type: 3}
+  placementRange: 2
+  angleCorrection: 90
+--- !u!114 &2470630800436172106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5872317493879452160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00aefaf419758ecab911ed0779b6731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Core.AttackManager
+  meteorPrefab: {fileID: 2799679565068693481, guid: 985ebd23a61309080bf645571739a868, type: 3}
+  targetIndicatorPrefab: {fileID: 1925918820797187701, guid: 4071d58a55b4b9980bb1ae54da537e59, type: 3}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0

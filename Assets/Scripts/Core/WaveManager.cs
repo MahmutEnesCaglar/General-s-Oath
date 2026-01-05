@@ -23,6 +23,13 @@ namespace TowerDefense.Core
         [Header("Spawn Settings")]
         [Tooltip("Düşmanların takip edeceği waypoint sistemi - İLK waypoint spawn noktasıdır")]
         public Transform[] waypoints;
+        
+        [Header("Multi-Path Support (Kirin Haritası)")]
+        [Tooltip("İkinci path (opsiyonel - sadece Kirin haritası için)")]
+        public Transform[] waypointsPath2;
+        
+        [Tooltip("True ise düşmanlar her iki path'e de spawn olur")]
+        public bool useMultiplePaths = false;
 
         [Header("Enemy Prefabs")]
         public GameObject basicEnemyPrefab;
@@ -76,16 +83,17 @@ namespace TowerDefense.Core
         {
             waves.Clear();
 
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 5) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 12), new WaveEnemy(EnemyTypeEnum.Fast, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10), new WaveEnemy(EnemyTypeEnum.Fast, 4) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 8), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 6), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 4) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 4), new WaveEnemy(EnemyTypeEnum.Armored, 4), new WaveEnemy(EnemyTypeEnum.Elite, 6) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 8), new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 4), new WaveEnemy(EnemyTypeEnum.Elite, 7) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Elite, 10) })); // Boss TriggerBossDialog() içinde spawn edilecek
+            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 1) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 12), new WaveEnemy(EnemyTypeEnum.Fast, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10), new WaveEnemy(EnemyTypeEnum.Fast, 4) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 8), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 6), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 4) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 4), new WaveEnemy(EnemyTypeEnum.Armored, 4), new WaveEnemy(EnemyTypeEnum.Elite, 6) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 8), new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 4), new WaveEnemy(EnemyTypeEnum.Elite, 4) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Elite, 7)})); // Boss TriggerBossDialog() içinde spawn edilecek
+            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Boss, 1)})); // Boss TriggerBossDialog() içinde spawn edilecek
 
 
             Debug.Log($"<color=cyan>WaveManager Initialized! Total Waves: {waves.Count}</color>");
@@ -148,7 +156,19 @@ namespace TowerDefense.Core
             {
                 for (int i = 0; i < enemyGroup.count; i++)
                 {
-                    SpawnEnemy(enemyGroup.type);
+                    // Multi-path desteği: Düşmanları 2 path'e dağıt
+                    if (useMultiplePaths && waypointsPath2 != null && waypointsPath2.Length > 0)
+                    {
+                        // Sırayla her path'e spawn et
+                        bool usePath2 = (i % 2 == 1); // Tek sayılarda 2. path
+                        SpawnEnemy(enemyGroup.type, usePath2);
+                    }
+                    else
+                    {
+                        // Tek path modu (normal)
+                        SpawnEnemy(enemyGroup.type, false);
+                    }
+                    
                     yield return new WaitForSeconds(timeBetweenSpawns);
                 }
             }
@@ -156,7 +176,7 @@ namespace TowerDefense.Core
             isSpawning = false;
         }
 
-        private void SpawnEnemy(EnemyTypeEnum enemyType)
+        private void SpawnEnemy(EnemyTypeEnum enemyType, bool useSecondPath = false)
         {
             GameObject prefab = GetEnemyPrefab(enemyType);
 
@@ -166,24 +186,44 @@ namespace TowerDefense.Core
                 return;
             }
 
-            if (waypoints == null || waypoints.Length == 0)
+            // Hangi path kullanılacak?
+            Transform[] selectedPath = (useSecondPath && waypointsPath2 != null && waypointsPath2.Length > 0) 
+                ? waypointsPath2 
+                : waypoints;
+
+            if (selectedPath == null || selectedPath.Length == 0)
             {
-                Debug.LogError("Waypoints not assigned to WaveManager!");
+                Debug.LogError($"Waypoints not assigned! useSecondPath={useSecondPath}");
                 return;
             }
 
-            Vector3 spawnPosition = waypoints[0].position;
+            Vector3 spawnPosition = selectedPath[0].position;
             GameObject enemyObj = Instantiate(prefab, spawnPosition, Quaternion.identity);
 
-            BaseEnemy enemy = enemyObj.GetComponent<BaseEnemy>();
-            if (enemy != null && waypoints != null && waypoints.Length > 0)
+            // BaseEnemyRefactored kullanarak waypoint'leri ata (tüm düşmanlar bunu kullanıyor)
+            BaseEnemyRefactored enemyRefactored = enemyObj.GetComponent<BaseEnemyRefactored>();
+            if (enemyRefactored != null)
             {
-                enemy.SetWaypoints(waypoints);
+                enemyRefactored.SetWaypoints(selectedPath);
+            }
+            else
+            {
+                // Eğer BaseEnemyRefactored yoksa, eski BaseEnemy'yi dene (sadece Boss için)
+                BaseEnemy enemy = enemyObj.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    enemy.SetWaypoints(selectedPath);
+                }
+                else
+                {
+                    Debug.LogError($"Enemy'de BaseEnemy veya BaseEnemyRefactored component'i bulunamadı! {enemyType}");
+                }
             }
 
             activeEnemies.Add(enemyObj);
 
-            Debug.Log($"<color=cyan>Spawned: {enemyType}</color> (Active Enemies: {activeEnemies.Count})");
+            string pathInfo = useSecondPath ? " (Path 2)" : " (Path 1)";
+            Debug.Log($"<color=cyan>Spawned: {enemyType}{pathInfo}</color> (Active Enemies: {activeEnemies.Count})");
         }
 
         private GameObject GetEnemyPrefab(EnemyTypeEnum type)
@@ -216,20 +256,20 @@ namespace TowerDefense.Core
             // 2. Wave 10 Elite ve Boss Mantığı
             if (currentWaveIndex == 10 && !wave10DialogShown)
             {
-                // GetComponent null hatası vermesin diye kontrol ediyoruz
                 if (enemy != null) 
                 {
-                    BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
-                    // Geçen düşman Elite ise sayacı düşmeli mi? 
-                    // EVET, çünkü o da sahneden gitti. Boss'un gelmesi için ölmesi veya gitmesi fark etmez.
-                    if (baseEnemy != null && baseEnemy is EliteEnemy)
+                    // EliteEnemy component'ini kontrol et (BaseEnemyRefactored kullanıyor)
+                    EliteEnemy eliteEnemy = enemy.GetComponent<EliteEnemy>();
+                    
+                    if (eliteEnemy != null)
                     {
                         wave10EliteCount--;
-                        Debug.Log($"⚔️ Elite Gitti! Kalan Elite: {wave10EliteCount}/10");
+                        Debug.Log($"⚔️ Elite Öldü! Kalan Elite: {wave10EliteCount}/10");
 
                         if (wave10EliteCount <= 0 && !wave10DialogShown)
                         {
                             wave10DialogShown = true;
+                            Debug.Log("<color=red>🔥 TÜM ELITE'LER ÖLDÜ! BOSS SPAWN EDİLİYOR!</color>");
                             StartCoroutine(TriggerBossDialog());
                         }
                     }

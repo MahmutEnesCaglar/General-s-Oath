@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map_Kirin.unity
     guid: 9e1b8456b43cf3b129dd3dc6b409629c
+  - enabled: 1
+    path: Assets/Scenes/Map_Dragon.unity
+    guid: d5647ed4b2f49b5c9afbbe4b303b1ab6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

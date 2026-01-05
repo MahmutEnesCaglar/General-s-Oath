@@ -18,15 +18,17 @@ namespace TowerDefense.Hero
 
         private void Awake()
         {
-            if (Instance == null)
+            // Her sahne için yeni bir HeroInput instance'ı oluştur
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
+                Debug.Log("[HeroInput] Eski instance temizleniyor, yeni instance oluşturuluyor.");
             }
-            else
-            {
-                Destroy(gameObject);
-            }
-            // Eski TowerPlacement arama kodunu sildik.
+            Instance = this;
+            
+            // Hero referansını temizle (Start'ta yeniden bulunacak)
+            hero = null;
+            
+            Debug.Log("[HeroInput] Instance oluşturuldu.");
         }
 
         private void Start()

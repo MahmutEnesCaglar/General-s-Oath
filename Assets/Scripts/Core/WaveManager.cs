@@ -55,18 +55,29 @@ namespace TowerDefense.Core
 
         private void Awake()
         {
-            // Singleton pattern
-            if (Instance == null)
+            // Her sahne için yeni bir WaveManager instance'ı oluştur
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
+                Debug.Log("[WaveManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
             }
+            Instance = this;
+            
+            // Wave durumlarını sıfırla
+            currentWaveIndex = 0;
+            isSpawning = false;
+            isWaveActive = false;
+            wave10EliteCount = 0;
+            wave10DialogShown = false;
+            wave10BossSpawned = false;
+            
+            // Düşman listelerini temizle
+            if (activeEnemies == null)
+                activeEnemies = new List<GameObject>();
             else
-            {
-                Destroy(gameObject);
-                return;
-            }
+                activeEnemies.Clear();
 
             InitializeWaves();
+            Debug.Log("[WaveManager] Instance oluşturuldu ve sıfırlandı.");
         }
 
         private void Start()

@@ -42,15 +42,19 @@ namespace TowerDefense.Core
 
         private void Awake()
         {
-            // Singleton pattern
-            if (Instance == null)
+            // Her sahne için yeni bir DialogManager instance'ı oluştur
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
+                Debug.Log("[DialogManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
             }
-            else
+            Instance = this;
+            
+            // Durumları sıfırla
+            isDialogActive = false;
+            if (typingCoroutine != null)
             {
-                Destroy(gameObject);
-                return;
+                StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
             }
 
             // Dialog başlangıçta kapalı
@@ -58,6 +62,8 @@ namespace TowerDefense.Core
             {
                 dialogPanel.SetActive(false);
             }
+            
+            Debug.Log("[DialogManager] Instance oluşturuldu.");
         }
 
         /// <summary>

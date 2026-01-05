@@ -66,6 +66,10 @@ namespace TowerDefense.Core
             if (scene.name != "MainMenuSahne" && scene.name != "WorldMap")
             {
                 Debug.Log($"[GameManager] Yeni sahne yüklendi: {scene.name}. Oyun başlatılıyor...");
+                
+                // NOT: BuildManager artık her sahnede ayrı bir GameObject'te olmalı
+                // GameManager'a bağlı değil, dolayısıyla otomatik olarak yeniden başlayacak
+                
                 InitializeGame();
                 StartGame();
             }
@@ -78,15 +82,28 @@ namespace TowerDefense.Core
             // Zamanı normalleştir
             Time.timeScale = 1f;
 
+            // Her sahne yüklendiğinde tüm referansları yeniden bul
+            waveManager = FindAnyObjectByType<WaveManager>();
             if (waveManager == null)
-                waveManager = FindAnyObjectByType<WaveManager>();
+                Debug.LogWarning("[GameManager] WaveManager bulunamadı!");
 
             if (bossConfigurator == null)
                 bossConfigurator = gameObject.AddComponent<FinalBossConfigurator>();
             
-            // UI Manager'ı bul
+            // UI Manager'ı her seferinde yeniden bul
+            uiManager = FindAnyObjectByType<UIManager>();
             if (uiManager == null)
-                uiManager = FindAnyObjectByType<UIManager>();
+                Debug.LogWarning("[GameManager] UIManager bulunamadı!");
+            
+            // MoneyManager'ı kontrol et (her sahnede yeni instance olacak)
+            if (MoneyManager.Instance != null)
+            {
+                Debug.Log($"[GameManager] MoneyManager bulundu: {MoneyManager.Instance.gameObject.name}");
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] MoneyManager bulunamadı!");
+            }
 
             PrintGameConfiguration();
         }

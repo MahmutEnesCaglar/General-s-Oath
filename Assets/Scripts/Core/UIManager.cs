@@ -26,20 +26,18 @@ namespace TowerDefense.Core
 
         private void Awake()
         {
-            // Singleton
-            if (Instance == null)
+            // Her sahne için yeni bir UIManager instance'ı oluştur
+            if (Instance != null && Instance != this)
             {
-                Instance = this;
+                Debug.Log("[UIManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
             }
-            else
-            {
-                Destroy(gameObject);
-                return;
-            }
+            Instance = this;
 
             // Panelleri gizle
             if (gameOverPanel != null) gameOverPanel.SetActive(false);
             if (victoryPanel != null) victoryPanel.SetActive(false);
+            
+            Debug.Log("[UIManager] Instance oluşturuldu.");
         }
 
         private void Start()

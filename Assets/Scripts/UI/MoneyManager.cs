@@ -7,14 +7,14 @@ public class MoneyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        // Her sahne için yeni bir MoneyManager instance'ı oluştur
+        // (Çünkü UI elemanları her sahnede farklı)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Debug.Log("[MoneyManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
+        Debug.Log("[MoneyManager] Instance oluşturuldu.");
     }
 
     [Header("Para Ayarları")]
@@ -32,11 +32,30 @@ public class MoneyManager : MonoBehaviour
     
     void Start()
     {
+        // AudioSource'u oluştur
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.volume = sfxVolume;
         
+        // UI referansını yeniden bul (eğer null ise)
+        if (moneyText == null)
+        {
+            moneyText = GameObject.Find("MoneyText")?.GetComponent<TMP_Text>();
+            if (moneyText == null)
+            {
+                Debug.LogWarning("[MoneyManager] MoneyText bulunamadı! UI'da 'MoneyText' isimli bir TMP_Text objesi olmalı.");
+            }
+        }
+        
+        // GameManager ile senkronize ol
+        if (TowerDefense.Core.GameManager.Instance != null)
+        {
+            currentMoney = TowerDefense.Core.GameManager.Instance.playerMoney;
+            Debug.Log($"[MoneyManager] GameManager ile senkronize edildi. Para: {currentMoney}");
+        }
+        
         UpdateMoneyUI();
+        Debug.Log("[MoneyManager] Start tamamlandı.");
     }
     
     void Update()

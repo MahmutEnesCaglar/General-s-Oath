@@ -226,17 +226,31 @@ namespace TowerDefense.Enemy
 
         protected virtual void ReachBase()
         {
-            if (hasReachedBase) return;
+            if (hasReachedBase) return; // Zaten işlem yapıldıysa tekrar girme
             hasReachedBase = true;
             
-            // GameManager'a can kaybını bildir
+            Debug.Log($"[BaseEnemy] Düşman üsse ulaştı: {gameObject.name}");
+
+            // 1. Önce GameManager'a haber ver (Can düşsün)
             if (GameManager.Instance != null)
-                GameManager.Instance.OnEnemyReachedBase(1);
+            {
+                GameManager.Instance.OnEnemyReachedBase(1); // 1 hasar ver
+            }
             
-            // WaveManager'a düşmanın gittiğini bildir (activeEnemies'ten çıksın)
+            // 2. WaveManager'ın listesinden DÜŞÜR (Para vermeden sil)
             if (WaveManager.Instance != null)
-                WaveManager.Instance.OnEnemyKilled(gameObject);
+            {
+                // OnEnemyKilled yerine, düşmanı listeden silecek ama ödül vermeyecek bir işlem yapıyoruz.
+                // Eğer WaveManager.cs'de OnEnemyKilled düşmanı listeden siliyorsa onu kullanabilirsin
+                // ama buradaki mantık hatasını önlemek için manuel listeden sildirelim:
+                WaveManager.Instance.OnEnemyKilled(gameObject); 
+                
+                // NOT: WaveManager'ın OnEnemyKilled fonksiyonu içinde
+                // "CheckWaveComplete()" çağrıldığından emin olmalısın.
+                // Eğer çağrılmazsa wave bitmez.
+            }
             
+            // 3. Obje yok ediliyor
             Destroy(gameObject);
         }
 

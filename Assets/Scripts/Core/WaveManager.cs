@@ -76,16 +76,16 @@ namespace TowerDefense.Core
         {
             waves.Clear();
 
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 8) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 12), new WaveEnemy(EnemyTypeEnum.Fast, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10), new WaveEnemy(EnemyTypeEnum.Fast, 4) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 8), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 6), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 4) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 4), new WaveEnemy(EnemyTypeEnum.Armored, 4), new WaveEnemy(EnemyTypeEnum.Elite, 6) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 8), new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 2) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 4), new WaveEnemy(EnemyTypeEnum.Elite, 7) }));
-            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Elite, 10) }));
+            waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 5) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 12), new WaveEnemy(EnemyTypeEnum.Fast, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 10), new WaveEnemy(EnemyTypeEnum.Fast, 4) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 8), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Basic, 6), new WaveEnemy(EnemyTypeEnum.Fast, 6), new WaveEnemy(EnemyTypeEnum.Armored, 4) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 4), new WaveEnemy(EnemyTypeEnum.Armored, 4), new WaveEnemy(EnemyTypeEnum.Elite, 6) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Fast, 8), new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 2) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Armored, 6), new WaveEnemy(EnemyTypeEnum.Archer, 4), new WaveEnemy(EnemyTypeEnum.Elite, 7) }));
+            // waves.Add(new Wave(new WaveEnemy[] { new WaveEnemy(EnemyTypeEnum.Elite, 10) }));
 
 
             Debug.Log($"<color=cyan>WaveManager Initialized! Total Waves: {waves.Count}</color>");
@@ -199,67 +199,89 @@ namespace TowerDefense.Core
 
         public void OnEnemyKilled(GameObject enemy)
         {
+            // 1. Önce listeden silmeye çalış
             if (activeEnemies.Contains(enemy))
             {
                 activeEnemies.Remove(enemy);
+                Debug.Log($"🔻 Düşman Eksildi! Kalan Düşman: {activeEnemies.Count}");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ Silinmeye çalışılan düşman listede bulunamadı (Zaten silinmiş olabilir).");
             }
 
-            // Wave 10 Elite takibi
+            // 2. Wave 10 Elite ve Boss Mantığı
             if (currentWaveIndex == 10 && !wave10DialogShown)
             {
-                BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
-                if (baseEnemy != null && baseEnemy is EliteEnemy)
+                // GetComponent null hatası vermesin diye kontrol ediyoruz
+                if (enemy != null) 
                 {
-                    wave10EliteCount--;
-                    Debug.Log($"<color=orange>Elite Defeated! Remaining: {wave10EliteCount}/10</color>");
-
-                    if (wave10EliteCount <= 0 && !wave10DialogShown)
+                    BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
+                    // Geçen düşman Elite ise sayacı düşmeli mi? 
+                    // EVET, çünkü o da sahneden gitti. Boss'un gelmesi için ölmesi veya gitmesi fark etmez.
+                    if (baseEnemy != null && baseEnemy is EliteEnemy)
                     {
-                        wave10DialogShown = true;
-                        StartCoroutine(TriggerBossDialog());
+                        wave10EliteCount--;
+                        Debug.Log($"⚔️ Elite Gitti! Kalan Elite: {wave10EliteCount}/10");
+
+                        if (wave10EliteCount <= 0 && !wave10DialogShown)
+                        {
+                            wave10DialogShown = true;
+                            StartCoroutine(TriggerBossDialog());
+                        }
                     }
                 }
             }
 
+            // 3. Bölüm Bitti mi Kontrolü
             CheckWaveComplete();
         }
 
         private void CheckWaveComplete()
         {
-            // Spawn devam ediyorsa bekle
-            if (isSpawning) return;
-            
-            // Wave 10 Boss bekliyorsa bekle
-            if (currentWaveIndex == 10 && !wave10BossSpawned) return;
-
-            // Tüm düşmanlar öldü/geçti
-            if (activeEnemies.Count == 0)
+            // Spawn hala devam ediyorsa bitirme
+            if (isSpawning) 
             {
-                isWaveActive = false;
+                Debug.Log("⏳ Wave bitmedi: Hala spawn yapılıyor.");
+                return;
+            }
 
-                // Wave 10 Boss öldü → Victory!
-                if (currentWaveIndex == 10 && wave10BossSpawned)
+            // Wave 10'da Boss henüz doğmadıysa bitirme
+            if (currentWaveIndex == 10 && !wave10BossSpawned) 
+            {
+                Debug.Log("⏳ Wave bitmedi: Boss bekleniyor.");
+                return;
+            }
+
+            // Listede hala düşman varsa bitirme
+            if (activeEnemies.Count > 0)
+            {
+                Debug.Log($"⏳ Wave bitmedi: Sahnede {activeEnemies.Count} düşman var.");
+                return;
+            }
+
+            // --- BURAYA GELDİYSE WAVE BİTMİŞ DEMEKTİR ---
+            
+            Debug.Log($"✅ WAVE {currentWaveIndex} TAMAMLANDI!");
+            isWaveActive = false;
+
+            // Eğer bu SON Wave ise (Örn: Wave 10 bittiyse) -> VICTORY
+            // Not: currentWaveIndex spawn başlarken arttığı için, waves.Count ile eşit veya büyükse son wave bitmiş demektir.
+            if (currentWaveIndex >= waves.Count)
+            {
+                Debug.Log("🏆 TÜM WAVE'LER BİTTİ! VICTORY ÇAĞRILIYOR...");
+                if (GameManager.Instance != null)
                 {
-                    Debug.Log($"<color=green>═══════════════════════════════════</color>");
-                    Debug.Log($"<color=green>VICTORY! ANKA SIMURG DEFEATED!</color>");
-                    Debug.Log($"<color=green>THE REALM IS SAVED!</color>");
-                    Debug.Log($"<color=green>═══════════════════════════════════</color>");
-                    
-                    if (GameManager.Instance != null)
-                        GameManager.Instance.OnAllWavesCompleted();
-                    
-                    return;
+                    GameManager.Instance.OnAllWavesCompleted();
                 }
-
-                Debug.Log($"<color=yellow>Wave {currentWaveIndex} tamamlandı! Sonraki wave için butona basın.</color>");
-                
-                // ← YENİ: Son wave tamamlandıysa Victory!
-                if (currentWaveIndex >= waves.Count)
+            }
+            else
+            {
+                Debug.Log("➡️ Wave bitti, sıradaki wave için buton bekleniyor.");
+                // Burada VictoryDefeatManager'daki UI'ın güncellenmesi lazım (Next Wave butonu açılsın diye)
+                if (VictoryDefeatManager.Instance != null)
                 {
-                    Debug.Log("<color=green>ALL WAVES COMPLETED! VICTORY!</color>");
-                    
-                    if (GameManager.Instance != null)
-                        GameManager.Instance.OnAllWavesCompleted();
+                    VictoryDefeatManager.Instance.UpdateUI();
                 }
             }
         }

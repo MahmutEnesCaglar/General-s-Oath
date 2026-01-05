@@ -100,9 +100,17 @@ namespace TowerDefense.Enemy.Components
             if (hasReachedBase) return;
             hasReachedBase = true;
 
+            // 1. Canı azalt (Mevcut kodun)
             if (GameManager.Instance != null)
                 GameManager.Instance.OnEnemyReachedBase(1);
 
+            // 2. EKLENEN KISIM: WaveManager'a haber ver ki listeden düşsün
+            // "Killed" fonksiyonunu çağırıyoruz çünkü bu fonksiyon düşmanı listeden silip
+            // "Wave bitti mi?" kontrolünü yapıyor.
+            if (WaveManager.Instance != null)
+                WaveManager.Instance.OnEnemyKilled(gameObject);
+
+            // 3. Objeyi yok et
             Destroy(gameObject);
         }
 

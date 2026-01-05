@@ -243,19 +243,26 @@ namespace TowerDefense.Core
         void UnlockNextLevel()
         {
             string currentScene = SceneManager.GetActiveScene().name;
+            Debug.Log($"[UnlockNextLevel] Mevcut sahne: {currentScene}");
             
             if (currentScene == "Map_Grifon")
             {
                 PlayerPrefs.SetInt("Map_Kirin_Unlocked", 1);
-                Debug.Log("🔓 Map_Kirin kilidi açıldı!");
+                PlayerPrefs.Save();
+                Debug.Log("🔓 Map_Kirin kilidi açıldı ve kaydedildi!");
+                Debug.Log($"Kontrol: Map_Kirin_Unlocked = {PlayerPrefs.GetInt("Map_Kirin_Unlocked", 0)}");
             }
             else if (currentScene == "Map_Kirin")
             {
                 PlayerPrefs.SetInt("Map_Ejderha_Unlocked", 1);
-                Debug.Log("🔓 Map_Ejderha kilidi açıldı!");
+                PlayerPrefs.Save();
+                Debug.Log("🔓 Map_Ejderha kilidi açıldı ve kaydedildi!");
+                Debug.Log($"Kontrol: Map_Ejderha_Unlocked = {PlayerPrefs.GetInt("Map_Ejderha_Unlocked", 0)}");
             }
-            
-            PlayerPrefs.Save();
+            else
+            {
+                Debug.LogWarning($"⚠️ Bilinmeyen sahne: {currentScene} - Kilit açma işlemi yapılamadı!");
+            }
         }
 
         void RetryLevel()

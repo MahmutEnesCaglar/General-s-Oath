@@ -987,7 +987,7 @@ MonoBehaviour:
   enableHeroRespawn: 0
   heroRespawnDelay: 5
   healthBar: {fileID: 670755357}
-  uiManager: {fileID: 0}
+  victoryDefeatManager: {fileID: 0}
 --- !u!114 &413839665
 MonoBehaviour:
   m_ObjectHideFlags: 0

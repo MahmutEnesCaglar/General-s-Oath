@@ -4,87 +4,120 @@ using UnityEngine.SceneManagement;
 
 public class WorldMapManager : MonoBehaviour
 {
-    [Header("Butonlar")]
+    [Header("Yöneticiler")]
     public Button mainMenuButton;
+    public MapSelectionManager mapSelectionManager;
+
+    [Header("--- GRİFON (Bölüm 1) ---")]
+    public Button grifonButton;
+    public Image grifonImage;
+    // Grifon hep açık, kilitli haline gerek yok
+    public Sprite grifonCurrentSprite; // Şu an oynanan
+    public Sprite grifonPassedSprite;  // Bitirilen
+
+    [Header("--- KİRİN (Bölüm 2) ---")]
+    public Button kirinButton;
+    public Image kirinImage;
+    [Space(5)]
+    public Sprite kirinLockedSprite;  // KİLİTLİ (Gri veya üzerinde kilit çizili resim)
+    public Sprite kirinCurrentSprite; // ŞİMDİKİ (Sıradaki hedef)
+    public Sprite kirinPassedSprite;  // GEÇİLEN (Bitmiş)
     
-    [Header("Grifon Haritası Yıldızları")]
-    public Image grifonStar1;
-    public Image grifonStar2;
-    public Image grifonStar3;
-    
-    [Header("Kirin Haritası Yıldızları")]
-    public Image kirinStar1;
-    public Image kirinStar2;
-    public Image kirinStar3;
-    public GameObject kirinLock; // Kilit ikonu
-    
-    [Header("Ejderha Haritası Yıldızları")]
-    public Image ejderhaStar1;
-    public Image ejderhaStar2;
-    public Image ejderhaStar3;
-    public GameObject ejderhaLock; // Kilit ikonu
-    
-    [Header("Yıldız Sprite'ları")]
-    public Sprite starEmpty;
-    public Sprite starFilled;
+    [Header("--- EJDERHA (Bölüm 3) ---")]
+    public Button ejderhaButton;
+    public Image ejderhaImage;
+    [Space(5)]
+    public Sprite ejderhaLockedSprite; 
+    public Sprite ejderhaCurrentSprite;
+    public Sprite ejderhaPassedSprite; 
     
     void Start()
     {
-        if (mainMenuButton != null)
+        if (mainMenuButton != null) 
             mainMenuButton.onClick.AddListener(ReturnToMainMenu);
         
-        // Yıldızları güncelle
-        UpdateAllMapStars();
+        // Buton Tıklamaları
+        if (grifonButton != null && mapSelectionManager != null)
+            grifonButton.onClick.AddListener(mapSelectionManager.OpenGrifonMap);
+            
+        if (kirinButton != null && mapSelectionManager != null)
+            kirinButton.onClick.AddListener(mapSelectionManager.OpenKirinMap);
+            
+        if (ejderhaButton != null && mapSelectionManager != null)
+            ejderhaButton.onClick.AddListener(mapSelectionManager.OpenEjderhaMap);
+        
+        // Görselleri Güncelle
+        UpdateMapVisuals();
     }
     
-    void UpdateAllMapStars()
+    void UpdateMapVisuals()
     {
-        // Grifon (her zaman açık)
+        // 1. GRİFON (Hep açık)
         int grifonStars = PlayerPrefs.GetInt("Map_Grifon_Stars", 0);
-        UpdateStars(grifonStar1, grifonStar2, grifonStar3, grifonStars);
-        
-        // Kirin
+        // Kilitli sprite yok (null), kilitli değil (true)
+        UpdateOneMapVisual(grifonImage, true, grifonStars, 
+            grifonCurrentSprite, grifonPassedSprite, null);
+
+        // 2. KİRİN
         int kirinStars = PlayerPrefs.GetInt("Map_Kirin_Stars", 0);
-        bool kirinUnlocked = PlayerPrefs.GetInt("Map_Kirin_Unlocked", 0) == 1;
-        UpdateStars(kirinStar1, kirinStar2, kirinStar3, kirinStars);
-        if (kirinLock != null) 
-            kirinLock.SetActive(!kirinUnlocked);
-        
-        // Ejderha
+        bool isKirinUnlocked = PlayerPrefs.GetInt("Map_Kirin_Unlocked", 0) == 1;
+
+        UpdateOneMapVisual(kirinImage, isKirinUnlocked, kirinStars, 
+            kirinCurrentSprite, kirinPassedSprite, kirinLockedSprite);
+
+        // 3. EJDERHA
         int ejderhaStars = PlayerPrefs.GetInt("Map_Ejderha_Stars", 0);
-        bool ejderhaUnlocked = PlayerPrefs.GetInt("Map_Ejderha_Unlocked", 0) == 1;
-        UpdateStars(ejderhaStar1, ejderhaStar2, ejderhaStar3, ejderhaStars);
-        if (ejderhaLock != null) 
-            ejderhaLock.SetActive(!ejderhaUnlocked);
-        
-        Debug.Log($"🗺️ WorldMap Yıldızlar güncellendi:");
-        Debug.Log($"  Grifon: {grifonStars} ⭐");
-        Debug.Log($"  Kirin: {kirinStars} ⭐ (Kilitsiz: {kirinUnlocked})");
-        Debug.Log($"  Ejderha: {ejderhaStars} ⭐ (Kilitsiz: {ejderhaUnlocked})");
+        bool isEjderhaUnlocked = PlayerPrefs.GetInt("Map_Ejderha_Unlocked", 0) == 1;
+
+        UpdateOneMapVisual(ejderhaImage, isEjderhaUnlocked, ejderhaStars, 
+            ejderhaCurrentSprite, ejderhaPassedSprite, ejderhaLockedSprite);
     }
     
-    void UpdateStars(Image star1, Image star2, Image star3, int starCount)
+    /// <summary>
+    /// Sadece Sprite değiştirerek durumu yönetir. Ekstra ikon yoktur.
+    /// </summary>
+    void UpdateOneMapVisual(Image mapImg, bool isUnlocked, int starCount, 
+                            Sprite currentSprite, Sprite passedSprite, Sprite lockedSprite)
     {
-        if (star1 != null)
-            star1.sprite = starCount >= 1 ? starFilled : starEmpty;
-        
-        if (star2 != null)
-            star2.sprite = starCount >= 2 ? starFilled : starEmpty;
-        
-        if (star3 != null)
-            star3.sprite = starCount >= 3 ? starFilled : starEmpty;
+        if (mapImg == null) return;
+
+        // --- DURUM 1: KİLİTLİ ---
+        if (!isUnlocked)
+        {
+            // Eğer inspector'a kilitli resim koyduysan onu göster
+            if (lockedSprite != null) 
+            {
+                mapImg.sprite = lockedSprite;
+                mapImg.color = Color.white; // Resim zaten griyse rengi beyaz kalsın
+            }
+            else 
+            {
+                // Resim yoksa, mevcut resmi grileştir (Kodla karartma)
+                mapImg.color = Color.gray; 
+            }
+            return;
+        }
+
+        // --- KİLİT AÇIK İSE ---
+        mapImg.color = Color.white; // Rengi normale döndür
+
+        // --- DURUM 2: GEÇİLEN (Yıldız > 0) ---
+        if (starCount > 0)
+        {
+            if (passedSprite != null) mapImg.sprite = passedSprite;
+        }
+        // --- DURUM 3: ŞİMDİKİ (Yıldız == 0) ---
+        else
+        {
+            if (currentSprite != null) mapImg.sprite = currentSprite;
+        }
     }
     
     public void ReturnToMainMenu()
     {
-        Debug.Log("Ana menüye dönülüyor...");
-        
         if (SceneTransition.Instance != null)
             SceneTransition.Instance.LoadScene("MainMenuSahne");
         else
-        {
-            Debug.LogWarning("SceneTransition yok, normal yani animasyonsuz yükleme yapılıyor...");
             SceneManager.LoadScene("MainMenuSahne");
-        }
     }
 }

@@ -74,7 +74,7 @@ namespace TowerDefense.Core
         public void StartGame()
         {
             currentWave = 0;
-            playerMoney = 1000;
+            playerMoney = 100;
             playerLives = 5;
             isGameActive = true;
 

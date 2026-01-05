@@ -9,7 +9,7 @@ namespace TowerDefense.Enemy
     /// Speed: 1.5, Reward: 8$
     /// isRanged = true (archerRange 3.5f kullanır)
     /// </summary>
-    public class ArcherEnemy : BaseEnemy
+    public class ArcherEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -18,7 +18,6 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 6;
             damageToBarrier = 6;
-            damageToOthers = 6;
             moveSpeed = 1f;
             moneyReward = 8;
 
@@ -32,42 +31,21 @@ namespace TowerDefense.Enemy
             isRanged = true;  // ÖNEMLI: Archer ranged saldırı yapar
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
         }
 
-        // Override movement to stop at ranged attack distance
-        protected override void MoveTowardsHero()
-        {
-            if (currentHeroTarget == null) return;
-            if (isAttacking) return;
+        // Note: Archer-specific movement behavior (stopping at range) is now handled by EnemyCombat component
+        // The isRanged flag and archerRange settings control the behavior automatically
 
-            // Check if in attack range
-            float distanceToHero = Vector2.Distance(transform.position, currentHeroTarget.transform.position);
-
-            // If within archer range, stop and attack
-            if (distanceToHero <= archerRange)
-            {
-                AttackHero();
-                return;
-            }
-
-            // Move closer to attack range
-            Vector2 directionToHero = (currentHeroTarget.transform.position - transform.position).normalized;
-            Vector2 movement = directionToHero * moveSpeed + CalculateSeparation() * separationForce;
-
-            transform.position += (Vector3)movement * Time.deltaTime;
-            FlipSprite(movement.x);
-        }
-
-        protected override void OnAttackPerformed()
+        public override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
             // Future: Add arrow shooting effect/sound
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
         }

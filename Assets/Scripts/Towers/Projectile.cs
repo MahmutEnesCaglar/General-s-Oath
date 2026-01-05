@@ -63,7 +63,7 @@ namespace TowerDefense.Tower
             foreach (Collider2D hit in hits)
             {
                 // Sadece düşmanlara çarp
-                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
+                BaseEnemyRefactored enemy = hit.GetComponent<BaseEnemyRefactored>();
                 if (enemy != null)
                 {
                     HitTarget(enemy);
@@ -72,7 +72,7 @@ namespace TowerDefense.Tower
             }
         }
 
-        private void HitTarget(BaseEnemy enemy)
+        private void HitTarget(BaseEnemyRefactored enemy)
         {
             if (enemy != null)
             {

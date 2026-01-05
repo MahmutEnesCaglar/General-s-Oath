@@ -54,7 +54,7 @@ namespace TowerDefense.Abilities
             
             foreach (Collider2D col in hitEnemies)
             {
-                BaseEnemy enemy = col.GetComponent<BaseEnemy>();
+                BaseEnemyRefactored enemy = col.GetComponent<BaseEnemyRefactored>();
 
                 if (enemy != null)
                 {

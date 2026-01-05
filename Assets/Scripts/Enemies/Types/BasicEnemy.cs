@@ -7,7 +7,7 @@ namespace TowerDefense.Enemy
     /// HP: 50, Damage to Hero: 5, Damage to Barrier: 5
     /// Speed: 2.0, Reward: 5$
     /// </summary>
-    public class BasicEnemy : BaseEnemy
+    public class BasicEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -16,7 +16,6 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 5;
             damageToBarrier = 5;
-            damageToOthers = 5;  // Gelecekte diğer düşmanlara saldırı için
             moveSpeed = 1.2f;
             moneyReward = 5;
 
@@ -31,13 +30,13 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=cyan>BasicEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             // BasicEnemy spawn'landığında özel bir şey yapmaz
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
             // BasicEnemy öldüğünde özel bir şey yapmaz

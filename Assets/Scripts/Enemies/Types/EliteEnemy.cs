@@ -8,7 +8,7 @@ namespace TowerDefense.Enemy
     /// Speed: 2.5, Reward: 15$
     /// Wave 7, 9, 10'da gelir. Wave 10'daki 10 Elite öldükten sonra Boss spawn'lanır
     /// </summary>
-    public class EliteEnemy : BaseEnemy
+    public class EliteEnemy : BaseEnemyRefactored
     {
         protected override void InitializeStats()
         {
@@ -17,7 +17,6 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 10;     // Yüksek hasar
             damageToBarrier = 10;
-            damageToOthers = 10;
             moveSpeed = 1.5f;      // Hızlı
             moneyReward = 15;
 
@@ -32,14 +31,14 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=orange>EliteEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             // Elite spawn'landığında güçlü bir giriş efekti olabilir
             Debug.Log($"<color=orange>ELITE ENEMY SPAWNED!</color> HP: {currentHealth}");
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             base.OnDeath();
             // Elite öldüğünde WaveManager kontrol eder
@@ -47,7 +46,7 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=orange>ELITE ENEMY DEFEATED!</color>");
         }
 
-        protected override void OnAttackPerformed()
+        public override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
             // Elite saldırısı daha gösterişli olabilir

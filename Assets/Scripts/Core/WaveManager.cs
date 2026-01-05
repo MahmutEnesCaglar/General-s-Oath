@@ -84,7 +84,8 @@ namespace TowerDefense.Core
             // Wave 1: 8 Basic
             waves.Add(new Wave(new WaveEnemy[]
             {
-                new WaveEnemy(EnemyTypeEnum.Basic, 1)
+                new WaveEnemy(EnemyTypeEnum.Basic, 1),
+                new WaveEnemy(EnemyTypeEnum.Boss, 1)
             }));
 
             // Wave 2: 10 Basic
@@ -250,7 +251,7 @@ namespace TowerDefense.Core
             GameObject enemyObj = Instantiate(prefab, spawnPosition, Quaternion.identity);
 
             // Waypoint sistemini düşmana ata
-            BaseEnemy enemy = enemyObj.GetComponent<BaseEnemy>();
+            BaseEnemyRefactored enemy = enemyObj.GetComponent<BaseEnemyRefactored>();
             if (enemy != null && waypoints != null && waypoints.Length > 0)
             {
                 enemy.SetWaypoints(waypoints);
@@ -293,7 +294,7 @@ namespace TowerDefense.Core
             // Wave 10 Elite takibi
             if (currentWaveIndex == 10 && !wave10DialogShown)
             {
-                BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
+                BaseEnemyRefactored baseEnemy = enemy.GetComponent<BaseEnemyRefactored>();
                 if (baseEnemy != null && baseEnemy is EliteEnemy)
                 {
                     wave10EliteCount--;

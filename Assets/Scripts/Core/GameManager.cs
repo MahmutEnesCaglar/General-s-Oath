@@ -154,7 +154,6 @@ namespace TowerDefense.Core
 
         public void OnEnemyKilled(int moneyReward)
         {
-            Debug.Log($"<color=cyan>[GameManager] OnEnemyKilled çağrıldı - Reward: {moneyReward}</color>");
 
             // MoneyManager üzerinden para ekle
             if (MoneyManager.Instance != null)
@@ -163,13 +162,11 @@ namespace TowerDefense.Core
                 // MoneyManager'ı GameManager ile senkronize et
                 int oldPlayerMoney = playerMoney;
                 playerMoney = MoneyManager.Instance.currentMoney;
-                Debug.Log($"<color=cyan>[GameManager] Senkronize: {oldPlayerMoney} → {playerMoney}</color>");
             }
             else
             {
                 // Fallback: MoneyManager yoksa sadece GameManager'ı güncelle
                 playerMoney += moneyReward;
-                Debug.LogWarning("<color=orange>[GameManager] MoneyManager bulunamadı! Fallback kullanıldı.</color>");
             }
         }
 

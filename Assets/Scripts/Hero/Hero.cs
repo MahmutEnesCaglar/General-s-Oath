@@ -34,7 +34,7 @@ namespace TowerDefense.Hero
         private bool isMoving = false;
 
         [Header("Combat")]
-        private BaseEnemy currentTarget;
+        private BaseEnemyRefactored currentTarget;
         private float attackTimer = 0f;
         private int attackComboIndex = 0; // 0,1,2 for Attack1/2/3
 
@@ -218,7 +218,7 @@ namespace TowerDefense.Hero
         /// <summary>
         /// Düşmanın 4 köşe ile tanımlanan attack range içinde olup olmadığını kontrol eder
         /// </summary>
-        private bool IsEnemyInAttackRange(BaseEnemy enemy, float multiplier = 1.0f)
+        private bool IsEnemyInAttackRange(BaseEnemyRefactored enemy, float multiplier = 1.0f)
         {
             if (enemy == null) return false;
 
@@ -247,8 +247,8 @@ namespace TowerDefense.Hero
         /// </summary>
         private void FindNearestEnemy()
         {
-            BaseEnemy[] allEnemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
-            BaseEnemy closestEnemy = null;
+            BaseEnemyRefactored[] allEnemies = FindObjectsByType<BaseEnemyRefactored>(FindObjectsSortMode.None);
+            BaseEnemyRefactored closestEnemy = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (var enemy in allEnemies)

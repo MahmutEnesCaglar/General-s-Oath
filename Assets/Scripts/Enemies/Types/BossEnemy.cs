@@ -12,7 +12,7 @@ namespace TowerDefense.Enemy
     ///
     /// ASSETS: Evil Wizard 2 kullanılacak (kullanıcı sonra ayarlayacak)
     /// </summary>
-    public class BossEnemy : BaseEnemy
+    public class BossEnemy : BaseEnemyRefactored
     {
         [Header("Boss Özellikleri")]
         [Tooltip("Boss'un özel giriş efekti/animasyonu")]
@@ -30,7 +30,6 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 25;
             damageToBarrier = 50;
-            damageToOthers = 20;
             moveSpeed = 1f;
             moneyReward = 50;
 
@@ -48,7 +47,7 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=red>BossEnemy Initialized:</color> HP:{maxHealth} DMG:{damageToHero} SPD:{moveSpeed}");
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -64,7 +63,7 @@ namespace TowerDefense.Enemy
             Debug.Log($"<color=red>═══════════════════════════════════</color>");
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             // Boss ölüm efekti
             if (deathEffect != null)
@@ -82,7 +81,7 @@ namespace TowerDefense.Enemy
             // Boss öldüğünde oyun kazanılır (WaveManager bunu dinler)
         }
 
-        protected override void OnAttackPerformed()
+        public override void OnAttackPerformed()
         {
             base.OnAttackPerformed();
             // Boss saldırısı çok güçlü ve görsel efektli

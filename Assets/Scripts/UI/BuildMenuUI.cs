@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using TowerDefense.Tower;
+using System.Collections;
 
 namespace TowerDefense.UI
 {
@@ -19,9 +20,47 @@ namespace TowerDefense.UI
         public Button closeButton; // Menüyü kapatma butonu
         
         private BuildManager buildManager;
+        private bool isInitialized = false; // Setup'ın yapılıp yapılmadığını takip et
         
         private void Start()
         {
+            Debug.Log($"<color=cyan>[BuildMenuUI] Start çağrıldı. GameObject: {gameObject.name}</color>");
+            Debug.Log($"<color=cyan>[BuildMenuUI] BuildManager.main: {(BuildManager.main != null ? BuildManager.main.gameObject.name : "NULL")}</color>");
+            
+            TrySetup();
+        }
+        
+        private void OnEnable()
+        {
+            // Her aktif olduğunda Setup'ı kontrol et
+            Debug.Log($"<color=orange>[BuildMenuUI] OnEnable çağrıldı. isInitialized: {isInitialized}</color>");
+            
+            // Eğer Setup yapılmamışsa veya BuildManager değiştiyse yeniden Setup yap
+            if (!isInitialized || buildManager != BuildManager.main)
+            {
+                TrySetup();
+            }
+        }
+        
+        private void TrySetup()
+        {
+            if (BuildManager.main != null)
+            {
+                Setup(BuildManager.main);
+                isInitialized = true;
+            }
+            else
+            {
+                Debug.LogWarning("<color=red>[BuildMenuUI] BuildManager.main NULL! Setup yapılamadı.</color>");
+                // Biraz bekleyip tekrar dene
+                StartCoroutine(DelayedSetup());
+            }
+        }
+        
+        private System.Collections.IEnumerator DelayedSetup()
+        {
+            yield return new WaitForSeconds(0.1f);
+            Debug.Log($"<color=cyan>[BuildMenuUI] Delayed setup: BuildManager.main {(BuildManager.main != null ? "bulundu" : "hala NULL")}</color>");
             if (BuildManager.main != null)
             {
                 Setup(BuildManager.main);
@@ -30,6 +69,7 @@ namespace TowerDefense.UI
 
         public void Setup(BuildManager manager)
         {
+            Debug.Log($"<color=green>[BuildMenuUI] Setup çağrıldı! Manager: {(manager != null ? manager.gameObject.name : "NULL")}</color>");
             buildManager = manager;
             UpdateCostTexts();
             SetupButtons();
@@ -40,6 +80,8 @@ namespace TowerDefense.UI
                 closeButton.onClick.RemoveAllListeners();
                 closeButton.onClick.AddListener(Close);
             }
+            
+            Debug.Log("<color=green>[BuildMenuUI] Setup tamamlandı!</color>");
         }
         
         private void UpdateCostTexts()

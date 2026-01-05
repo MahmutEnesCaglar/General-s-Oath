@@ -23,6 +23,9 @@ public class MapSelectionManager : MonoBehaviour
     public Button startButton;
     public Button closeButton;
     
+    [Header("Kilit Popup (Opsiyonel)")]
+    public GameObject lockedPopup; // "Bu harita kilitli!" mesajı için
+    
     private string selectedMapScene = "";
     
     void Start()
@@ -32,6 +35,9 @@ public class MapSelectionManager : MonoBehaviour
         
         if (darkOverlay != null)
             darkOverlay.gameObject.SetActive(false);
+        
+        if (lockedPopup != null)
+            lockedPopup.SetActive(false);
         
         if (startButton != null)
             startButton.onClick.AddListener(StartMap);
@@ -84,33 +90,90 @@ public class MapSelectionManager : MonoBehaviour
             else
             {
                 SceneManager.LoadScene(selectedMapScene);
-                Debug.LogWarning("SceneTransition yok, normal yani animasyonsuz yükleme yapılıyor...");
+                Debug.LogWarning("SceneTransition yok, animasyonsuz yükleme yapılıyor...");
             }
-
         }
     }
+    
     /// <summary>
-    /// Grifon haritası için wrapper
+    /// Grifon haritası için wrapper (Her zaman açık)
     /// </summary>
     public void OpenGrifonMap()
     {
-        OpenMapSelection("GRİFON HARITASI", "Map_Grifon", 0);
+        int savedStars = GetSavedStars("Map_Grifon");
+        OpenMapSelection("GRİFON HARITASI", "Map_Grifon", savedStars);
     }
 
     /// <summary>
-    /// Kirin haritası için wrapper
+    /// Kirin haritası için wrapper (Grifon tamamlanınca açılır)
     /// </summary>
     public void OpenKirinMap()
     {
-        OpenMapSelection("KİRİN HARITASI", "Map_Kirin", 0);
+        // Kilit kontrolü
+        if (PlayerPrefs.GetInt("Map_Kirin_Unlocked", 0) == 1)
+        {
+            int savedStars = GetSavedStars("Map_Kirin");
+            OpenMapSelection("KİRİN HARITASI", "Map_Kirin", savedStars);
+        }
+        else
+        {
+            ShowLockedMessage("Kirin haritası kilitli! Grifon'u tamamlayın.");
+        }
     }
 
     /// <summary>
-    /// Ejderha haritası için wrapper
+    /// Ejderha haritası için wrapper (Kirin tamamlanınca açılır)
     /// </summary>
     public void OpenEjderhaMap()
     {
-        OpenMapSelection("EJDERHA HARITASI", "Map_Ejderha", 0);
+        // Kilit kontrolü
+        if (PlayerPrefs.GetInt("Map_Ejderha_Unlocked", 0) == 1)
+        {
+            int savedStars = GetSavedStars("Map_Ejderha");
+            OpenMapSelection("EJDERHA HARITASI", "Map_Ejderha", savedStars);
+        }
+        else
+        {
+            ShowLockedMessage("Ejderha haritası kilitli! Kirin'i tamamlayın.");
+        }
+    }
+    
+    /// <summary>
+    /// Kaydedilmiş yıldız sayısını getirir
+    /// </summary>
+    int GetSavedStars(string sceneName)
+    {
+        return PlayerPrefs.GetInt(sceneName + "_Stars", 0);
+    }
+    
+    /// <summary>
+    /// Kilitli harita mesajı göster
+    /// </summary>
+    void ShowLockedMessage(string message)
+    {
+        Debug.Log($"⚠️ {message}");
+        
+        // Opsiyonel: Kilit popup göster
+        if (lockedPopup != null)
+        {
+            lockedPopup.SetActive(true);
+            
+            // Popup içindeki text'i güncelle
+            TMP_Text lockedText = lockedPopup.GetComponentInChildren<TMP_Text>();
+            if (lockedText != null)
+                lockedText.text = message;
+            
+            // 2 saniye sonra kapat
+            StartCoroutine(CloseLockedPopupAfterDelay());
+        }
+    }
+    
+    System.Collections.IEnumerator CloseLockedPopupAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        
+        if (lockedPopup != null)
+            lockedPopup.SetActive(false);
     }
     
     void ClosePopup()

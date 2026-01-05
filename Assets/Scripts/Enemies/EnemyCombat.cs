@@ -94,9 +94,22 @@ namespace TowerDefense.Enemy.Components
             if (hero != null && !hero.isDead)
             {
                 float distanceToHero = Vector2.Distance(transform.position, hero.transform.position);
+
+                // DEBUG: Boss için hero detection
+                BaseEnemyRefactored baseEnemy = GetComponent<BaseEnemyRefactored>();
+                if (baseEnemy != null && baseEnemy.GetType().Name.Contains("Boss"))
+                {
+                    Debug.Log($"<color=cyan>[BOSS DEBUG]</color> CheckForHero: Distance={distanceToHero:F2}, AggroRange={aggroRange}, InRange={distanceToHero <= aggroRange}");
+                }
+
                 if (distanceToHero <= aggroRange)
                 {
                     currentHeroTarget = hero;
+
+                    if (baseEnemy != null && baseEnemy.GetType().Name.Contains("Boss"))
+                    {
+                        Debug.Log($"<color=green>[BOSS DEBUG]</color> Hero LOCKED as target!");
+                    }
                 }
             }
         }
@@ -106,12 +119,18 @@ namespace TowerDefense.Enemy.Components
             if (currentHeroTarget == null) return;
             if (isAttacking) return;
 
+            // DEBUG: Boss için movement tracking
+            BaseEnemyRefactored baseEnemy = GetComponent<BaseEnemyRefactored>();
+            bool isBoss = baseEnemy != null && baseEnemy.GetType().Name.Contains("Boss");
+
             // Path deviation check
             float distanceFromPath = Vector2.Distance(transform.position, movementComponent.LastWaypointPosition);
             float deviationMultiplier = CalculateDeviationMultiplier();
 
             if (distanceFromPath > maxPathDeviation * deviationMultiplier)
             {
+                if (isBoss) Debug.Log($"<color=yellow>[BOSS DEBUG]</color> Lost hero target due to path deviation! Distance={distanceFromPath:F2}, Max={maxPathDeviation * deviationMultiplier:F2}");
+
                 currentHeroTarget = null;
                 heroAttackSlot = -1;
                 isInOuterGrid = false;
@@ -139,12 +158,15 @@ namespace TowerDefense.Enemy.Components
 
             if (distanceToTarget > 0.15f)
             {
+                if (isBoss) Debug.Log($"<color=cyan>[BOSS DEBUG]</color> Moving towards hero. Distance to grid pos: {distanceToTarget:F2}");
+
                 transform.position += (Vector3)movement * Time.deltaTime;
                 if (animationComponent != null)
                     animationComponent.FlipSprite(movement.x);
             }
             else
             {
+                if (isBoss) Debug.Log($"<color=green>[BOSS DEBUG]</color> Reached attack position! Calling AttackHero()");
                 AttackHero();
             }
         }
@@ -152,7 +174,19 @@ namespace TowerDefense.Enemy.Components
         public void AttackHero()
         {
             if (currentHeroTarget == null || isAttacking) return;
-            if (!CanAttackHero()) return;
+
+            // DEBUG: Boss için attack attempt tracking
+            BaseEnemyRefactored baseEnemy = GetComponent<BaseEnemyRefactored>();
+            bool isBoss = baseEnemy != null && baseEnemy.GetType().Name.Contains("Boss");
+
+            bool canAttack = CanAttackHero();
+            if (isBoss)
+            {
+                float dist = Vector2.Distance(transform.position, currentHeroTarget.transform.position);
+                Debug.Log($"<color=magenta>[BOSS DEBUG]</color> AttackHero called! CanAttack={canAttack}, Distance={dist:F2}, MeleReachOffset={meleReachOffset}, AttackTimer={attackTimer:F2}");
+            }
+
+            if (!canAttack) return;
 
             if (attackTimer > 0)
             {
@@ -160,6 +194,7 @@ namespace TowerDefense.Enemy.Components
                 return;
             }
 
+            if (isBoss) Debug.Log($"<color=red>[BOSS DEBUG]</color> Starting attack coroutine!");
             StartCoroutine(PerformHeroAttack());
         }
 
@@ -191,12 +226,21 @@ namespace TowerDefense.Enemy.Components
             Vector2 enemyPos = transform.position;
             float distance = Vector2.Distance(enemyPos, heroPos);
 
+            // Boss için basit mesafe kontrolü - grid bounds'a bağlı değil
+            BaseEnemyRefactored baseEnemy = GetComponent<BaseEnemyRefactored>();
+            if (baseEnemy != null && baseEnemy.GetType().Name.Contains("Boss"))
+            {
+                bool result = distance <= meleReachOffset;
+                Debug.Log($"<color=orange>[BOSS DEBUG]</color> CanAttackHero: Distance={distance:F2}, MeleReachOffset={meleReachOffset}, Result={result}");
+                return result;
+            }
+
             if (isRanged)
             {
                 return distance <= archerRange;
             }
 
-            // Melee check with grid bounds
+            // Melee check with grid bounds (normal enemies)
             CalculateHeroBounds();
             float dx = Mathf.Abs(heroPos.x - enemyPos.x);
             float dy = Mathf.Abs(heroPos.y - enemyPos.y);

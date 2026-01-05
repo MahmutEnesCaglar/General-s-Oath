@@ -16,6 +16,8 @@ namespace TowerDefense.Enemy
             currentHealth = maxHealth;
             damageToHero = 3;
             damageToBarrier = 3;
+            damageFromHero = 25;    // Hero'dan aldığı hasar (kırılgan, daha çok hasar alır)
+            damageFromTower = 15;   // Tower'dan aldığı hasar (kırılgan)
             moveSpeed = 2f;  // En hızlı düşman
             moneyReward = 7;
 

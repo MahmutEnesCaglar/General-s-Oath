@@ -263,7 +263,16 @@ namespace TowerDefense.Tower
         // --- FİZİK İLETİŞİMİ ---
         public void OnEnemyEnter(GameObject enemy)
         {
-            if (!enemiesInRange.Contains(enemy)) enemiesInRange.Add(enemy);
+            if (!enemiesInRange.Contains(enemy))
+            {
+                enemiesInRange.Add(enemy);
+                // DEBUG: Boss detection
+                BaseEnemyRefactored enemyScript = enemy.GetComponent<BaseEnemyRefactored>();
+                if (enemyScript != null && enemyScript.GetType().Name.Contains("Boss"))
+                {
+                    Debug.Log($"<color=yellow>[{towerName}] BOSS ENTERED RANGE! Total enemies in range: {enemiesInRange.Count}</color>");
+                }
+            }
         }
 
         public void OnEnemyExit(GameObject enemy)
@@ -544,6 +553,13 @@ namespace TowerDefense.Tower
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            // DEBUG: Boss detection
+            if (other.GetComponent<BaseEnemyRefactored>() != null)
+            {
+                bool hasTag = other.CompareTag("Enemy");
+                Debug.Log($"[Tower Range] Detected {other.name}, Has Enemy Tag: {hasTag}, Type: {other.GetComponent<BaseEnemyRefactored>().GetType().Name}");
+            }
+
             if (other.CompareTag("Enemy"))
                 towerParent.OnEnemyEnter(other.gameObject);
         }

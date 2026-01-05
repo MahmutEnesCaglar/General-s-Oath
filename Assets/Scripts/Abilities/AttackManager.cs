@@ -24,7 +24,22 @@ namespace TowerDefense.Core
 
         void Awake()
         {
+            // Her sahne için yeni bir AttackManager instance'ı oluştur
+            if (Instance != null && Instance != this)
+            {
+                Debug.Log("[AttackManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
+            }
             Instance = this;
+            
+            // Durumları sıfırla
+            isAttackMode = false;
+            if (ghostObject != null)
+            {
+                Destroy(ghostObject);
+                ghostObject = null;
+            }
+            
+            Debug.Log("[AttackManager] Instance oluşturuldu.");
         }
 
         void Update()

@@ -12,7 +12,18 @@ namespace TowerDefense.Tower
 
         private void Awake()
         {
+            // Her sahne için yeni instance oluştur - DontDestroyOnLoad KULLANMA!
+            if (main != null && main != this)
+            {
+                // Eski instance varsa yok et (bu sahne yeniden yükleniyorsa)
+                Debug.Log("[BuildManager] Eski instance temizleniyor, yeni instance oluşturuluyor.");
+                Destroy(main.gameObject);
+            }
             main = this;
+            Debug.Log($"<color=cyan>[BuildManager] Awake tamamlandı. GameObject: {gameObject.name}</color>");
+            Debug.Log($"<color=cyan>[BuildManager] buildMenuPanel: {(buildMenuPanel != null ? buildMenuPanel.name : "NULL")}</color>");
+            Debug.Log($"<color=cyan>[BuildManager] upgradeMenu: {(upgradeMenu != null ? "Var" : "NULL")}</color>");
+            Debug.Log($"<color=cyan>[BuildManager] towerPrefabs: {(towerPrefabs != null ? towerPrefabs.Length.ToString() : "NULL")}</color>");
         }
 
         [Header("Gerekli Bileşenler")]
@@ -32,11 +43,68 @@ namespace TowerDefense.Tower
 
         void Start()
         {
+            ResetForNewScene();
+        }
+        
+        /// <summary>
+        /// Yeni sahne yüklendiğinde BuildManager'ı sıfırla ve yeniden başlat
+        /// GameManager tarafından çağrılır
+        /// </summary>
+        public void ResetForNewScene()
+        {
+            Debug.Log($"<color=yellow>[BuildManager] ResetForNewScene çağrıldı. GameObject: {gameObject.name}</color>");
+            
+            // Menüleri kapat
             if(buildMenuPanel != null)
                 buildMenuPanel.SetActive(false);
             
             if(upgradeMenu != null)
                 upgradeMenu.CloseMenu();
+            
+            // Seçili pozisyonları temizle
+            selectedBuildPosition = Vector3.zero;
+            selectedSpotObj = null;
+            
+            // Eğer referanslar null ise otomatik bul
+            if (buildMenuPanel == null)
+            {
+                // Canvas'ın altında "BuildMenu" isimli objeyi bul
+                GameObject canvasObj = GameObject.Find("Canvas");
+                if (canvasObj != null)
+                {
+                    Transform buildMenuTransform = canvasObj.transform.Find("BuildMenu");
+                    if (buildMenuTransform != null)
+                    {
+                        buildMenuPanel = buildMenuTransform.gameObject;
+                        Debug.Log($"<color=lime>[BuildManager] buildMenuPanel otomatik bulundu: {buildMenuPanel.name}</color>");
+                    }
+                }
+                
+                if (buildMenuPanel == null)
+                {
+                    Debug.LogError("<color=red>[BuildManager] buildMenuPanel bulunamadı! Lütfen Inspector'dan atayın veya Canvas/BuildMenu objesi oluşturun.</color>");
+                }
+            }
+            
+            if (upgradeMenu == null)
+            {
+                upgradeMenu = FindAnyObjectByType<UpgradeMenuUI>();
+                if (upgradeMenu != null)
+                {
+                    Debug.Log($"<color=lime>[BuildManager] upgradeMenu otomatik bulundu.</color>");
+                }
+            }
+            
+            if (towerPrefabs == null || towerPrefabs.Length == 0)
+            {
+                Debug.LogError("<color=red>[BuildManager] towerPrefabs boş! Lütfen Inspector'dan tower prefablarını atayın.</color>");
+            }
+            
+            Debug.Log($"<color=yellow>[BuildManager] buildMenuPanel: {(buildMenuPanel != null ? buildMenuPanel.name : "NULL")}</color>");
+            Debug.Log($"<color=yellow>[BuildManager] upgradeMenu: {(upgradeMenu != null ? "Var" : "NULL")}</color>");
+            Debug.Log($"<color=yellow>[BuildManager] towerPrefabs: {(towerPrefabs != null ? towerPrefabs.Length.ToString() : "NULL")}</color>");
+            
+            Debug.Log("<color=green>[BuildManager] ResetForNewScene tamamlandı. BuildMenu ve UpgradeMenu hazır.</color>");
         }
 
         void Update()
@@ -81,12 +149,15 @@ namespace TowerDefense.Tower
 
         void HandleClick()
         {
+            Debug.Log("<color=magenta>[BuildManager] HandleClick çağrıldı!</color>");
+            
             // Mouse pozisyonu
             Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z)));
 
             // TÜM çarpışmaları al (RaycastAll kullanarak overlap sorununu çöz)
             RaycastHit2D[] hits = Physics2D.RaycastAll(worldPoint, Vector2.zero);
+            Debug.Log($"<color=magenta>[BuildManager] {hits.Length} collision bulundu.</color>");
 
             // ÖNCELİK: Kuleler (Tower'a tıklamak BuildSpot'tan daha önemli)
             foreach (RaycastHit2D hit in hits)
@@ -113,6 +184,8 @@ namespace TowerDefense.Tower
             {
                 if (hit.collider != null && hit.collider.CompareTag("BuildSpot"))
                 {
+                    Debug.Log($"<color=lime>[BuildManager] BuildSpot bulundu: {hit.collider.gameObject.name}</color>");
+                    
                     // Upgrade menüsünü kapat
                     if (upgradeMenu != null) upgradeMenu.CloseMenu();
 
